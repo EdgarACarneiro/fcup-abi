@@ -1,4 +1,6 @@
+from Seq import Seq
 
-class _Rna(_Seq):
+
+class Rna(Seq):
     def __init__(self, seq):
         super().__init__(seq)

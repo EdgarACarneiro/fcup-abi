@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class _Seq(ABC):
+class Seq(ABC):
     """Abstract class that represents a sequence"""
 
     class InvalidSequenceException(Exception):
@@ -12,4 +12,5 @@ class _Seq(ABC):
         self.__seq = seq
 
     @abstractmethod
-    def isValid()
+    def validate(self):
+        pass
