@@ -31,3 +31,9 @@ class Seq(ABC):
         return sorted(symbols.items(),
                       key=lambda symbol: symbol[1],
                       reverse=True)
+
+    def readFile(fileName):
+        return open(fileName, "r")
+
+    def writeFile(fileName):
+        return open(fileName, "w+")

@@ -40,6 +40,8 @@ class BioSeq:
 def main():
     dna = BioSeq.createBioSeq("AtcACA", "dna")
     assert dna.validate(), "Invalid Sequence"
+    print(dna.reverse_complement())
+    print(dna.transcription().reverse_complement())
 
 
 if __name__ == "__main__":
