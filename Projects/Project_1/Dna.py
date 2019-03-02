@@ -2,13 +2,13 @@ from Seq import Seq
 
 
 class Dna(Seq):
-    switcher = {"A": "T",
-                "T": "A",
-                "G": "C",
-                "C": "G"}
 
     def __init__(self, seq):
         super().__init__(seq)
+        self.switcher = {"A": "T",
+                         "T": "A",
+                         "G": "C",
+                         "C": "G"}
 
     def validate(self):
-        return self.__seq in switcher
+        return self._seq in self.switcher

@@ -9,7 +9,7 @@ class BioSeq:
     """Class that represents a Bio Sequence: can either be a Dna,
     Rna or Protein"""
 
-    class _BioType(Enum):
+    class BioType(Enum):
         """Possible Bio Sequence types"""
         DNA = "DNA"
         RNA = "RNA"
@@ -19,27 +19,28 @@ class BioSeq:
         """Error raised when bio sequence type is not recognized"""
         pass
 
-    def __init__(self, seq, seq_type="DNA"):
+    @staticmethod
+    def createBioSeq(seq, seq_type="DNA"):
+        """Create a BioSeq instance according to the given type and
+        returns it"""
+
         # Assuring it is either Dna, Rna or a Protein
-        if seq_type.upper() not in [el.value for el in list(self._BioType)]:
+        if seq_type.upper() not in [el.value for el in list(BioSeq.BioType)]:
             raise self.BioTypeException
 
-        bio_type = self._BioType(seq_type.upper())
+        bio_type = BioSeq.BioType(seq_type.upper())
 
-        if bio_type is self._BioType.DNA:
-            __bio_seq = Dna(seq)
-        elif seq_type is self._BioType.RNA:
-            __bio_seq = Rna(seq)
-        else:
-            __bio_seq = Protein(seq)
-
-    def validate_seq(self):
-        return __bio_seq.validate()
+        if bio_type is BioSeq.BioType.DNA:
+            return Dna(seq)
+        elif seq_type is BioSeq.BioType.RNA:
+            return Rna(seq)
+        return Protein(seq)
 
 
 def main():
-    test = BioSeq("ATCACA", "dna") 
-    assert test.validate_seq(), "Invalid Sequence"
+    dna = BioSeq.createBioSeq("AtcACA", "dna")
+    assert dna.validate(), "Invalid Sequence"
+
 
 if __name__ == "__main__":
     main()
