@@ -1,9 +1,9 @@
-from Seq import Seq
+from NucleotideChain import NucleotideChain
 
 
-class Rna(Seq):
+class Rna(NucleotideChain):
     def __init__(self, seq):
         super().__init__(seq)
 
     def validate(self):
-        return self._seq in ["A", "U", "C", "G"]
+        return all(n in ["A", "U", "C", "G"] for n in self._seq)

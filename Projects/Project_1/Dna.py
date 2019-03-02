@@ -1,8 +1,10 @@
-from Seq import Seq
+from NucleotideChain import NucleotideChain
+from Rna import Rna
 
 
-class Dna(Seq):
+class Dna(NucleotideChain):
 
+    # TODO: Validate in sequences on creation?
     def __init__(self, seq):
         super().__init__(seq)
         self.switcher = {"A": "T",
@@ -11,4 +13,7 @@ class Dna(Seq):
                          "C": "G"}
 
     def validate(self):
-        return self._seq in self.switcher
+        return all(n in self.switcher for n in self._seq)
+
+    def transcription(self):
+        return Rna(self._seq.replace("T", "U"))

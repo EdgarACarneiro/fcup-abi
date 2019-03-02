@@ -9,7 +9,10 @@ class Seq(ABC):
         pass
 
     def __init__(self, seq):
-        self._seq = seq
+        self._seq = seq.upper()
+
+    def get_seq(self):
+        return bio._seq
 
     @abstractmethod
     def validate(self):
@@ -28,8 +31,3 @@ class Seq(ABC):
         return sorted(symbols.items(),
                       key=lambda symbol: symbol[1],
                       reverse=True)
-
-    def gcPercent(self):
-        """Return the percentage og G and C nucleotides in a Bio Sequence.
-        Genes are tipically found in GC-rich regions of the genome"""
-        return sum(1 for val in dna_seq if val is "G" or val is "C") / len(dna_seq)
