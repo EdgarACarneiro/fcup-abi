@@ -6,6 +6,9 @@ class Protein(Seq):
     def __init__(self, seq):
         super().__init__(seq)
 
+    def validate(self):
+        return all(n.isalpha() or n is '_' or n is '*' for n in self._seq)
+
     #TODO: revise name of functions and compare them to the teacher functions
     def all_proteins_rf():
         """Computes all possible proteins in the stored aminoacid sequence
@@ -33,3 +36,9 @@ class Protein(Seq):
                 begin = False
         
         return proteins
+
+def main():
+    assert Protein("aomademaedoaed_*adiaedae").validate(), "Invalid protein"
+
+if __name__ == "__main__":
+    main()

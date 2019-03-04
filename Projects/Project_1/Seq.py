@@ -10,6 +10,10 @@ class Seq(ABC):
 
     def __init__(self, seq):
         self._seq = seq.upper()
+        
+        if (not self.validate()):
+            raise self.InvalidSequenceException()
+            
 
     def get_seq(self):
         return bio._seq

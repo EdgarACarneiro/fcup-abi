@@ -10,7 +10,6 @@ class Dna(NucleotideChain):
                 "G": "C",
                 "C": "G"}
 
-    # TODO: Validate in sequences on creation?
     def __init__(self, seq):
         super().__init__(seq)
         self._genetic_code = {}
