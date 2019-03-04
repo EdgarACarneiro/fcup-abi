@@ -10,7 +10,7 @@ class Protein(Seq):
         return all(n.isalpha() or n is '_' or n is '*' for n in self._seq)
 
     #TODO: revise name of functions and compare them to the teacher functions
-    def all_proteins_rf(self):
+    def all_proteins_rf(self): #Check
         """Computes all possible proteins in the stored aminoacid sequence
         Complexity: O(log(n))"""
         proteins = []

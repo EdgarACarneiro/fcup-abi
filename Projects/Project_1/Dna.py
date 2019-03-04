@@ -15,6 +15,7 @@ class Dna(NucleotideChain):
         self._genetic_code = {}
 
     def transcription(self):
+        """computes the RNA corresponding to the transcription of the DNA sequence"""
         return Rna(self._seq.replace("T", "U"))
 
     def read_genetic_code(self, file_name):
@@ -26,7 +27,7 @@ class Dna(NucleotideChain):
     def set_genetic_code(self, gc):
         self._genetic_code = gc
 
-    def translate(self, iniPos=0):
+    def translate(self, iniPos=0): #Check
         """Translate the stored dna sequence using the stored genetic code
         and returns the resultant Protein."""
         trans = ""
@@ -55,9 +56,9 @@ class Dna(NucleotideChain):
         else:
             return freq
 
-    def reading_frames(self):
+    def reading_frames(self): #Check
         """Compute all possible reading frames of the stored dna sequence,
-        using the stored genetic code"""
+        using the stored genetic code (includes the reverse complement)"""
         rc = Dna(self.reverse_complement())
         rc.set_genetic_code(self.get_gentic_code())
         return [self.translate(i) for i in range(0, 3)] + [rc.translate(i) for i in range(0, 3)]
