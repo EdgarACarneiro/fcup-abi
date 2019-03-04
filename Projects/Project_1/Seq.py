@@ -18,9 +18,21 @@ class Seq(ABC):
     def get_seq(self):
         return self._seq
 
+    def __len__(self):
+        return len(self._seq)
+
     @abstractmethod
     def validate(self):
         pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    def pretty_print(self):
+        print("* Sequence:")
+        for i in range(0, len(self._seq), 60):
+            print(self._seq[i: i + 60])
 
     def freq(self):
         """Computes the frequency of the symbols in the stored sequence and 

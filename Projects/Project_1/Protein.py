@@ -9,6 +9,13 @@ class Protein(Seq):
     def validate(self):
         return all(n.isalpha() or n is '_' or n is '*' for n in self._seq)
 
+    def __str__(self):
+        return 'Protein: ' + self._seq
+
+    def pretty_print(self):
+        print("* Bio type:\nProtein")
+        super().pretty_print()
+
     #TODO: revise name of functions and compare them to the teacher functions
     def all_proteins_rf(self): #Check
         """Computes all possible proteins in the stored aminoacid sequence

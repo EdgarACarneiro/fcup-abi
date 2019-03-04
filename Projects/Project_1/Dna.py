@@ -14,6 +14,17 @@ class Dna(NucleotideChain):
         super().__init__(seq)
         self._genetic_code = {}
 
+    def __str__(self):
+        return 'DNA: ' + self._seq
+
+    def pretty_print(self):
+        print("* Bio type:\nDNA")
+        super().pretty_print()
+
+        print("* Genetic Code Dictionary:")
+        for k,v in self._genetic_code.items():
+            print(k + ' - ' + v)
+
     def transcription(self):
         """computes the RNA corresponding to the transcription of the DNA sequence"""
         return Rna(self._seq.replace("T", "U"))

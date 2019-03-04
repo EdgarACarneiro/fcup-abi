@@ -70,6 +70,7 @@ def main():
     for p in dna.reading_frames():
         print(p.get_seq())
     print(dna.all_orfs(10))
+    dna.pretty_print()
 
 
 if __name__ == "__main__":
