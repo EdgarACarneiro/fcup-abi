@@ -62,10 +62,14 @@ class BioSeq:
 
 
 def main():
-    dna = BioSeq.createBioSeq("AtcACA", "dna")
+    dna = BioSeq.createBioSeq("ATGAAATTATGAATGAGCCTCAGCTGAAGCATCGCGCATCAGACTACGCTCAGACTCAGACTCAGCATTATAGTGAATGTTAATAAATAAAATAA", "dna")
     assert dna.validate(), "Invalid Sequence"
     print(dna.reverse_complement())
     print(dna.transcription().reverse_complement())
+    dna.read_genetic_code('../../Classes/files/genetic_code.txt')
+    for p in dna.reading_frames():
+        print(p.get_seq())
+    print(dna.all_orfs(10))
 
 
 if __name__ == "__main__":

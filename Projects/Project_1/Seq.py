@@ -10,13 +10,13 @@ class Seq(ABC):
 
     def __init__(self, seq):
         self._seq = seq.upper()
-        
+
         if (not self.validate()):
             raise self.InvalidSequenceException()
             
 
     def get_seq(self):
-        return bio._seq
+        return self._seq
 
     @abstractmethod
     def validate(self):
@@ -36,18 +36,18 @@ class Seq(ABC):
                       key=lambda symbol: symbol[1],
                       reverse=True)
 
-    def readFile(fileName):
+    def readFile(self, fileName):
         return open(fileName, "r")
 
-    def writeFile(fileName):
+    def writeFile(self, fileName):
         return open(fileName, "w+")
 
-    def readSequence(fileName):
+    def readSequence(self, fileName):
         self._seq = ""
         for line in readFile(fileName):
             self._seq += line.strip()
 
-    def writeSequence(fileName):
+    def writeSequence(self, fileName):
         f = writeFile(fileName)
         for i in range(0, len(self._seq), 60):
             f.write(self._seq[i: i + 60] + '\n')

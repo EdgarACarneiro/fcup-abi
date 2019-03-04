@@ -20,16 +20,22 @@ class Dna(NucleotideChain):
     def read_genetic_code(self, file_name):
         self._genetic_code = {line[1:4]: line[7] for line in self.readFile(file_name)}
 
-    def translate(iniPos = 0):
-        """Translate the stored dna sequence using the stored dictionary
-        and returns the resultant Protein"""
+    def get_gentic_code(self):
+        return self._genetic_code
+
+    def set_genetic_code(self, gc):
+        self._genetic_code = gc
+
+    def translate(self, iniPos=0):
+        """Translate the stored dna sequence using the stored genetic code
+        and returns the resultant Protein."""
         trans = ""
         
-        for i in range(iniPos, len(seq) - 2, 3):
-            trans += dictionary[seq[i: i + 3]]
+        for i in range(iniPos, len(self._seq) - 2, 3):
+            trans += self._genetic_code[self._seq[i: i + 3]]
         return Protein(trans)
 
-    def codonUsage(aa, iniPos = 0):
+    def codon_usage(self, aa, iniPos=0):
         """Provides the frequency of each codon encoding a given aminoacid,
         in the stored dna sequence with the stored dictionary"""
         freq = {}
@@ -48,3 +54,20 @@ class Dna(NucleotideChain):
             return {k: v/total for (k,v) in freq.items() if v > 0} # Filter the dictionary
         else:
             return freq
+
+    def reading_frames(self):
+        """Compute all possible reading frames of the stored dna sequence,
+        using the stored genetic code"""
+        rc = Dna(self.reverse_complement())
+        rc.set_genetic_code(self.get_gentic_code())
+        return [self.translate(i) for i in range(0, 3)] + [rc.translate(i) for i in range(0, 3)]
+
+    def __all_orfs_unordered(self):
+        """Computes all possible proteins for all open reading frames and
+        returnd and unordered list"""
+        return [p for rf in self.reading_frames() for p in rf.all_proteins_rf()]
+
+    def all_orfs(self, minsize = 0):
+        """Computes all possible proteins for all open reading frames.
+        Returns ordered list of proteins with minimum size"""
+        return sorted([el for el in self.__all_orfs_unordered() if len(el) >= minsize], key=lambda prot: len(prot))

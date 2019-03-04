@@ -31,4 +31,4 @@ class NucleotideChain(Seq, ABC):
 
     def reverse_complement(self):
         """Reverse complement of a nucleotidic chain."""
-        return [self.switcher[base] for base in reversed(self._seq)]
+        return "".join([self.switcher[base] for base in reversed(self._seq)])
