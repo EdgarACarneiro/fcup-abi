@@ -6,12 +6,15 @@ class NucleotideChain(Seq, ABC):
 
     @property
     def switcher(self):
+        """Property used for computing the reverse complement and
+        validating the nucleotidic chain"""
         raise NotImplementedError
 
     def __init__(self, seq):
         super().__init__(seq)
 
     def validate(self):
+        """Validates the input sequence used in the object creation"""
         return all(n in self.switcher for n in self._seq)
 
     def __gc_percent_helper(seq):

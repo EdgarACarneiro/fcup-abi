@@ -15,5 +15,7 @@ class Rna(NucleotideChain):
         return 'RNA: ' + self._seq
 
     def pretty_print(self):
+        """Pretty printing of the class information:
+        type and sequence"""
         print("* Bio type:\nRNA")
         super().pretty_print()    

@@ -13,6 +13,8 @@ class Protein(Seq):
         return 'Protein: ' + self._seq
 
     def pretty_print(self):
+        """Pretty printing of the class information:
+        type and sequence"""
         print("* Bio type:\nProtein")
         super().pretty_print()
 

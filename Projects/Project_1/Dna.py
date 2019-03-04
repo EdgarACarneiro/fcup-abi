@@ -18,6 +18,8 @@ class Dna(NucleotideChain):
         return 'DNA: ' + self._seq
 
     def pretty_print(self):
+        """Pretty printing of the class information:
+        type, sequence and genetic code dictionary"""
         print("* Bio type:\nDNA")
         super().pretty_print()
 
@@ -30,6 +32,7 @@ class Dna(NucleotideChain):
         return Rna(self._seq.replace("T", "U"))
 
     def read_genetic_code(self, file_name):
+        """Reads and stores the genetic code dicitonary from the given file"""
         self._genetic_code = {line[1:4]: line[7] for line in self.readFile(file_name)}
 
     def get_gentic_code(self):

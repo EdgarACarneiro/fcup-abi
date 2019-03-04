@@ -23,6 +23,7 @@ class Seq(ABC):
 
     @abstractmethod
     def validate(self):
+        """Validates the sequence used in the object creation"""
         pass
 
     @abstractmethod
@@ -30,6 +31,8 @@ class Seq(ABC):
         pass
 
     def pretty_print(self):
+        """Method to be overriden by child classes.
+        Pretty prints the stored bio sequence"""
         print("* Sequence:")
         for i in range(0, len(self._seq), 60):
             print(self._seq[i: i + 60])
@@ -50,24 +53,29 @@ class Seq(ABC):
 
     @staticmethod
     def readFile(fileName):
+        """Returns a file descriptor in the read mode for the given file"""
         return open(fileName, "r")
 
     @staticmethod
     def writeFile(fileName):
+        """Returns a file descriptor in the write mode for the given file"""
         return open(fileName, "w+")
 
     def readSequence(self, fileName):
+        """Reads a bio sequence from the given file"""
         self._seq = ""
         for line in Seq.readFile(fileName):
             self._seq += line.strip()
 
     def writeSequence(self, fileName):
+        """Writes the currently stored bio sequence to the given file"""
         f = Seq.writeFile(fileName)
         for i in range(0, len(self._seq), 60):
             f.write(self._seq[i: i + 60] + '\n')
         f.close()
 
     def save(self, fileName):
+        """Saves the bio sequence instance into the given file"""
         bf = open(fileName, mode='wb')
         pickle.dump(self, bf)
         bf.close()
