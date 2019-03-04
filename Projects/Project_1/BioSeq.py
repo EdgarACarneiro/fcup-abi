@@ -1,4 +1,5 @@
 from enum import Enum
+import pickle
 
 from Dna import Dna
 from Rna import Rna
@@ -60,6 +61,9 @@ class BioSeq:
                 
         return fasta
 
+    @staticmethod
+    def load(fileName):
+        return pickle.load(open(fileName, mode='rb'))
 
 def main():
     dna = BioSeq.createBioSeq("ATGAAATTATGAATGAGCCTCAGCTGAAGCATCGCGCATCAGACTACGCTCAGACTCAGACTCAGCATTATAGTGAATGTTAATAAATAAAATAA", "dna")
@@ -71,6 +75,7 @@ def main():
         print(p.get_seq())
     print(dna.all_orfs(10))
     dna.pretty_print()
+    # print(dna.load('test.csv'))
 
 
 if __name__ == "__main__":

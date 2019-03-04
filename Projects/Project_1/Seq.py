@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-
+import pickle
 
 class Seq(ABC):
     """Abstract class that represents a sequence"""
@@ -48,19 +48,26 @@ class Seq(ABC):
                       key=lambda symbol: symbol[1],
                       reverse=True)
 
-    def readFile(self, fileName):
+    @staticmethod
+    def readFile(fileName):
         return open(fileName, "r")
 
-    def writeFile(self, fileName):
+    @staticmethod
+    def writeFile(fileName):
         return open(fileName, "w+")
 
     def readSequence(self, fileName):
         self._seq = ""
-        for line in readFile(fileName):
+        for line in Seq.readFile(fileName):
             self._seq += line.strip()
 
     def writeSequence(self, fileName):
-        f = writeFile(fileName)
+        f = Seq.writeFile(fileName)
         for i in range(0, len(self._seq), 60):
             f.write(self._seq[i: i + 60] + '\n')
         f.close()
+
+    def save(self, fileName):
+        bf = open(fileName, mode='wb')
+        pickle.dump(self, bf)
+        bf.close()
