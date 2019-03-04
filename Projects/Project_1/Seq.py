@@ -37,3 +37,14 @@ class Seq(ABC):
 
     def writeFile(fileName):
         return open(fileName, "w+")
+
+    def readSequence(fileName):
+        self._seq = ""
+        for line in readFile(fileName):
+            self._seq += line.strip()
+
+    def writeSequence(fileName):
+        f = writeFile(fileName)
+        for i in range(0, len(self._seq), 60):
+            f.write(self._seq[i: i + 60] + '\n')
+        f.close()

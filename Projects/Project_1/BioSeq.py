@@ -36,6 +36,30 @@ class BioSeq:
             return Rna(seq)
         return Protein(seq)
 
+    @staticmethod
+    def readFastaFile(fileName):
+        """Reads a fasta file and returns a dicitonary with the correspondent
+        identifier and bio sequence."""
+        fasta = {}
+        helperSeq = ""
+        currFasta = ""
+        
+        for line in readFile(fileName):
+            l = line.strip()
+            
+            if l is "" and currFasta is not "":
+                fasta[currFasta] = helperSeq
+                helperSeq = ""
+                currFasta = ""
+            
+            if currFasta is not "":
+                helperSeq += l
+            
+            if (l.strip()[0:1] is ">"):
+                currFasta = line[1:len(l)]
+                
+        return fasta
+
 
 def main():
     dna = BioSeq.createBioSeq("AtcACA", "dna")
