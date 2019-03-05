@@ -18,4 +18,8 @@ class Rna(NucleotideChain):
         """Pretty printing of the class information:
         type and sequence"""
         print("* Bio type:\nRNA")
-        super().pretty_print()    
+        super().pretty_print()
+
+    def rev_transcription(self):
+        """computes the DNA corresponding to the reverse transcription of the RNA sequence"""
+        return Rna(self._seq.replace("U", "T"))
