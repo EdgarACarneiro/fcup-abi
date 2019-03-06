@@ -1,13 +1,26 @@
 import unittest
 
-from src import BioSeq
-from src import Dna
+from bioseq import BioSeq
+from bioseq import Dna
+from bioseq import Rna
+from bioseq import Protein
 
 
 class test_BioSeq(unittest.TestCase):
 
     def test_create_bio_seq(self):
         self.assertIsInstance(BioSeq.create_bio_seq("ATCGTAT"), Dna)
+        self.assertIsInstance(BioSeq.create_bio_seq("ATCGTAT", "dna"), Dna)
+        self.assertIsInstance(BioSeq.create_bio_seq("AUGCUAC", "RNA"), Rna)
+        self.assertIsInstance(BioSeq.create_bio_seq(
+            "AUNED_MIAEDMA*IAED", "Protein"), Protein)
+        self.assertRaises(BioSeq.BioTypeException, BioSeq.create_bio_seq, "ATCTG", "noseq")
+
+    def test_read_fasta_file(self):
+        # TP53 AND "Homo sapiens"
+        fasta = BioSeq.read_fasta_file('test/files/sequence.fasta')
+        self.assertEqual(len(fasta), 15)
+        self.assertEqual(list(fasta.keys())[2], "NM_001126113.2 Homo sapiens tumor protein p53 (TP53), transcript variant 4, mRNA")
 
 if __name__ == '__main__':
     unittest.main()

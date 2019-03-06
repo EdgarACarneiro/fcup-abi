@@ -27,13 +27,13 @@ class BioSeq:
 
         # Assuring it is either Dna, Rna or a Protein
         if seq_type.upper() not in [el.value for el in list(BioSeq.BioType)]:
-            raise self.BioTypeException
+            raise BioSeq.BioTypeException
 
         bio_type = BioSeq.BioType(seq_type.upper())
 
         if bio_type is BioSeq.BioType.DNA:
             return Dna(seq)
-        elif seq_type is BioSeq.BioType.RNA:
+        elif bio_type is BioSeq.BioType.RNA:
             return Rna(seq)
         return Protein(seq)
 
@@ -44,8 +44,9 @@ class BioSeq:
         fasta = {}
         helperSeq = ""
         currFasta = ""
+        fd = open(fileName, "r")
 
-        for line in readFile(fileName):
+        for line in fd:
             l = line.strip()
 
             if l is "" and currFasta is not "":
@@ -59,6 +60,7 @@ class BioSeq:
             if (l.strip()[0:1] is ">"):
                 currFasta = line[1:len(l)]
 
+        fd.close()
         return fasta
 
     @staticmethod
