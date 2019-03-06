@@ -6,4 +6,6 @@ To import the module you just have to right `from bioseq import BioSeq`, and the
 
 To run run_me.py: `python3 run_me.py`
 
-To run all tests: `python -m unittest discover`
+To run all tests: `python3 -m unittest discover`
+
+* Author: Edgar Carneiro
