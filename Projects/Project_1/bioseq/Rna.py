@@ -22,4 +22,5 @@ class Rna(NucleotideChain):
 
     def rev_transcription(self):
         """computes the DNA corresponding to the reverse transcription of the RNA sequence"""
-        return Rna(self._seq.replace("U", "T"))
+        from .Dna import Dna  # Import done here because of circular dependencies
+        return Dna(self._seq.replace("U", "T"))
