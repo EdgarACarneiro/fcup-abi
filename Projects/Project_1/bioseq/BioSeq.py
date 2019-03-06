@@ -38,53 +38,35 @@ class BioSeq:
         return Protein(seq)
 
     @staticmethod
-    def read_fasta_file(fileName):
+    def read_fasta_file(file_name):
         """Reads a fasta file and returns a dicitonary with the correspondent
         identifier and bio sequence."""
         fasta = {}
-        helperSeq = ""
-        currFasta = ""
-        fd = open(fileName, "r")
+        helper_seq = ""
+        curr_fasta = ""
+        fd = open(file_name, "r")
 
         for line in fd:
             l = line.strip()
 
-            if l is "" and currFasta is not "":
-                fasta[currFasta] = helperSeq
-                helperSeq = ""
-                currFasta = ""
+            if l is "" and curr_fasta is not "":
+                fasta[curr_fasta] = helper_seq
+                helper_seq = ""
+                curr_fasta = ""
 
-            if currFasta is not "":
-                helperSeq += l
+            if curr_fasta is not "":
+                helper_seq += l
 
             if (l.strip()[0:1] is ">"):
-                currFasta = line[1:len(l)]
+                curr_fasta = line[1:len(l)]
 
         fd.close()
         return fasta
 
     @staticmethod
-    def load(fileName):
+    def load(file_name):
         """Loads a bio sequence from a given file and returns it"""
-        fd = open(fileName, mode='rb')
+        fd = open(file_name, mode='rb')
         load = pickle.load(fd)
         fd.close()
         return load
-
-
-def main():
-    dna = BioSeq.createBioSeq(
-        "ATGAAATTATGAATGAGCCTCAGCTGAAGCATCGCGCATCAGACTACGCTCAGACTCAGACTCAGCATTATAGTGAATGTTAATAAATAAAATAA", "dna")
-    assert dna.validate(), "Invalid Sequence"
-    print(dna.reverse_complement())
-    print(dna.transcription().reverse_complement())
-    dna.read_genetic_code('../../Classes/files/genetic_code.txt')
-    for p in dna.reading_frames():
-        print(p.get_seq())
-    print(dna.all_orfs(10))
-    dna.pretty_print()
-    # print(dna.load('test.csv'))
-
-
-if __name__ == "__main__":
-    main()

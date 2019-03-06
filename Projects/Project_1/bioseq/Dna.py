@@ -43,16 +43,16 @@ class Dna(NucleotideChain):
     def set_genetic_code(self, gc):
         self._genetic_code = gc
 
-    def translate(self, iniPos=0):
+    def translate(self, ini_pos=0):
         """Translate the stored dna sequence using the stored genetic code
         and returns the resultant Protein."""
         trans = ""
 
-        for i in range(iniPos, len(self._seq) - 2, 3):
+        for i in range(ini_pos, len(self._seq) - 2, 3):
             trans += self._genetic_code[self._seq[i: i + 3]]
         return Protein(trans)
 
-    def codon_usage(self, aa, iniPos=0):
+    def codon_usage(self, aa, ini_pos=0):
         """Provides the frequency of each codon encoding a given aminoacid,
         in the stored dna sequence with the stored dictionary"""
         freq = {}
@@ -62,7 +62,7 @@ class Dna(NucleotideChain):
             if v is aa:
                 freq[k] = 0
 
-        for i in range(iniPos, len(self._seq) - 2, 3):
+        for i in range(ini_pos, len(self._seq) - 2, 3):
             if self._seq[i: i + 3] in freq:
                 freq[self._seq[i: i + 3]] += 1
                 total += 1

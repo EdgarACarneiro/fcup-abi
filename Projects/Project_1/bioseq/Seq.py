@@ -52,32 +52,32 @@ class Seq(ABC):
                            reverse=True))
 
     @staticmethod
-    def read_file(fileName):
+    def read_file(file_name):
         """Returns a file descriptor in the read mode for the given file"""
-        return open(fileName, "r")
+        return open(file_name, "r")
 
     @staticmethod
-    def write_file(fileName):
+    def write_file(file_name):
         """Returns a file descriptor in the write mode for the given file"""
-        return open(fileName, "w+")
+        return open(file_name, "w+")
 
-    def read_sequence(self, fileName):
+    def read_sequence(self, file_name):
         """Reads a bio sequence from the given file"""
         self._seq = ""
-        fd = Seq.read_file(fileName)
+        fd = Seq.read_file(file_name)
         for line in fd:
             self._seq += line.strip()
         fd.close()
 
-    def write_sequence(self, fileName):
+    def write_sequence(self, file_name):
         """Writes the currently stored bio sequence to the given file"""
-        fd = Seq.write_file(fileName)
+        fd = Seq.write_file(file_name)
         for i in range(0, len(self._seq), 60):
             fd.write(self._seq[i: i + 60] + '\n')
         fd.close()
 
-    def save(self, fileName):
+    def save(self, file_name):
         """Saves the bio sequence instance into the given file"""
-        bf = open(fileName, mode='wb')
+        bf = open(file_name, mode='wb')
         pickle.dump(self, bf)
         bf.close()
