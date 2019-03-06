@@ -1,8 +1,8 @@
-from Seq import Seq
+from .Seq import Seq
 
 
 class Protein(Seq):
-    
+
     def __init__(self, seq):
         super().__init__(seq)
 
@@ -18,36 +18,38 @@ class Protein(Seq):
         print("* Bio type:\nProtein")
         super().pretty_print()
 
-    #TODO: revise name of functions and compare them to the teacher functions
-    def all_proteins_rf(self): #Check
+    # TODO: revise name of functions and compare them to the teacher functions
+    def all_proteins_rf(self):
         """Computes all possible proteins in the stored aminoacid sequence
         Complexity: O(log(n))"""
         proteins = []
         curr = []
         begin = False
-        
+
         for aa in self._seq:
             if aa is "M":
                 curr.append("M")
                 begin = True
                 continue
-            
+
             if begin:
                 curr[len(curr) - 1] += aa
-                
+
             if aa is "_" and begin:
                 for i in range(0, len(curr)):
                     seq = ""
-                    for j in range(i, len(curr)) :
+                    for j in range(i, len(curr)):
                         seq += curr[j]
                     proteins.append(seq)
                 curr = []
                 begin = False
-        
+
         return proteins
+
 
 def main():
     assert Protein("aomademaedoaed_*adiaedae").validate(), "Invalid protein"
+
 
 if __name__ == "__main__":
     main()

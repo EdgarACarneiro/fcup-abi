@@ -1,6 +1,6 @@
-from NucleotideChain import NucleotideChain
-from Rna import Rna
-from Protein import Protein
+from .NucleotideChain import NucleotideChain
+from .Rna import Rna
+from .Protein import Protein
 
 
 class Dna(NucleotideChain):
@@ -24,7 +24,7 @@ class Dna(NucleotideChain):
         super().pretty_print()
 
         print("* Genetic Code Dictionary:")
-        for k,v in self._genetic_code.items():
+        for k, v in self._genetic_code.items():
             print(k + ' - ' + v)
 
     def transcription(self):
@@ -33,7 +33,8 @@ class Dna(NucleotideChain):
 
     def read_genetic_code(self, file_name):
         """Reads and stores the genetic code dicitonary from the given file"""
-        self._genetic_code = {line[1:4]: line[7] for line in self.readFile(file_name)}
+        self._genetic_code = {line[1:4]: line[7]
+                              for line in self.readFile(file_name)}
 
     def get_gentic_code(self):
         return self._genetic_code
@@ -41,11 +42,11 @@ class Dna(NucleotideChain):
     def set_genetic_code(self, gc):
         self._genetic_code = gc
 
-    def translate(self, iniPos=0): #Check
+    def translate(self, iniPos=0):
         """Translate the stored dna sequence using the stored genetic code
         and returns the resultant Protein."""
         trans = ""
-        
+
         for i in range(iniPos, len(self._seq) - 2, 3):
             trans += self._genetic_code[self._seq[i: i + 3]]
         return Protein(trans)
@@ -55,22 +56,23 @@ class Dna(NucleotideChain):
         in the stored dna sequence with the stored dictionary"""
         freq = {}
         total = 0
-        
-        for k,v in self._genetic_code.items():
+
+        for k, v in self._genetic_code.items():
             if v is aa:
                 freq[k] = 0
-        
+
         for i in range(iniPos, len(seq) - 2, 3):
             if self._seq[i: i + 3] in freq:
                 freq[self._seq[i: i + 3]] += 1
                 total += 1
-                
+
         if total > 0:
-            return {k: v/total for (k,v) in freq.items() if v > 0} # Filter the dictionary
+            # Filter the dictionary
+            return {k: v/total for (k, v) in freq.items() if v > 0}
         else:
             return freq
 
-    def reading_frames(self): #Check
+    def reading_frames(self):
         """Compute all possible reading frames of the stored dna sequence,
         using the stored genetic code (includes the reverse complement)"""
         rc = Dna(self.reverse_complement())
@@ -82,7 +84,7 @@ class Dna(NucleotideChain):
         returnd and unordered list"""
         return [p for rf in self.reading_frames() for p in rf.all_proteins_rf()]
 
-    def all_orfs(self, minsize = 0):
+    def all_orfs(self, minsize=0):
         """Computes all possible proteins for all open reading frames.
         Returns ordered list of proteins with minimum size"""
         return sorted([el for el in self.__all_orfs_unordered() if len(el) >= minsize], key=lambda prot: len(prot))

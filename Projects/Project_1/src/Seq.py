@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import pickle
 
+
 class Seq(ABC):
     """Abstract class that represents a sequence"""
 
@@ -13,7 +14,6 @@ class Seq(ABC):
 
         if (not self.validate()):
             raise self.InvalidSequenceException()
-            
 
     def get_seq(self):
         return self._seq

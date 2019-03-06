@@ -1,9 +1,9 @@
 from enum import Enum
 import pickle
 
-from Dna import Dna
-from Rna import Rna
-from Protein import Protein
+from .Dna import Dna
+from .Rna import Rna
+from .Protein import Protein
 
 
 class BioSeq:
@@ -21,7 +21,7 @@ class BioSeq:
         pass
 
     @staticmethod
-    def createBioSeq(seq, seq_type="DNA"):
+    def create_bio_seq(seq, seq_type="DNA"):
         """Create a BioSeq instance according to the given type and
         returns it"""
 
@@ -38,27 +38,27 @@ class BioSeq:
         return Protein(seq)
 
     @staticmethod
-    def readFastaFile(fileName):
+    def read_fasta_file(fileName):
         """Reads a fasta file and returns a dicitonary with the correspondent
         identifier and bio sequence."""
         fasta = {}
         helperSeq = ""
         currFasta = ""
-        
+
         for line in readFile(fileName):
             l = line.strip()
-            
+
             if l is "" and currFasta is not "":
                 fasta[currFasta] = helperSeq
                 helperSeq = ""
                 currFasta = ""
-            
+
             if currFasta is not "":
                 helperSeq += l
-            
+
             if (l.strip()[0:1] is ">"):
                 currFasta = line[1:len(l)]
-                
+
         return fasta
 
     @staticmethod
@@ -66,8 +66,10 @@ class BioSeq:
         """Loads a bio sequence from a given file and returns it"""
         return pickle.load(open(fileName, mode='rb'))
 
+
 def main():
-    dna = BioSeq.createBioSeq("ATGAAATTATGAATGAGCCTCAGCTGAAGCATCGCGCATCAGACTACGCTCAGACTCAGACTCAGCATTATAGTGAATGTTAATAAATAAAATAA", "dna")
+    dna = BioSeq.createBioSeq(
+        "ATGAAATTATGAATGAGCCTCAGCTGAAGCATCGCGCATCAGACTACGCTCAGACTCAGACTCAGCATTATAGTGAATGTTAATAAATAAAATAA", "dna")
     assert dna.validate(), "Invalid Sequence"
     print(dna.reverse_complement())
     print(dna.transcription().reverse_complement())

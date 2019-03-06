@@ -1,5 +1,5 @@
 from abc import ABC
-from Seq import Seq
+from .Seq import Seq
 
 
 class NucleotideChain(Seq, ABC):

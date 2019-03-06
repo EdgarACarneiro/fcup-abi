@@ -1,4 +1,4 @@
-from NucleotideChain import NucleotideChain
+from .NucleotideChain import NucleotideChain
 
 
 class Rna(NucleotideChain):
