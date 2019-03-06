@@ -13,7 +13,7 @@ class test_BioSeq(unittest.TestCase):
         self.assertIsInstance(BioSeq.create_bio_seq("ATCGTAT", "dna"), Dna)
         self.assertIsInstance(BioSeq.create_bio_seq("AUGCUAC", "RNA"), Rna)
         self.assertIsInstance(BioSeq.create_bio_seq(
-            "AUNED_MIAEDMA*IAED", "Protein"), Protein)
+            "AUNED_MIAEDMA_IAED", "Protein"), Protein)
         self.assertRaises(BioSeq.BioTypeException, BioSeq.create_bio_seq, "ATCTG", "noseq")
 
     def test_read_fasta_file(self):

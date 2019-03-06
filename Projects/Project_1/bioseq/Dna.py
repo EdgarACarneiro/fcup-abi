@@ -33,8 +33,9 @@ class Dna(NucleotideChain):
 
     def read_genetic_code(self, file_name):
         """Reads and stores the genetic code dicitonary from the given file"""
-        self._genetic_code = {line[1:4]: line[7]
-                              for line in self.readFile(file_name)}
+        fd = self.read_file(file_name)
+        self._genetic_code = {line[1:4]: line[7] for line in fd}
+        fd.close()
 
     def get_genetic_code(self):
         return self._genetic_code
@@ -61,7 +62,7 @@ class Dna(NucleotideChain):
             if v is aa:
                 freq[k] = 0
 
-        for i in range(iniPos, len(seq) - 2, 3):
+        for i in range(iniPos, len(self._seq) - 2, 3):
             if self._seq[i: i + 3] in freq:
                 freq[self._seq[i: i + 3]] += 1
                 total += 1
@@ -76,7 +77,7 @@ class Dna(NucleotideChain):
         """Compute all possible reading frames of the stored dna sequence,
         using the stored genetic code (includes the reverse complement)"""
         rc = Dna(self.reverse_complement())
-        rc.set_genetic_code(self.get_gentic_code())
+        rc.set_genetic_code(self.get_genetic_code())
         return [self.translate(i) for i in range(0, 3)] + [rc.translate(i) for i in range(0, 3)]
 
     def __all_orfs_unordered(self):
@@ -87,4 +88,4 @@ class Dna(NucleotideChain):
     def all_orfs(self, minsize=0):
         """Computes all possible proteins for all open reading frames.
         Returns ordered list of proteins with minimum size"""
-        return sorted([el for el in self.__all_orfs_unordered() if len(el) >= minsize], key=lambda prot: len(prot))
+        return sorted([Protein(el) for el in self.__all_orfs_unordered() if len(el) >= minsize], key=lambda prot: len(prot))

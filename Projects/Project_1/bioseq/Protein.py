@@ -7,7 +7,7 @@ class Protein(Seq):
         super().__init__(seq)
 
     def validate(self):
-        return all(n.isalpha() or n is '_' or n is '*' for n in self._seq)
+        return all(n.isalpha() or n is '_' for n in self._seq)
 
     def __str__(self):
         return 'Protein: ' + self._seq
@@ -18,7 +18,6 @@ class Protein(Seq):
         print("* Bio type:\nProtein")
         super().pretty_print()
 
-    # TODO: revise name of functions and compare them to the teacher functions
     def all_proteins_rf(self):
         """Computes all possible proteins in the stored aminoacid sequence
         Complexity: O(log(n))"""
@@ -32,9 +31,6 @@ class Protein(Seq):
                 begin = True
                 continue
 
-            if begin:
-                curr[len(curr) - 1] += aa
-
             if aa is "_" and begin:
                 for i in range(0, len(curr)):
                     seq = ""
@@ -44,12 +40,7 @@ class Protein(Seq):
                 curr = []
                 begin = False
 
+            if begin:
+                curr[len(curr) - 1] += aa
+
         return proteins
-
-
-def main():
-    assert Protein("aomademaedoaed_*adiaedae").validate(), "Invalid protein"
-
-
-if __name__ == "__main__":
-    main()
