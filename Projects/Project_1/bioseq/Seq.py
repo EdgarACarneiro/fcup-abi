@@ -37,7 +37,7 @@ class Seq(ABC):
         for i in range(0, len(self._seq), 60):
             print(self._seq[i: i + 60])
 
-    def freq(self):
+    def freq_symbols(self):
         """Computes the frequency of the symbols in the stored sequence and 
         returns a sorted dictionary"""
         symbols = {}
@@ -45,34 +45,36 @@ class Seq(ABC):
             if (base in symbols):
                 symbols[base] += 1
             else:
-                symbols[base] = 0
+                symbols[base] = 1
 
-        return sorted(symbols.items(),
-                      key=lambda symbol: symbol[1],
-                      reverse=True)
+        return dict(sorted(symbols.items(),
+                           key=lambda symbol: symbol[1],
+                           reverse=True))
 
     @staticmethod
-    def readFile(fileName):
+    def read_file(fileName):
         """Returns a file descriptor in the read mode for the given file"""
         return open(fileName, "r")
 
     @staticmethod
-    def writeFile(fileName):
+    def write_file(fileName):
         """Returns a file descriptor in the write mode for the given file"""
         return open(fileName, "w+")
 
-    def readSequence(self, fileName):
+    def read_sequence(self, fileName):
         """Reads a bio sequence from the given file"""
         self._seq = ""
-        for line in Seq.readFile(fileName):
+        fd = Seq.read_file(fileName)
+        for line in fd:
             self._seq += line.strip()
+        fd.close()
 
-    def writeSequence(self, fileName):
+    def write_sequence(self, fileName):
         """Writes the currently stored bio sequence to the given file"""
-        f = Seq.writeFile(fileName)
+        fd = Seq.write_file(fileName)
         for i in range(0, len(self._seq), 60):
-            f.write(self._seq[i: i + 60] + '\n')
-        f.close()
+            fd.write(self._seq[i: i + 60] + '\n')
+        fd.close()
 
     def save(self, fileName):
         """Saves the bio sequence instance into the given file"""

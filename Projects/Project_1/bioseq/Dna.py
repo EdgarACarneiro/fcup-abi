@@ -36,7 +36,7 @@ class Dna(NucleotideChain):
         self._genetic_code = {line[1:4]: line[7]
                               for line in self.readFile(file_name)}
 
-    def get_gentic_code(self):
+    def get_genetic_code(self):
         return self._genetic_code
 
     def set_genetic_code(self, gc):

@@ -22,5 +22,7 @@ class test_BioSeq(unittest.TestCase):
         self.assertEqual(len(fasta), 15)
         self.assertEqual(list(fasta.keys())[2], "NM_001126113.2 Homo sapiens tumor protein p53 (TP53), transcript variant 4, mRNA")
 
+    # Test of method load() is made on test_Seq.py
+
 if __name__ == '__main__':
     unittest.main()

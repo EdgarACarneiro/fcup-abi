@@ -66,7 +66,10 @@ class BioSeq:
     @staticmethod
     def load(fileName):
         """Loads a bio sequence from a given file and returns it"""
-        return pickle.load(open(fileName, mode='rb'))
+        fd = open(fileName, mode='rb')
+        load = pickle.load(fd)
+        fd.close()
+        return load
 
 
 def main():
