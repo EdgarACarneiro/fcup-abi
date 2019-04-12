@@ -2,6 +2,7 @@ import unittest
 
 from seq_align import read_submat_file,\
                         subst_matrix,\
+                        pretty_matrix,\
                         global_align_multiple_solutions
 
 class test_SeqAlign(unittest.TestCase):
@@ -46,11 +47,11 @@ class test_SeqAlign(unittest.TestCase):
             'TG': -1,
             'TT': 1})
 
-
     def test_global_align_multiple_solutions(self):
         sm = subst_matrix("ACGT", 1, -1)
         g = global_align_multiple_solutions(self.seq1, self.seq2, sm, -3)
-        print(g)
+        pretty_matrix(g[1], " " + self.seq1, " " + self.seq2)
+        pretty_matrix(g[0], " " + self.seq1, " " + self.seq2)
 
 if __name__ == '__main__':
     unittest.main()

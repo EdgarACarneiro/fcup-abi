@@ -17,9 +17,29 @@ def read_submat_file(filename):
 
 
 def subst_matrix(alphabet, match, mismatch):
-    """ substitution matrix as dictionary """
+    """Substitution matrix as a dictionary"""
     return {i + j : match if i == j else mismatch
             for i in alphabet for j in alphabet}
+
+
+def pretty_matrix(matrix, label1, label2):
+    """Pretty print of the given matrix """
+    # Stringfying everything & Joining top label
+    s_matrix = [list(" " + (label2))] + \
+               [[label1[row_idx]] + \
+                [str(e) for e in row] for row_idx, row in enumerate(matrix)]
+
+    # Length of each matrix column
+    len_s = [max(map(len, col)) for col in zip(*s_matrix)]
+
+    # Cell formatation
+    formatation = '\t'.join('{{:{}}}'.format(x) for x in len_s)
+
+    # Apply cell formation to each matrix element
+    pretty_mat = [formatation.format(*row) for row in s_matrix]
+
+    # Print Pretty Matrix
+    print('\n'.join(pretty_mat))
 
 
 def __max3(v1, v2, v3):
@@ -27,7 +47,6 @@ def __max3(v1, v2, v3):
     vals = [v1, v2, v3]
 
     return [index for index, value in enumerate(vals) if value == max(vals)]
-
 
 
 def __score_pos(c1, c2, sm, g):
