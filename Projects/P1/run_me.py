@@ -13,7 +13,7 @@ if __name__ == '__main__':
     dna.pretty_print()
 
     print("Now, lets load a genetic_code dictionary!\n")
-    dna.read_genetic_code('test/files/genetic_code.txt')
+    dna.read_genetic_code('tests/files/genetic_code.txt')
     input("Press Enter to continue...")
     dna.pretty_print()
 
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     input("Press Enter to continue...")
     print("Lets see all its opeaning reading frames!\n")
     dna = BioSeq.create_bio_seq("ATGAAATTATGAATGAGCCTCAGCTGAAGCATCGCGCATCAGACTACGCTCAGACTCAGACTCAGCATTATAGTGAATGTTAATAAATAAAATAA")
-    dna.read_genetic_code('test/files/genetic_code.txt')
+    dna.read_genetic_code('tests/files/genetic_code.txt')
 
     for orfs in dna.all_orfs():
         print(orfs.get_seq())
@@ -70,10 +70,10 @@ if __name__ == '__main__':
 
     print("We can also save and load sequences! Let's do it with the RNA to the 'test/files/test_save_load.csv' file!\n")
     input("Press Enter to continue...")
-    rna.save('test/files/test_save_load.csv')
+    rna.save('tests/files/test_save_load.csv')
     print("The rna is now saved, open the csv!\n")
     input("And now we print what we load from that file!\n")
-    BioSeq.load('test/files/test_save_load.csv').pretty_print()
+    BioSeq.load('tests/files/test_save_load.csv').pretty_print()
 
     input("Press Enter to continue...")
 
@@ -81,6 +81,6 @@ if __name__ == '__main__':
 
     print("Finally lets see the contents of the FASTA file in the 'tests/files/sequence.fasta'!\n")
     input("Press Enter to continue...")
-    fasta = BioSeq.read_fasta_file('test/files/sequence.fasta')
+    fasta = BioSeq.read_fasta_file('tests/files/sequence.fasta')
     for (k, v) in fasta.items():
         print('> ' + k + '\n' + v + '\n\n')

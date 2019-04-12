@@ -17,7 +17,7 @@ class test_NucleotidicChain(unittest.TestCase):
         self.assertTrue(rna.validate())
 
         # seq.csv contains a DNA sequence
-        rna.read_sequence('test/files/seq.csv')
+        rna.read_sequence('tests/files/seq.csv')
         self.assertFalse(rna.validate())
 
     def test_gc_percent(self):
