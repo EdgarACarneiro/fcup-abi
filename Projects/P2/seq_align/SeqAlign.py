@@ -16,12 +16,18 @@ def read_submat_file(filename):
     return dic
 
 
+def subst_matrix(alphabet, match, mismatch):
+    """ substitution matrix as dictionary """
+    return {i + j : match if i == j else mismatch
+            for i in alphabet for j in alphabet}
+
+
 def __max3(v1, v2, v3):
     """Indicates, between the given integers, the indexes of the biggest ones"""
-    if v1 > v2:
-        return 1 if v1 > v3 else 3
-    else:
-        return 2 if v2 > v3 else 3
+    vals = [v1, v2, v3]
+
+    return [index for index, value in enumerate(vals) if value == max(vals)]
+
 
 
 def __score_pos(c1, c2, sm, g):
@@ -41,17 +47,17 @@ def __score_align(seq1, seq2, sm, g):
 def global_align_multiple_solutions(seq1, seq2, sm, g):
     """Global Alignment with multiple solutions of two sequences"""
     score = [[0]]
-    trace = [[0]]
+    trace = [[[0]]] # Each element of the trace matrix is now a list
 
     # initialize gaps in cols
     for i in range(1, len(seq1) + 1):
         score.append([g * i])
-        trace.append([2])
-    
+        trace.append([[2]])
+
     # initialize gaps in rows
     for j in range(1, len(seq2) + 1):
         score[0].append(g * j)
-        trace[0].append(3)
+        trace[0].append([3])
 
     # apply the recurrence to fill the matrices
     for i in range(1, len(seq1) + 1):
