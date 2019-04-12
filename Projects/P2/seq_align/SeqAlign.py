@@ -22,11 +22,11 @@ def subst_matrix(alphabet, match, mismatch):
             for i in alphabet for j in alphabet}
 
 
-def pretty_matrix(matrix, label1, label2):
+def pretty_matrix(matrix, row_label, col_label):
     """Pretty print of the given matrix """
     # Stringfying everything & Joining top label
-    s_matrix = [list(" " + (label2))] + \
-               [[label1[row_idx]] + \
+    s_matrix = [list(" " + (col_label))] + \
+               [[row_label[row_idx]] + \
                 [str(e) for e in row] for row_idx, row in enumerate(matrix)]
 
     # Length of each matrix column

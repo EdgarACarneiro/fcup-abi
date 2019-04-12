@@ -49,9 +49,31 @@ class test_SeqAlign(unittest.TestCase):
 
     def test_global_align_multiple_solutions(self):
         sm = subst_matrix("ACGT", 1, -1)
-        g = global_align_multiple_solutions(self.seq1, self.seq2, sm, -3)
-        pretty_matrix(g[1], " " + self.seq1, " " + self.seq2)
-        pretty_matrix(g[0], " " + self.seq1, " " + self.seq2)
+        ga_score, ga_trace = global_align_multiple_solutions(self.seq1, self.seq2, sm, -3)
+
+        self.assertEqual(ga_score,
+            [
+                [  0,  -3,  -6, -9, -12, -15, -18, -21],
+                [ -3,   1,  -2, -5,  -8, -11, -14, -17],
+                [ -6,  -2,   0, -1,  -4,  -7, -10, -13],
+                [ -9,  -5,  -3, -1,   0,  -3,  -6,  -9],
+                [-12,  -8,  -6, -4,   0,  -1,  -4,  -5],
+                [-15, -11,  -9, -5,  -3,  -1,  -2,  -5],
+                [-18, -14, -10, -8,  -6,  -4,   0,  -3],
+                [-21, -17, -13, -9,  -9,  -7,  -3,  -1]
+            ])
+        self.assertEqual(ga_trace,
+            [
+                [[0], [3], [3],    [3],    [3],    [3],    [3],    [3]   ],
+                [[2], [0], [2],    [2],    [2],    [0, 2], [2],    [2]   ],
+                [[2], [1], [0],    [0],    [2],    [2],    [2],    [2]   ],
+                [[2], [1], [0, 1], [0],    [0],    [2],    [2],    [0, 2]],
+                [[2], [1], [0, 1], [0, 1], [0],    [0],    [0, 2], [0]   ],
+                [[2], [1], [0, 1], [0],    [1],    [0],    [0],    [0, 2]],
+                [[2], [1], [0],    [1],    [0, 1], [0, 1], [0],    [0, 2]],
+                [[2], [1], [1],    [0],    [0, 1], [0, 1], [1],    [0]   ]
+            ])
+
 
 if __name__ == '__main__':
     unittest.main()

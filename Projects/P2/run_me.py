@@ -4,6 +4,8 @@ def wait_input():
     input("Press Enter to continue...")
 
 if __name__ == '__main__':
+    # pretty_matrix(ga_score, " " + self.seq1, " " + self.seq2)
+    # pretty_matrix(ga_trace, " " + self.seq1, " " + self.seq2)
     print("Hello and welcome to the demonstrarion of the module 'BioSeq'!\n")
     print("The program will stop at checkpoints and you, as the User, will have to press Enter to continue. Ok?\n")
     input("Press Enter to continue...")
