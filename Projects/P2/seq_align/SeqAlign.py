@@ -1,5 +1,12 @@
 from functools import reduce
 
+def __matrix(row, col, val = 0):
+    """ create a matrix with the given dimensions: 
+    number of rows and columns filled with the given value (by omission zero) """
+    return [[val] * col for _ in range(0, row)]
+
+
+
 def read_submat_file(filename):
     """Read a substitution matrix from the given file"""
     f = open(filename, "r")
@@ -46,7 +53,7 @@ def __max3(v1, v2, v3):
     """Indicates, between the given integers, the indexes of the biggest ones"""
     vals = [v1, v2, v3]
 
-    return [index for index, value in enumerate(vals) if value == max(vals)]
+    return [index + 1 for index, value in enumerate(vals) if value == max(vals)]
 
 
 def __score_pos(c1, c2, sm, g):
@@ -88,3 +95,51 @@ def global_align_multiple_solutions(seq1, seq2, sm, g):
             trace[i].append(__max3(v1, v2, v3))
 
     return (score, trace)
+
+
+__DIAGONAL = 1
+__VERTICAL = 2
+__HORIZONTAL = 3
+
+def __recover_global_aux(trace, seq1, seq2, memoization_mat):
+    """Auxiliary recursive function with MEMOIZATION to help return all the 
+    possible global align solutions"""
+    i, j = len(seq1), len(seq2)
+    res = []
+
+    if (i > 0 or j > 0):
+        if len(memoization_mat[i][j]) == 0:
+            if __DIAGONAL in trace[i][j]:
+                res += [
+                    [val[0] + seq1[i-1], val[1] + seq2[j-1]]
+                    for val
+                    in __recover_global_aux(trace, seq1[:-1], seq2[:-1], memoization_mat)
+                ]
+
+            if __VERTICAL in trace[i][j]:
+                res += [
+                    [val[0] + seq1[i-1], val[1] + '-']
+                    for val
+                    in __recover_global_aux(trace, seq1[:-1], seq2, memoization_mat)
+                ]
+
+            if __HORIZONTAL in trace[i][j]:
+                res += [
+                    [val[0] + '-', val[1] + seq2[j-1]]
+                    for val
+                    in __recover_global_aux(trace, seq1, seq2[:-1], memoization_mat)
+                ]
+
+            # Updating the memoization matrix with the computed arrays
+            memoization_mat[i][j] = res
+
+        return memoization_mat[i][j]
+
+    # Base case position 0, 0
+    return [["", ""]]
+
+def recover_global_align_multiple_solutions(trace, seq1, seq2):
+    """Recover the optimal alignments between seq1 and seq2
+    using the given trace matrix and recursivity"""
+    return __recover_global_aux(trace, seq1, seq2, \
+                                __matrix(len(seq1) + 1, len(seq2) + 2, []))

@@ -3,12 +3,16 @@ import unittest
 from seq_align import read_submat_file,\
                         subst_matrix,\
                         pretty_matrix,\
-                        global_align_multiple_solutions
+                        global_align_multiple_solutions,\
+                        recover_global_align_multiple_solutions
 
 class test_SeqAlign(unittest.TestCase):
 
     seq1 = 'GATTACA'
     seq2 = 'GCATGCT'
+
+    slides_seq1 = 'HGWAG'
+    slides_seq2 = 'PHSWG'
 
     def test_read_submat(self):
         sm = read_submat_file('tests/files/blosum62.mat')
@@ -65,15 +69,20 @@ class test_SeqAlign(unittest.TestCase):
         self.assertEqual(ga_trace,
             [
                 [[0], [3], [3],    [3],    [3],    [3],    [3],    [3]   ],
-                [[2], [0], [2],    [2],    [2],    [0, 2], [2],    [2]   ],
-                [[2], [1], [0],    [0],    [2],    [2],    [2],    [2]   ],
-                [[2], [1], [0, 1], [0],    [0],    [2],    [2],    [0, 2]],
-                [[2], [1], [0, 1], [0, 1], [0],    [0],    [0, 2], [0]   ],
-                [[2], [1], [0, 1], [0],    [1],    [0],    [0],    [0, 2]],
-                [[2], [1], [0],    [1],    [0, 1], [0, 1], [0],    [0, 2]],
-                [[2], [1], [1],    [0],    [0, 1], [0, 1], [1],    [0]   ]
+                [[2], [1], [3],    [3],    [3],    [1, 3], [3],    [3]   ],
+                [[2], [2], [1],    [1],    [3],    [3],    [3],    [3]   ],
+                [[2], [2], [1, 2], [1],    [1],    [3],    [3],    [1, 3]],
+                [[2], [2], [1, 2], [1, 2], [1],    [1],    [1, 3], [1]   ],
+                [[2], [2], [1, 2], [1],    [2],    [1],    [1],    [1, 3]],
+                [[2], [2], [1],    [2],    [1, 2], [1, 2], [1],    [1, 3]],
+                [[2], [2], [2],    [1],    [1, 2], [1, 2], [2],    [1]   ]
             ])
 
+    def test_recover_global_align_multiple_solutions(self):
+        sm = read_submat_file('tests/files/blosum62.mat')
+        _, ga_trace = global_align_multiple_solutions(self.slides_seq1, self.slides_seq2, sm, -3)
+        a = recover_global_align_multiple_solutions(ga_trace, self.slides_seq1, self.slides_seq2)
+        print(a)
 
 if __name__ == '__main__':
     unittest.main()
