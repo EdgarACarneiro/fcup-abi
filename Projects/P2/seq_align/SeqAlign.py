@@ -31,6 +31,8 @@ def subst_matrix(alphabet, match, mismatch):
 
 def pretty_matrix(matrix, row_label, col_label):
     """Pretty print of the given matrix """
+
+    # Restraining labels that are too big
     row_label = [el[:10] + '..' if len(el) > 10 else el
                 for el in row_label]
     col_label = [el[:10] + '..' if len(el) > 10 else el
@@ -272,7 +274,20 @@ def compare_pairwise_global_align(seq_list, sm, g):
     return cross_prod
 
 
-def compare_pairwise_local_align(seq1_list, seq2_list, sm, g):
+def compare_pairwise_local_align(seq_list, sm, g):
     """Gets a matrix indicating the local scores of the possible
     cross product of sequences"""
-    return None
+    cross_prod = []
+
+    for i in range(0, len(seq_list)):
+        cross_prod.append([])
+
+        for seq2 in seq_list:
+            ga_score, ga_trace, _ = local_align_multiple_solutions(seq_list[i], seq2, sm, g)
+            cross_prod[i].append(
+                len(recover_local_align_multiple_solutions(ga_score, ga_trace, seq_list[i], seq2))
+            )
+
+    pretty_matrix(cross_prod, seq_list, seq_list)
+
+    return cross_prod

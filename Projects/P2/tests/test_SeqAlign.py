@@ -169,11 +169,13 @@ class test_SeqAlign(unittest.TestCase):
         # 4 local optimal alignments between sp|C1F111 & sp|B7JC18
         self.assertEqual(len(rga), 4)
 
-
     def test_compare_pairwise_global_align(self):
         seqs = list(BioSeq.read_fasta_file('tests/files/protein_sequences.fas').values())
         compare_pairwise_global_align(seqs, self.sm, -3)
 
+    def test_compare_pairwise_local_align(self):
+        seqs = list(BioSeq.read_fasta_file('tests/files/protein_sequences.fas').values())
+        compare_pairwise_local_align(seqs, self.sm, -3)
 
 if __name__ == '__main__':
     unittest.main()
