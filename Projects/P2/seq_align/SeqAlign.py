@@ -71,7 +71,8 @@ def __score_align(seq1, seq2, sm, g):
 
 
 def global_align_multiple_solutions(seq1, seq2, sm, g):
-    """Global Alignment with multiple solutions of two sequences"""
+    """Global Alignment with multiple solutions of two sequences.
+    Represents an adaptation of the needleman-wunsch algorithm"""
     score = [[0]]
     trace = [[[0]]] # Each element of the trace matrix is now a list
 
@@ -143,3 +144,35 @@ def recover_global_align_multiple_solutions(trace, seq1, seq2):
     using the given trace matrix and recursivity"""
     return __recover_global_aux(trace, seq1, seq2, \
                                 __matrix(len(seq1) + 1, len(seq2) + 2, []))
+
+
+def local_align_multiple_solutions(seq1, seq2, sm, g):
+    """Local Alignment with multiple solutions of two sequences.
+    Represents an adaptation of the smith-waterman algorithm"""
+    score = [[0]]
+    trace = [[[0]]] # Each element of the trace matrix is now a list
+
+    # initialize gaps in cols
+    for i in range(1, len(seq1) + 1):
+        score.append([0])
+        trace.append([[0]])
+        max_score = 0
+
+    # initialize gaps in rows
+    for j in range(1, len(seq2) + 1):
+        score[0].append(0)
+        trace[0].append([0])
+
+    # apply the recurrence to fill the matrices
+    for i in range(1, len(seq1) + 1):
+        for j in range(1, len(seq2) + 1):
+            v1 = score[i-1][j-1] + __score_align(seq1[i-1], seq2[j-1], sm, g)
+            v2 = score[i-1][j] + g
+            v3 = score[i][j-1] + g
+            max_v = max(v1, v2, v3)
+
+            score[i].append(0 if max_v <= 0 else max_v)
+            trace[i].append([0] if max_v <= 0 else __max3(v1, v2, v3))
+            max_score = max_score if max_v < max_score else max_v
+
+    return (score, trace, max_score)
