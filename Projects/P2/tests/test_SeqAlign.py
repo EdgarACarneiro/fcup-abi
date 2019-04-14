@@ -37,6 +37,8 @@ class test_SeqAlign(unittest.TestCase):
         self.assertEqual(self.sm['YY'], 7)
         self.assertEqual(self.sm['VW'], -3)
 
+        print('>> Passed test_read_submat()')
+
     def test_subst_matrix(self):
         sm = subst_matrix("ACGT", 1, -1)
         self.assertEqual(sm,
@@ -56,6 +58,8 @@ class test_SeqAlign(unittest.TestCase):
             'TC': -1,
             'TG': -1,
             'TT': 1})
+
+        print('>> Passed test_subst_matrix()')
 
     def test_global_align_multiple_solutions(self):
         ga_score, ga_trace = global_align_multiple_solutions(self.seq1, self.seq2, self.sm_dna, -3)
@@ -82,6 +86,8 @@ class test_SeqAlign(unittest.TestCase):
                 [[2], [2], [1],    [2],    [1, 2], [1, 2], [1],    [1, 3]],
                 [[2], [2], [2],    [1],    [1, 2], [1, 2], [2],    [1]   ]
             ])
+
+        print('>> Passed test_global_align_multiple_solutions()')
 
     def test_recover_global_align_multiple_solutions(self):
         _, ga_trace = global_align_multiple_solutions(self.slides_seq1, self.slides_seq2, self.sm, -3)
@@ -111,6 +117,8 @@ class test_SeqAlign(unittest.TestCase):
 
         # 5760 global optimal alignments between sp|C1F111 & sp|B7JC18
         self.assertEqual(len(rga), 5760)
+
+        print('>> Passed test_recover_global_align_multiple_solutions()')
 
     def test_local_align_multiple_solutions(self):
         # Example presented in Class slides
@@ -150,6 +158,8 @@ class test_SeqAlign(unittest.TestCase):
             ])
         self.assertEqual(max_score, 2)
 
+        print('>> Passed test_local_align_multiple_solutions()')
+
     def test_recover_local_align_multiple_solutions(self):
         # Classes example
         ga_score, ga_trace, _ = local_align_multiple_solutions(self.slides_seq2, self.slides_seq1, self.sm, -8)
@@ -169,13 +179,31 @@ class test_SeqAlign(unittest.TestCase):
         # 4 local optimal alignments between sp|C1F111 & sp|B7JC18
         self.assertEqual(len(rga), 4)
 
+        print('>> Passed test_recover_local_align_multiple_solutions()')
+
     def test_compare_pairwise_global_align(self):
         seqs = list(BioSeq.read_fasta_file('tests/files/protein_sequences.fas').values())
-        compare_pairwise_global_align(seqs, self.sm, -3)
+        cga = compare_pairwise_global_align(seqs, self.sm, -3)
+
+        # Some random values
+        self.assertEqual(cga[4][3], 5760) # Between sp|C1F111 & sp|B7JC18 - matches previous test
+        self.assertEqual(cga[0][0], 1)
+        self.assertEqual(cga[9][6], 288)
+        self.assertEqual(cga[8][10], 1728)
+
+        print('>> Passed test_compare_pairwise_global_align()')
 
     def test_compare_pairwise_local_align(self):
         seqs = list(BioSeq.read_fasta_file('tests/files/protein_sequences.fas').values())
-        compare_pairwise_local_align(seqs, self.sm, -3)
+        cla = compare_pairwise_local_align(seqs, self.sm, -3)
+
+        # Some random values
+        self.assertEqual(cla[4][3], 4) # Between sp|C1F111 & sp|B7JC18 - matches previous test
+        self.assertEqual(cla[0][0], 1)
+        self.assertEqual(cla[9][6], 144)
+        self.assertEqual(cla[8][10], 1152)
+
+        print('>> Passed test_compare_pairwise_local_align()')
 
 if __name__ == '__main__':
     unittest.main()
