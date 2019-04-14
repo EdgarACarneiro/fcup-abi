@@ -107,7 +107,7 @@ class test_SeqAlign(unittest.TestCase):
         _, ga_trace = global_align_multiple_solutions(seqs['sp|C1F111'], seqs['sp|B7JC18'], self.sm, -3)
         rga = recover_global_align_multiple_solutions(ga_trace, seqs['sp|C1F111'], seqs['sp|B7JC18'])
 
-        # 5760 optimal alignments between sp|C1F111 & sp|B7JC18
+        # 5760 global optimal alignments between sp|C1F111 & sp|B7JC18
         self.assertEqual(len(rga), 5760)
 
     def test_local_align_multiple_solutions(self):
@@ -149,8 +149,24 @@ class test_SeqAlign(unittest.TestCase):
         self.assertEqual(max_score, 2)
 
     def test_recover_local_align_multiple_solutions(self):
+        # Classes example
         ga_score, ga_trace, _ = local_align_multiple_solutions(self.slides_seq2, self.slides_seq1, self.sm, -8)
-        recover_local_align_multiple_solutions(ga_score, ga_trace, self.slides_seq2, self.slides_seq1)
+        rga = recover_local_align_multiple_solutions(ga_score, ga_trace, self.slides_seq2, self.slides_seq1)
+
+        self.assertEqual(rga, [['HSW', 'HGW'], ['HSWG', 'HGWA']])
+
+        ga_score, ga_trace, _ = local_align_multiple_solutions(self.seq1, self.seq2, self.sm_dna, -1)
+        rga = recover_local_align_multiple_solutions(ga_score, ga_trace, self.seq1, self.seq2)
+
+        self.assertEqual(rga, [['AT', 'AT'], ['CA', 'CA']])
+
+        seqs = BioSeq.read_fasta_file('tests/files/protein_sequences.fas')
+        ga_score, ga_trace, _ = local_align_multiple_solutions(seqs['sp|C1F111'], seqs['sp|B7JC18'], self.sm, -3)
+        rga = recover_local_align_multiple_solutions(ga_score, ga_trace, seqs['sp|C1F111'], seqs['sp|B7JC18'])
+
+        # 12 local optimal alignments between sp|C1F111 & sp|B7JC18
+        self.assertEqual(len(rga), 4)
+
 
 if __name__ == '__main__':
     unittest.main()
