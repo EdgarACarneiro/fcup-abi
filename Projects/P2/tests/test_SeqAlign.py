@@ -164,7 +164,7 @@ class test_SeqAlign(unittest.TestCase):
         ga_score, ga_trace, _ = local_align_multiple_solutions(seqs['sp|C1F111'], seqs['sp|B7JC18'], self.sm, -3)
         rga = recover_local_align_multiple_solutions(ga_score, ga_trace, seqs['sp|C1F111'], seqs['sp|B7JC18'])
 
-        # 12 local optimal alignments between sp|C1F111 & sp|B7JC18
+        # 4 local optimal alignments between sp|C1F111 & sp|B7JC18
         self.assertEqual(len(rga), 4)
 
 

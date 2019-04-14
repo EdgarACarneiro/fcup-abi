@@ -171,8 +171,13 @@ def local_align_multiple_solutions(seq1, seq2, sm, g):
             v3 = score[i][j-1] + g
             max_v = max(v1, v2, v3)
 
-            score[i].append(0 if max_v <= 0 else max_v)
-            trace[i].append([0] if max_v <= 0 else __max3(v1, v2, v3))
+            if (max_v <= 0):
+                score[i].append(0)
+                trace[i].append([0])
+            else:
+                score[i].append(max_v)
+                trace[i].append(__max3(v1, v2, v3))
+
             max_score = max_score if max_v < max_score else max_v
 
     return (score, trace, max_score)
