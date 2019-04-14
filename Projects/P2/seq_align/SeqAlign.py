@@ -205,7 +205,7 @@ def __max_positions(mat):
             elif mat[i][j] == max_val:
                 pos.append((i, j))
 
-    return pos
+    return (pos, max_val)
 
 
 def __recover_local_aux(trace, seq1, seq2, pos, memoization_mat):
@@ -247,7 +247,7 @@ def __recover_local_aux(trace, seq1, seq2, pos, memoization_mat):
 
 
 def recover_local_align_multiple_solutions(score, trace, seq1, seq2):
-    la_pos = __max_positions(score) # Local Alignment starting positions
+    la_pos, _ = __max_positions(score) # Local Alignment starting positions
     memoization_mat = __matrix(len(seq1) + 1, len(seq2) + 2, [])
 
     return reduce((lambda acc, val: acc + val), \
@@ -256,8 +256,44 @@ def recover_local_align_multiple_solutions(score, trace, seq1, seq2):
 
 
 def compare_pairwise_global_align(seq_list, sm, g):
-    """Gets a matrix indicating the global scores of the possible
-    cross product of sequences"""
+    """Gets a matrix indicating the maximum score of possible global alignments
+    resultant of the cross product of sequences"""
+    cross_prod = []
+
+    for i in range(0, len(seq_list)):
+        cross_prod.append([])
+
+        for seq2 in seq_list:
+            ga_score, _  = global_align_multiple_solutions(seq_list[i], seq2, sm, g)
+            _, max_val = __max_positions(ga_score)
+
+            cross_prod[i].append(max_val)
+
+    pretty_matrix(cross_prod, seq_list, seq_list)
+
+    return cross_prod
+
+
+def compare_pairwise_local_align(seq_list, sm, g):
+    """Gets a matrix indicating the score of possible local alignments
+    resultant of the cross product of sequences"""
+    cross_prod = []
+
+    for i in range(0, len(seq_list)):
+        cross_prod.append([])
+
+        for seq2 in seq_list:
+            *_, max_val = local_align_multiple_solutions(seq_list[i], seq2, sm, g)
+            cross_prod[i].append(max_val)
+
+    pretty_matrix(cross_prod, seq_list, seq_list)
+
+    return cross_prod
+
+
+def compare_pairwise_num_global_align(seq_list, sm, g):
+    """Gets a matrix indicating the number of possible global alignments
+    resultant of the cross product of sequences"""
     cross_prod = []
 
     for i in range(0, len(seq_list)):
@@ -274,9 +310,9 @@ def compare_pairwise_global_align(seq_list, sm, g):
     return cross_prod
 
 
-def compare_pairwise_local_align(seq_list, sm, g):
-    """Gets a matrix indicating the local scores of the possible
-    cross product of sequences"""
+def compare_pairwise_num_local_align(seq_list, sm, g):
+    """Gets a matrix indicating the number of possible local alignments
+    resultant of the cross product of sequences"""
     cross_prod = []
 
     for i in range(0, len(seq_list)):

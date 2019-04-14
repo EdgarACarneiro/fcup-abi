@@ -9,7 +9,9 @@ from seq_align import read_submat_file,\
                         local_align_multiple_solutions,\
                         recover_local_align_multiple_solutions,\
                         compare_pairwise_global_align,\
-                        compare_pairwise_local_align
+                        compare_pairwise_local_align,\
+                        compare_pairwise_num_global_align,\
+                        compare_pairwise_num_local_align
 
 class test_SeqAlign(unittest.TestCase):
 
@@ -186,10 +188,10 @@ class test_SeqAlign(unittest.TestCase):
         cga = compare_pairwise_global_align(seqs, self.sm, -3)
 
         # Some random values
-        self.assertEqual(cga[4][3], 5760) # Between sp|C1F111 & sp|B7JC18 - matches previous test
-        self.assertEqual(cga[0][0], 1)
-        self.assertEqual(cga[9][6], 288)
-        self.assertEqual(cga[8][10], 1728)
+        self.assertEqual(cga[4][3], 196) # Between sp|C1F111 & sp|B7JC18 - matches previous test
+        self.assertEqual(cga[0][0], 1018)
+        self.assertEqual(cga[9][6], 514)
+        self.assertEqual(cga[8][10], 524)
 
         print('>> Passed test_compare_pairwise_global_align()')
 
@@ -198,12 +200,36 @@ class test_SeqAlign(unittest.TestCase):
         cla = compare_pairwise_local_align(seqs, self.sm, -3)
 
         # Some random values
+        self.assertEqual(cla[4][3], 353) # Between sp|C1F111 & sp|B7JC18 - matches previous test
+        self.assertEqual(cla[0][0], 1018)
+        self.assertEqual(cla[9][6], 517)
+        self.assertEqual(cla[8][10], 524)
+
+        print('>> Passed test_compare_pairwise_local_align()')
+
+    def test_compare_pairwise_num_global_align(self):
+        seqs = list(BioSeq.read_fasta_file('tests/files/protein_sequences.fas').values())
+        cga = compare_pairwise_num_global_align(seqs, self.sm, -3)
+
+        # Some random values
+        self.assertEqual(cga[4][3], 5760) # Between sp|C1F111 & sp|B7JC18 - matches previous test
+        self.assertEqual(cga[0][0], 1)
+        self.assertEqual(cga[9][6], 288)
+        self.assertEqual(cga[8][10], 1728)
+
+        print('>> Passed test_compare_num_pairwise_global_align()')
+
+    def test_compare_pairwise_num_local_align(self):
+        seqs = list(BioSeq.read_fasta_file('tests/files/protein_sequences.fas').values())
+        cla = compare_pairwise_num_local_align(seqs, self.sm, -3)
+
+        # Some random values
         self.assertEqual(cla[4][3], 4) # Between sp|C1F111 & sp|B7JC18 - matches previous test
         self.assertEqual(cla[0][0], 1)
         self.assertEqual(cla[9][6], 144)
         self.assertEqual(cla[8][10], 1152)
 
-        print('>> Passed test_compare_pairwise_local_align()')
+        print('>> Passed test_compare_num_pairwise_local_align()')
 
 if __name__ == '__main__':
     unittest.main()

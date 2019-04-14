@@ -7,7 +7,9 @@ from seq_align import read_submat_file,\
                         local_align_multiple_solutions,\
                         recover_local_align_multiple_solutions,\
                         compare_pairwise_global_align,\
-                        compare_pairwise_local_align
+                        compare_pairwise_local_align,\
+                        compare_pairwise_num_global_align,\
+                        compare_pairwise_num_local_align
 
 def wait_input():
     input("Press Enter to continue...\n")
@@ -157,10 +159,10 @@ if __name__ == '__main__':
 
     print("\n-------------------------\n")
 
-    print("Finally, we can also obtain the pairwise global and local alignment of the the sequences belonging to a list:\n")
+    print("We can also obtain the pairwise global and local alignment of the the sequences belonging to a list:\n")
     wait_input()
 
-    print("Lets try it out with the protein sequences we had!\nFirst, the comparation of the pairwise global alignments:\n")
+    print("Lets try it out with the protein sequences we had!\nFirst, the comparation of scores of the pairwise global alignments:\n")
     wait_input()
 
     seqs = list(seqs.values())
@@ -168,11 +170,30 @@ if __name__ == '__main__':
     compare_pairwise_global_align(seqs, sm_blosum, -3)
     wait_input()
 
-    print("And now, the comparation of the pairwise local alignments:\n")
+    print("And now, the comparation of scores of the pairwise local alignments:\n")
     wait_input()
 
     print("This might take a little bit...")
     compare_pairwise_local_align(seqs, sm_blosum, -3)
+    wait_input()
+
+    print("\n::: EXTRA :::\n")
+
+    print("Finally, we can also obtain the pairwise global and local alignment of the the sequences belonging to a list:\n")
+    wait_input()
+
+    print("Lets try it out with the protein sequences we had!\nFirst, the comparation of the number of pairwise global alignments:\n")
+    wait_input()
+
+    print("This might take a little bit...")
+    compare_pairwise_num_global_align(seqs, sm_blosum, -3)
+    wait_input()
+
+    print("And now, the comparation of the number of pairwise local alignments:\n")
+    wait_input()
+
+    print("This might take a little bit...")
+    compare_pairwise_num_local_align(seqs, sm_blosum, -3)
     wait_input()
 
     print("And that is it!! This are this module functionalities, hope you enjoyed it!")
