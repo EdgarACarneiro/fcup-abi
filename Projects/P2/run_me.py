@@ -55,7 +55,7 @@ if __name__ == '__main__':
     pretty_matrix(ga_trace, " " + seq1, " " + seq2)
     wait_input()
 
-    print("Using the computed matrixes we can recover the multipal optimal global alignements.\nLets do it?\n")
+    print("Using the computed matrixes we can recover the multiple optimal global alignments.\nLets do it?\n")
     wait_input()
 
     rga = recover_global_align_multiple_solutions(ga_trace, seq1, seq2)
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     print("\nMaximum value in the score matrix: " + str(max_score) + '\n')
     wait_input()
 
-    print("Using the computed matrixes we can recover the multipal optimal local alignements.\nLets do it?\n")
+    print("Using the computed matrixes we can recover the multiple optimal local alignments.\nLets do it?\n")
     wait_input()
 
     rga = recover_local_align_multiple_solutions(ga_score, ga_trace, seq1, seq2)
@@ -104,5 +104,76 @@ if __name__ == '__main__':
         print("> " + str(key) + ": " + str(value) + "\n")
     wait_input()
 
+    print("::: GLOBAL ALIGNMENT with multiple solutions :::\n")
+    print("\nLets make the global alignment with two of our protein sequences: sp|B0C882: & sp|A1TQI0, the 'sm_dna' and a gap of -3, shall we?\n")
+    p_seq1 = seqs["sp|B0C882"]
+    p_seq2 = seqs["sp|A1TQI0"]
+    wait_input()
 
-    print("")
+    ga_score, ga_trace = global_align_multiple_solutions(p_seq1, p_seq2, sm_blosum, -3)
+    print("Score matrix obtained:\n")
+    pretty_matrix(ga_score, " " + p_seq1, " " + p_seq2)
+    wait_input()
+
+    print("\nTrace matrix obtained:\n")
+    pretty_matrix(ga_trace, " " + p_seq1, " " + p_seq2)
+    wait_input()
+
+    print("Using the computed matrixes we can recover the multiple optimal global alignments.\nLets do it?\n")
+    wait_input()
+
+    rga = recover_global_align_multiple_solutions(ga_trace, p_seq1, p_seq2)
+    print("The obtained global alignments were:\n")
+    for align in rga:
+        print('Seq1: ' + str(align[0]) +  '\nSeq2: ' + str(align[1]) + '\n')
+    wait_input()
+
+    print("::: LOCAL ALIGNMENT with multiple solutions :::\n")
+    print("\nLets make the local alignment with two other protein sequences: sp|A0KL54 & sp|B7JC18, the 'sm_dna' and a gap of -1, shall we?\n")
+    p_seq1 = seqs["sp|A0KL54"]
+    p_seq2 = seqs["sp|B7JC18"]
+    wait_input()
+
+    ga_score, ga_trace, max_score = local_align_multiple_solutions(p_seq1, p_seq2, sm_blosum, -3)
+    print("Score matrix obtained:\n")
+    pretty_matrix(ga_score, " " + p_seq1, " " + p_seq2)
+    wait_input()
+
+    print("\nTrace matrix obtained:\n")
+    pretty_matrix(ga_trace, " " + p_seq1, " " + p_seq2)
+    wait_input()
+
+    print("\nMaximum value in the score matrix: " + str(max_score) + '\n')
+    wait_input()
+
+    print("Using the computed matrixes we can recover the multiple optimal local alignments.\nLets do it?\n")
+    wait_input()
+
+    rga = recover_local_align_multiple_solutions(ga_score, ga_trace, p_seq1, p_seq2)
+    print("The obtained local alignments were:\n")
+    for align in rga:
+        print('Seq1: ' + str(align[0]) +  '\nSeq2: ' + str(align[1]) + '\n')
+    wait_input()
+
+    print("\n-------------------------\n")
+
+    print("Finally, we can also obtain the pairwise global and local alignment of the the sequences belonging to a list:\n")
+    wait_input()
+
+    print("Lets try it out with the protein sequences we had!\nFirst, the comparation of the pairwise global alignments:\n")
+    wait_input()
+
+    seqs = list(seqs.values())
+    print("This might take a little bit...")
+    compare_pairwise_global_align(seqs, sm_blosum, -3)
+    wait_input()
+
+    print("And now, the comparation of the pairwise local alignments:\n")
+    wait_input()
+
+    print("This might take a little bit...")
+    compare_pairwise_local_align(seqs, sm_blosum, -3)
+    wait_input()
+
+    print("And that is it!! This are this module functionalities, hope you enjoyed it!")
+    wait_input()
