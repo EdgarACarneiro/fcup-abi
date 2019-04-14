@@ -6,7 +6,8 @@ from seq_align import read_submat_file,\
                         pretty_matrix,\
                         global_align_multiple_solutions,\
                         recover_global_align_multiple_solutions,\
-                        local_align_multiple_solutions
+                        local_align_multiple_solutions,\
+                        recover_local_align_multiple_solutions
 
 class test_SeqAlign(unittest.TestCase):
 
@@ -147,7 +148,9 @@ class test_SeqAlign(unittest.TestCase):
             ])
         self.assertEqual(max_score, 2)
 
-
+    def test_recover_local_align_multiple_solutions(self):
+        ga_score, ga_trace, _ = local_align_multiple_solutions(self.slides_seq2, self.slides_seq1, self.sm, -8)
+        recover_local_align_multiple_solutions(ga_score, ga_trace, self.slides_seq2, self.slides_seq1)
 
 if __name__ == '__main__':
     unittest.main()

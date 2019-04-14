@@ -176,3 +176,68 @@ def local_align_multiple_solutions(seq1, seq2, sm, g):
             max_score = max_score if max_v < max_score else max_v
 
     return (score, trace, max_score)
+
+
+def __max_positions(mat):
+    """Returns all the positions of the existing maximum value in
+    the given matrix"""
+    pos = []
+    max_val = mat[0][0]
+
+    for i in range(0, len(mat)):
+        for j in range(0, len(mat[i])):
+            if mat[i][j] > max_val:
+                max_val = mat[i][j]
+                pos = [(i ,j)]
+
+            elif mat[i][j] == max_val:
+                pos.append((i, j))
+
+    return pos
+
+
+def __recover_local_aux(trace, seq1, seq2, pos, memoization_mat):
+    """Auxiliary recursive function with MEMOIZATION to help return all the 
+    possible global align solutions"""
+    i, j = pos
+    res = []
+
+    if (trace[i][j] > [0]):
+        if len(memoization_mat[i][j]) == 0:
+            if __DIAGONAL in trace[i][j]:
+                res += [
+                    [val[0] + seq1[i-1], val[1] + seq2[j-1]]
+                    for val
+                    in __recover_local_aux(trace, seq1, seq2, (i-1, j-1), memoization_mat)
+                ]
+
+            if __VERTICAL in trace[i][j]:
+                res += [
+                    [val[0] + seq1[i-1], val[1] + '-']
+                    for val
+                    in __recover_local_aux(trace, seq1, seq2, (i-1, j), memoization_mat)
+                ]
+
+            if __HORIZONTAL in trace[i][j]:
+                res += [
+                    [val[0] + '-', val[1] + seq2[j-1]]
+                    for val
+                    in __recover_local_aux(trace, seq1, seq2, (i, j-1), memoization_mat)
+                ]
+
+            # Updating the memoization matrix with the computed arrays
+            memoization_mat[i][j] = res
+
+        return memoization_mat[i][j]
+
+    # Base case position trace[i][j] == 0
+    return [["", ""]]
+
+
+def recover_local_align_multiple_solutions(score, trace, seq1, seq2):
+    la_pos = __max_positions(score) # Local Alignment starting positions
+    memoization_mat = __matrix(len(seq1) + 1, len(seq2) + 2, [])
+
+    return reduce((lambda acc, val: acc + val), \
+                  [__recover_local_aux(trace, seq1, seq2, pos, memoization_mat)
+                    for pos in la_pos])
