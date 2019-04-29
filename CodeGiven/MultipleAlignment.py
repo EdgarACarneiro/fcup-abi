@@ -46,9 +46,29 @@ class MultipleAlignment():
         return res
 
     def ScoreColumn(self, charsCol):
-        return None
+        """Calculate the score of each column in the alignment.
+        CharsCol - list of chars representing a column in an alignment.
+        The score is computed using the Sum of Pairs (SP) approach,
+        i.e.the score will be the sum of the scores of each pair of
+        characters in the alignment. If two gaps are found in each
+        pair then the score will be zero."""
+        score = 0
+        for i in range(0, len(charsCol)-1):
+            for j in range(i+1, len(charsCol)):
+                p1 = charsCol[i]
+                p2 = charsCol[j]
+                if p1 == '-' and p2 == '-':
+                    score += 0
+                elif p1 == '-' or p2 == '-':
+                    score += self.alignpars.g
+                else:
+                    score += self.alignpars.sm[p1, p2]
+        return score
 
     def scoreSP (self, alignment):
+        """Returns the score SP from a complete alignment"""
+        # for el in alignment:
+        #     self.SCoreColumn()
         return None
 
 
