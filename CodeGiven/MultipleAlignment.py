@@ -9,22 +9,48 @@ class MultipleAlignment():
     def __init__(self, seqs, alignseq):
         self.seqs = seqs # list of MySeq objects
         self.alignpars = alignseq # PairwiseAlignment objects
-    
+
     def num_seqs(self):
         return len(self.seqs)
-    
-    def add_seq_alignment (self, alignment, seq):
-        #....
-    
+
+    def add_seq_alignment (self, alignment: MyAlign, seq):
+        """Adds new sequences to existing alignments. Used as: Aligns
+        the consensus of the previous alignment + new sequence = new alignemnt"""
+        res = []
+        for i in range(len(alignment.listseqs)+1):
+            res.append("")
+        # create consensus from given alignments
+        cons = MySeq(alignment.consensus(), alignment.al_type)
+        self.alignpars.needleman_Wunsch(cons, seq)
+        align2 = self.alignpars.recover_align()
+        orig = 0
+        for i in range(len(align2)):
+            if align2[0, i] == "-":
+                for k in range(len(alignment.listseqs)):
+                    res[k] += "-"
+            else:
+                for k in range(len(alignment.listseqs)):
+                    res[k] += alignment[k, orig]
+                orig += 1
+        res[len(alignment.listseqs)] = align2.listseqs[1]
+        return MyAlign(res, alignment.al_type)
+
+
     def align_consensus(self):
-        #...
-        
+        """General implmentation of the MSA."""
+        self.alignpars.needleman_Wunsch(self.seqs[0], self.seqs[1])
+        res = self.alignpars.recover_align()
+
+        for i in range(2, len(self.seqs)):
+            res = self.add_seq_alignment(res, self.seqs[i])
+        return res
+
     def ScoreColumn(self, charsCol):
-        # ...
-        
+        return None
+
     def scoreSP (self, alignment):
-        #
-   
+        return None
+
 
 def printMat (mat):
     for i in range(0, len(mat)):

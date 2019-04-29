@@ -32,7 +32,9 @@ class MyAlign:
     
     def consensus (self):
         return "".join(
-            [max(set(filter(lambda el: el != '-', self.column(i))))
+            [max(set(
+                    filter(lambda el: el != '-', self.column(i))
+                ))
                 for i
                 in range(0, len(self))]
         )
