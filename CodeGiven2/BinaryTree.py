@@ -13,6 +13,7 @@ class BinaryTree:
         return self.right != NotImplemented
 
     def get_cluster(self):
+        """Get the cluster values => get the tree leaves"""
         res = []
 
         if self.value >= 0:
@@ -60,9 +61,14 @@ class BinaryTree:
             numleaves += (resl[1] + resr[1])
         return numnodes, numleaves
 
-    def exists_leaf(self, leafnum):
-        pass
-        # ...
+    def exists_leaf(self, leafnum) -> bool:
+        """Finds leaf in tree"""
+
+        if self.value >= 0:
+            return leafnum == self.value
+        else:
+            return (self.left.exists_leaf(leafnum) if self.has_left_sibling() else False) or\
+                    (self.right.exists_leaf(leafnum) if self.has_left_sibling() else False)
     
     def common_ancestor(self, leaf1, leaf2):
        ''' Return simplest tree that contains leaf1, leaf2'''
