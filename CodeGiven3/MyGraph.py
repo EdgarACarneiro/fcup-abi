@@ -27,7 +27,7 @@ class MyGraph:
 
     def size(self):
         ''' Returns size of the graph : number of nodes, number of edges '''
-        return (len(self.graph), len(self.get_edges()))
+        return len(self.graph), len(self.get_edges())
 
     # add nodes and edges
     def add_node(self, v):
@@ -39,7 +39,8 @@ class MyGraph:
         ''' Add edge to the graph; if vertices do not exist, they are added to the graph '''
         self.add_node(o)
         self.add_node(d)
-        self.graph[o].append(d)
+        if d not in self.graph[0]:
+            self.graph[o].append(d)
 
     # successors, predecessors, adjacent nodes
 
