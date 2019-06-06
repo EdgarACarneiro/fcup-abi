@@ -58,7 +58,7 @@ class MultipleAlignment():
                 p1 = charsCol[i]
                 p2 = charsCol[j]
                 if p1 == '-' and p2 == '-':
-                    score += 0
+                    pass
                 elif p1 == '-' or p2 == '-':
                     score += self.alignpars.g
                 else:
@@ -69,6 +69,7 @@ class MultipleAlignment():
         """Returns the score SP from a complete alignment"""
         # for el in alignment:
         #     self.SCoreColumn()
+        # TODO
         return None
 
 

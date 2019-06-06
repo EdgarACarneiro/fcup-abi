@@ -24,7 +24,8 @@ class HierarchicalClustering:
             i, j = mins[0], mins[1]
 
             # create a new tree joining the clusters
-            n = UltrametricTree(-1, tableDist.get_value(i, j) / 2.0, i, trees[i], trees[j])
+            n = UltrametricTree(-1, tableDist.get_value(i, j) / 2.0,
+                i, trees[i], trees[j])
             if k > 2:
                 # remove trees being joined from the list
                 ti = trees.pop(i)
@@ -36,17 +37,23 @@ class HierarchicalClustering:
                         si = len(ti.get_cluster())
                         sj = len(tj.get_cluster())
                         # use the weighted average to calculate the distances between the clusters
-                        d =  # ...
-                        dists.append(d)
+                        dists.append(
+                            si*tableDist.get_value(i, x) +
+                                sj*tableDist.get_value(j, x)) / (si+sj))
                 # update the matrix:
-                # ...
+                tableDist.remove_row(i)
+                tableDist.remove_col(i)
+                tableDist.remove_row(j)
+                tableDist.remove_col(j)
+                tableDist.add_row(dists)
+                tableDist.add_col([0] * (len(dists)+1))
                 trees.append(n)
             else:
                 return n
 
 
 def test():
-    m = NumMatrix(5, 5)
+    m=NumMatrix(5, 5)
     m.set_value(0, 1, 2)
     m.set_value(0, 2, 5)
     m.set_value(0, 3, 7)
@@ -57,8 +64,8 @@ def test():
     m.set_value(2, 3, 4)
     m.set_value(2, 4, 6)
     m.set_value(3, 4, 3)
-    hc = HierarchicalClustering(m)
-    arv = hc.execute_clustering()
+    hc=HierarchicalClustering(m)
+    arv=hc.execute_clustering()
     arv.print_tree()
 
 

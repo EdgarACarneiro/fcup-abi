@@ -2,7 +2,7 @@ class UltrametricTree:
 
     def __init__(self, val, dist=0, left=None, right=None):
         self.value = val
-        self.distance = dist # distance from this node to the leafs
+        self.distance = dist  # distance from this node to the leafs
         self.left = left
         self.right = right
 
@@ -72,7 +72,8 @@ class UltrametricTree:
             return True if\
                 (self.left.exists_leaf(leafnum) if self.has_left_sibling() else False)\
                 else\
-                (self.right.exists_leaf(leafnum) if self.has_left_sibling() else False)
+                (self.right.exists_leaf(leafnum)
+                 if self.has_left_sibling() else False)
 
     def common_ancestor(self, leaf1, leaf2):
         ''' Return simplest tree that contains leaf1, leaf2'''
@@ -90,7 +91,6 @@ class UltrametricTree:
                     return self.right.common_ancestor(leaf1, leaf2)
                 else:
                     return self
-
 
     def distance_leaves(self, leafnum1, leafnum2):
         ''' distance between leafnum1 and leafnum2 using the common ancestor function.'''

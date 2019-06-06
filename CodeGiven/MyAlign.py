@@ -24,10 +24,10 @@ class MyAlign:
         return len(self.listseqs)
    
        
-    def column (self, indice):
+    def column (self, index):
         res = []
         for k in range(len(self.listseqs)):
-            res.append(self.listseqs[k][indice])
+            res.append(self.listseqs[k][index])
         return res
     
     def consensus (self):
