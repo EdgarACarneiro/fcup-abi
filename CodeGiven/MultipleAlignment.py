@@ -4,16 +4,17 @@ from MyAlign import MyAlign
 from MySeq import MySeq
 from SubstMatrix import SubstMatrix
 
+
 class MultipleAlignment():
 
     def __init__(self, seqs, alignseq):
-        self.seqs = seqs # list of MySeq objects
-        self.alignpars = alignseq # PairwiseAlignment objects
+        self.seqs = seqs  # list of MySeq objects
+        self.alignpars = alignseq  # PairwiseAlignment objects
 
     def num_seqs(self):
         return len(self.seqs)
 
-    def add_seq_alignment (self, alignment: MyAlign, seq):
+    def add_seq_alignment(self, alignment: MyAlign, seq):
         """Adds new sequences to existing alignments. Used as: Aligns
         the consensus of the previous alignment + new sequence = new alignemnt"""
         res = []
@@ -34,7 +35,6 @@ class MultipleAlignment():
                 orig += 1
         res[len(alignment.listseqs)] = align2.listseqs[1]
         return MyAlign(res, alignment.al_type)
-
 
     def align_consensus(self):
         """General implmentation of the MSA."""
@@ -65,55 +65,58 @@ class MultipleAlignment():
                     score += self.alignpars.sm[p1, p2]
         return score
 
-    def scoreSP (self, alignment):
+    def scoreSP(self, alignment):
         """Returns the score SP from a complete alignment"""
         # for el in alignment:
         #     self.SCoreColumn()
         return None
 
 
-def printMat (mat):
+def printMat(mat):
     for i in range(0, len(mat)):
         print(mat[i])
 
-def test_prot():  
-    s1 = MySeq("PHWAS","protein")
-    s2 = MySeq("HWASW","protein")
-    s3 = MySeq("HPHWA","protein")
+
+def test_prot():
+    s1 = MySeq("PHWAS", "protein")
+    s2 = MySeq("HWASW", "protein")
+    s3 = MySeq("HPHWA", "protein")
     sm = SubstMatrix()
     sm.read_submat_file("blosum62.mat", "\t")
     aseq = PairwiseAlignment(sm, -8)
-    ma = MultipleAlignment([s1,s2,s3], aseq)
+    ma = MultipleAlignment([s1, s2, s3], aseq)
     alinm = ma.align_consensus()
     print(alinm)
-    
+
 
 def test():
     s1 = MySeq("ATAGC")
     s2 = MySeq("AACC")
     s3 = MySeq("ATGAC")
-    
+
     sm = SubstMatrix()
-    sm.create_submat(1,-1,"ACGT")
-    aseq = PairwiseAlignment(sm,-1)
-    ma = MultipleAlignment([s1,s2,s3], aseq)
+    sm.create_submat(1, -1, "ACGT")
+    aseq = PairwiseAlignment(sm, -1)
+    ma = MultipleAlignment([s1, s2, s3], aseq)
     al = ma.align_consensus()
     print(al)
-    
+
+
 def exercise1():
     s1 = MySeq("ACATATCAT")
     s2 = MySeq("AACAGATCT")
     s3 = MySeq("AGATATTAG")
     s4 = MySeq("GCATCGATT")
-    
+
     sm = SubstMatrix()
-    sm.create_submat(1,-1,"ACGT")
-    aseq = PairwiseAlignment(sm,-1)
-    ma = MultipleAlignment([s1,s2,s3,s4], aseq)
+    sm.create_submat(1, -1, "ACGT")
+    aseq = PairwiseAlignment(sm, -1)
+    ma = MultipleAlignment([s1, s2, s3, s4], aseq)
     al = ma.align_consensus()
     print(al)
 
-if __name__ == "__main__": 
+
+if __name__ == "__main__":
     test_prot()
     print()
     test()

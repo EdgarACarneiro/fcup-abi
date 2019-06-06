@@ -67,13 +67,13 @@ class MyGraph:
     # degrees
 
     def out_degree(self, v):
-        pass
+        return sum([1 for edge in self.get_edges() if edge[0] == v])
 
     def in_degree(self, v):
-        pass
+        return sum([1 for edge in self.get_edges() if edge[1] == v])
 
     def degree(self, v):
-        pass
+        return sum([1 for edge in self.get_edges() if v in edge])
 
     def all_degrees(self, deg_type="inout"):
         ''' Computes the degree (of a given type) for all nodes.

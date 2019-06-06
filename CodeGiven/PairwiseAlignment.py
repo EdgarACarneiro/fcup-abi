@@ -22,7 +22,7 @@ class PairwiseAlignment:
     def score_alin (self, alin):
         res = 0;
         for i in range(len(alin)):
-            res += self.scorePos (alin[0][i], alin[1][i])
+            res += self.scorePos(alin[0][i], alin[1][i])
         return res
     
     def needleman_Wunsch (self, seq1, seq2):
