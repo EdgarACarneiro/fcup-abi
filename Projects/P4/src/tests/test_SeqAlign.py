@@ -11,7 +11,8 @@ from seq_align import read_submat_file,\
                         compare_pairwise_global_align,\
                         compare_pairwise_local_align,\
                         compare_pairwise_num_global_align,\
-                        compare_pairwise_num_local_align
+                        compare_pairwise_num_local_align,\
+                        align_query
 
 class test_SeqAlign(unittest.TestCase):
 
@@ -230,6 +231,17 @@ class test_SeqAlign(unittest.TestCase):
         self.assertEqual(cla[8][10], 1152)
 
         print('>> Passed test_compare_num_pairwise_local_align()')
+
+    def test_align_query(self):
+        query_seq, *seqs = list(BioSeq.read_fasta_file('tests/files/protein_sequences.fas').values())
+        align, max_score = align_query(query_seq, seqs, self.sm, -3)
+
+        self.assertEqual('VYT-RPLARLVEQLQR-LPGIGPKSAQRLALHLL-K-RPTAEVEALANALIEAKQQVGFCSVCFH-LSADPVCDICRAPSRDKTVICVVADS-RDVIALEKTREFKGQYHVLGGLISPMDGIGPDQLNVQP-LIRRVHQTKTQEVILAINPSVEGETTTLYVGQLLK--PFTRVTRIAFGLPMGGDLEYADEVTLARALEGR', align[0])
+        self.assertEqual('MFSDR-FEQLVQAL-RILPSVGPKSAQRMALHLLMKNREGA-F-GLAHALHEASSHIHECKIC-HSLTENEICDICLSNDRDQHLLCVV-ESPADVMAIEQSGSFRGKYHVLGGHLSPLDGIGPEEIGI-PYLIQRLSSGEIEEVILATNATVEGQATAHYLLEATKHLP-VHMTRIAQGVPQGGELEYVDSHTLSQAVHNR', align[1])
+        self.assertEqual(max_score, 468)
+
+        print('>> Passed test_align_query()')
+
 
 if __name__ == '__main__':
     unittest.main()

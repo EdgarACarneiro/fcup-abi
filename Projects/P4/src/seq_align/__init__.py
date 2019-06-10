@@ -8,4 +8,5 @@ from seq_align.SeqAlign import read_submat_file,\
                                 compare_pairwise_num_global_align,\
                                 compare_pairwise_num_local_align,\
                                 compare_pairwise_global_align,\
-                                compare_pairwise_local_align
+                                compare_pairwise_local_align,\
+                                align_query

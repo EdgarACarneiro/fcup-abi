@@ -1,21 +1,22 @@
 from functools import reduce
 
-def __matrix(row, col, val = 0):
+
+def __matrix(row, col, val=0):
     """ create a matrix with the given dimensions: 
     number of rows and columns filled with the given value (by omission zero) """
     return [[val] * col for _ in range(0, row)]
 
 
-
 def read_submat_file(filename):
     """Read a substitution matrix from the given file"""
     f = open(filename, "r")
-    alphabet = [symbol for symbol in f.readline().replace('\n', '').split('\t')]
+    alphabet = [symbol for symbol in f.readline().replace('\n',
+                                                          '').split('\t')]
 
     dic = {}
     for i, line in enumerate(f):
         line_symbol = line.replace('\n', '').split('\t')
-        
+
         for j in range(0, len(line_symbol)):
             dic[alphabet[i] + alphabet[j]] = int(line_symbol[j])
 
@@ -25,7 +26,7 @@ def read_submat_file(filename):
 
 def subst_matrix(alphabet, match, mismatch):
     """Substitution matrix as a dictionary"""
-    return {i + j : match if i == j else mismatch
+    return {i + j: match if i == j else mismatch
             for i in alphabet for j in alphabet}
 
 
@@ -34,13 +35,13 @@ def pretty_matrix(matrix, row_label, col_label):
 
     # Restraining labels that are too big
     row_label = [el[:10] + '..' if len(el) > 10 else el
-                for el in row_label]
+                 for el in row_label]
     col_label = [el[:10] + '..' if len(el) > 10 else el
-                for el in col_label]
+                 for el in col_label]
 
     # Stringfying everything & Joining top label
     s_matrix = [list([" "] + (col_label))] + \
-               [[row_label[row_idx]] + \
+               [[row_label[row_idx]] +
                 [str(e) for e in row] for row_idx, row in enumerate(matrix)]
 
     # Length of each matrix column
@@ -72,8 +73,8 @@ def __score_pos(c1, c2, sm, g):
 def __score_align(seq1, seq2, sm, g):
     """Score of the whole sequence alignment"""
     assert len(seq1) == len(seq2), "Sequences must have same size"
-    
-    return reduce((lambda acc, val: acc + val), \
+
+    return reduce((lambda acc, val: acc + val),
                   [__score_pos(seq1[i], seq2[i], sm, g) for i in range(0, len(seq1))])
 
 
@@ -81,7 +82,7 @@ def global_align_multiple_solutions(seq1, seq2, sm, g):
     """Global Alignment with multiple solutions of two sequences.
     Represents an adaptation of the needleman-wunsch algorithm"""
     score = [[0]]
-    trace = [[[0]]] # Each element of the trace matrix is now a list
+    trace = [[[0]]]  # Each element of the trace matrix is now a list
 
     # initialize gaps in cols
     for i in range(1, len(seq1) + 1):
@@ -108,6 +109,7 @@ def global_align_multiple_solutions(seq1, seq2, sm, g):
 __DIAGONAL = 1
 __VERTICAL = 2
 __HORIZONTAL = 3
+
 
 def __recover_global_aux(trace, seq1, seq2, memoization_mat):
     """Auxiliary recursive function with MEMOIZATION to help return all the 
@@ -146,10 +148,11 @@ def __recover_global_aux(trace, seq1, seq2, memoization_mat):
     # Base case position 0, 0
     return [["", ""]]
 
+
 def recover_global_align_multiple_solutions(trace, seq1, seq2):
     """Recover the optimal alignments between seq1 and seq2
     using the given trace matrix and recursivity"""
-    return __recover_global_aux(trace, seq1, seq2, \
+    return __recover_global_aux(trace, seq1, seq2,
                                 __matrix(len(seq1) + 1, len(seq2) + 2, []))
 
 
@@ -157,7 +160,7 @@ def local_align_multiple_solutions(seq1, seq2, sm, g):
     """Local Alignment with multiple solutions of two sequences.
     Represents an adaptation of the smith-waterman algorithm"""
     score = [[0]]
-    trace = [[[0]]] # Each element of the trace matrix is now a list
+    trace = [[[0]]]  # Each element of the trace matrix is now a list
 
     # initialize gaps in cols
     for i in range(1, len(seq1) + 1):
@@ -200,7 +203,7 @@ def __max_positions(mat):
         for j in range(0, len(mat[i])):
             if mat[i][j] > max_val:
                 max_val = mat[i][j]
-                pos = [(i ,j)]
+                pos = [(i, j)]
 
             elif mat[i][j] == max_val:
                 pos.append((i, j))
@@ -247,12 +250,12 @@ def __recover_local_aux(trace, seq1, seq2, pos, memoization_mat):
 
 
 def recover_local_align_multiple_solutions(score, trace, seq1, seq2):
-    la_pos, _ = __max_positions(score) # Local Alignment starting positions
+    la_pos, _ = __max_positions(score)  # Local Alignment starting positions
     memoization_mat = __matrix(len(seq1) + 1, len(seq2) + 2, [])
 
-    return reduce((lambda acc, val: acc + val), \
+    return reduce((lambda acc, val: acc + val),
                   [__recover_local_aux(trace, seq1, seq2, pos, memoization_mat)
-                    for pos in la_pos])
+                   for pos in la_pos])
 
 
 def compare_pairwise_global_align(seq_list, sm, g):
@@ -264,7 +267,8 @@ def compare_pairwise_global_align(seq_list, sm, g):
         cross_prod.append([])
 
         for seq2 in seq_list:
-            ga_score, _  = global_align_multiple_solutions(seq_list[i], seq2, sm, g)
+            ga_score, _ = global_align_multiple_solutions(
+                seq_list[i], seq2, sm, g)
             _, max_val = __max_positions(ga_score)
 
             cross_prod[i].append(max_val)
@@ -300,9 +304,11 @@ def compare_pairwise_num_global_align(seq_list, sm, g):
         cross_prod.append([])
 
         for seq2 in seq_list:
-            _, ga_trace = global_align_multiple_solutions(seq_list[i], seq2, sm, g)
+            _, ga_trace = global_align_multiple_solutions(
+                seq_list[i], seq2, sm, g)
             cross_prod[i].append(
-                len(recover_global_align_multiple_solutions(ga_trace, seq_list[i], seq2))
+                len(recover_global_align_multiple_solutions(
+                    ga_trace, seq_list[i], seq2))
             )
 
     pretty_matrix(cross_prod, seq_list, seq_list)
@@ -319,11 +325,30 @@ def compare_pairwise_num_local_align(seq_list, sm, g):
         cross_prod.append([])
 
         for seq2 in seq_list:
-            ga_score, ga_trace, _ = local_align_multiple_solutions(seq_list[i], seq2, sm, g)
+            ga_score, ga_trace, _ = local_align_multiple_solutions(
+                seq_list[i], seq2, sm, g)
             cross_prod[i].append(
-                len(recover_local_align_multiple_solutions(ga_score, ga_trace, seq_list[i], seq2))
+                len(recover_local_align_multiple_solutions(
+                    ga_score, ga_trace, seq_list[i], seq2))
             )
 
     pretty_matrix(cross_prod, seq_list, seq_list)
 
     return cross_prod
+
+
+def align_query(query_seq, seq_list, sm, g):
+    """Finds the most similar sequence to a query sequence.
+    Uses local alignment"""
+    max_result = (-1, None, None)  # score, seq, alignment
+
+    for seq in seq_list:
+        la = local_align_multiple_solutions(query_seq, seq, sm, g)
+        if la[2] > max_result[0]:
+            max_result = (la[2], seq, la)
+
+    best_alignment = recover_local_align_multiple_solutions(
+        max_result[2][0], max_result[2][1], query_seq, max_result[1])
+
+    # Return the first of the best alignments
+    return best_alignment[0], max_result[0]
