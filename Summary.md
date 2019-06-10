@@ -69,4 +69,41 @@ iub_to_re = {
 
 ## Pairwise Sequence Alignment
 
+Bioinformatics relies on the assumption that biological sequences with __high similarity__ share __similar functions__.
+
+__Phylogenetics__ is the division of biology that studies evolutionary divergence and relationship between organisms, based on _Similarity_ (resemblance and differences between organisms) and _Homology_ (common ground between the organisms and if they share any ancestral characteristics).
+
+The __edit distance__ between 2 sequences is the minimum number of editing operations to transform one sequence into the other. Operations:
+* __Substitution__: Replace symbols - `T -> C`.
+* __Deletion__: Delete 1 symbol - `C -> _`.
+* __Insertion__: Insert 1 symbol - `_ -> C`.
+
+__Sequence alignment__ is a way of arranging the biological sequences to identify regions of similarity. Such regions may indicate a functional, structural, or evolutionary relationships between the sequences.
+
+A __global alignment__ aligns two sequences from beginning to end, aligning each letter in each sequence only once. An alignment is always produced. _(Needleman-Wunsch algorithm)_
+
+A __local alignment__ maximizes the alignment of the parts of the sequences that share similarity. Finds the best aligned subsequence. An alignment may not be produced if no sufficient similarity is found. _(Smith-Waterman algorithm)_
+
+Substitution matrices give a score for each substitution of one amino-acid by another. BLOSUM (BLOcks SUbstitution Matrix) matrix is a substitution matrix used for sequence alignment of proteins.
+
+In __pairwise sequence alignment__ we try to arrange two sequences so that the number of matching characters is maximised.
+
+__Dynamic Programming for Global Alignment:__ fill __score matrix__ cell by cell, using the value of adjacent cells to reach the target cell.
+```python
+S[i][j] = max(S[i-1][j-1] + sm(a[i], b[j]), S[i-1][j] + g, S[i][j-1] + g) for all 0 < i <= n and 0 < j <= m
+```
+Matrix is filled left to right and top to bottom. To calculate `S[i][j]` you need to have
+calculated: `S[i-1][j], S[i][j-1], S[i-1][j-1]`.
+
+Additionally, keep a __trace-back matrix__ (T) to keep all the possible optimal moves at each cell. From T, one can recover the optimal alignment - start from lower-right cell and trace-bacl to upper-left cell.
+
+__Dynamic Programming for Local Alignment:__ find the best partial alignment of the sub-sequences from the 2 sequences.
+```python
+S[i][j] = max(S[i-1][j-1] + sm(a[i], b[j]), S[i-1][j] + g, S[i][j-1] + g, 0) for all 0 < i <= n and 0 < j <= m
+```
+For the optimal alignment, one now starts in the cells with highest score.
+
+Now, the __trace-back matrix T contains 4 possible values__: three previous values and an extra value to the cases where the alignment is terminated (correspond to cells in S with 0).
+
+---
 
