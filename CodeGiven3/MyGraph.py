@@ -172,6 +172,14 @@ class MyGraph:
                     visited.append(elem)
         return None
 
+    def mean_distances(self):
+        num_nodes = self.size()[0]
+
+        return sum([self.distance(i, j)
+                    for j in self.get_nodes()
+                    for i in self.get_nodes()
+                    if j > i]) / num_nodes
+
     # clustering
 
     def clustering_coef(self, v):
@@ -236,7 +244,7 @@ if __name__ == "__main__":
     print()
     print(gr.mean_degree())
     print(gr.prob_degree())
-    # print(gr.mean_distances())
+    print(gr.mean_distances())
     print()
     print(gr.clustering_coef(1))
     print(gr.clustering_coef(2))
