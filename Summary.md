@@ -107,3 +107,46 @@ Now, the __trace-back matrix T contains 4 possible values__: three previous valu
 
 ---
 
+## Searching for Similar Sequences in Databases - _BLAST_
+
+In Bioinformatics to infer the function of an unknown sequence, one has to scan large databases of sequences and compare the query sequence against all the sequences in the database, selecting those with higher degree of similarity.
+
+Pairwise sequence alignment algorithms are not efficient enough (quadratic complexity & memory consuming because of 2 matrixes) when it is necessary to scan very large sets of sequences, so __BLAST__ _- Basic Local Alignment Search Tool -_ is used.
+
+__BLAST__ can be used to infer functional and evolutionary relationships between sequences as well as help to identify members of gene families.
+
+BLAST Concepts:
+* __Query sequence__: sequence that will be processed with BLAST (we want to know more about).
+* __Target sequence__: sequence in the database that was matched with the query sequence.
+* __Dtabase (D)__: database of sequences where the search is done.
+
+BLAST in an heuristic approach based on the idea of _K-indexing_.
+_K-mer Indexing_ concepts:
+* __Database Pre-processing__: Scan every word of length __K__ and keep it in a hashmap.
+* __Query sequence scan__: scan every k-word in Query and get its location in the hashmap.
+
+__BLAST Algorithm__:
+1. __Seeding__: find common subwords between the query sequence and the database sequences (using the K-mer Indexing) -> _seeds_.
+    * Window scanning of Q to generate K-words: L1-set
+    * Find neighborhood words for each k-word until threshold T: L2-set
+    * Merge L = L1 U L2
+    * Look into H table where L words occur: seeds
+2. __Extension__: starting from seeds, extend alignment in both directions -> _high-scoring segment paris (HSP)_.
+    * BLAST 2.0. allows alignments with gaps. If two non-overlapping hits are found within distance A of one another on the same diagonal, then merge the hits into an alignment and extend the alignment in both directions until the running alignments score has dropped more than X below the maximum score yet attained.
+3. __Evaluation__: assess the statistical significance of each HSP.
+    * The __Expect value (E)__ is a parameter that describes the number of hits one can "expect" to see by chance when searching a database of a particular size. It decrease exponentially as the Score (S) of the match increases. The lower the E-value, or the closer it is to zero, the more "significant" the match is.
+
+![Blast Explanation](https://i.imgur.com/nVSUG33.png)
+
+__BLAST__ can be __summarized__ in:
+1. Remove regions of low complexity (e.g. sequence repeats) from query sequence.
+2. Obtain all possible “words” of size _w_ (a parameter of the algorithm), i.e. sub- sequences of length w occurring in the query sequence;
+3. For each word from the previous step, compile the list of all possible words of size w that can be defined in the allowable alphabet, whose alignment score (with no gaps) is higher than a threshold _T_ (parameter of the algorithm);
+4. Search in all sequences from the database, all occurrences of the words collected in the last step, which represent __matches (hits or seeds) of size w between the query and one of the database sequences__;
+5. Extend all hits from the last step, in both directions, while the score follows a given criterion (typically, the criterion is dependent on the size of the extension);
+6. Select the alignments in the previous step with highest scores, normalized for its size (these are named the __high-scoring pairs - HSPs__).
+
+---
+
+## Multiple Sequence Alignment
+
