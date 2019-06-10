@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-
-
 class MyBlast:
-    '''Classe para matrizes de pontos'''
+    """Classe para matrizes de pontos"""
 
     def __init__(self, filename=None, w=3):
-        '''
-        Construtor
-        '''
+        """Construtor"""
         if filename is not None:
             self.readDatabase(filename)
         else:
@@ -16,7 +11,9 @@ class MyBlast:
         self.map = None
 
     # TODO: Where does this belong??
-    # def align_query(self, query, ls, ms, g):
+    # def align_query(self, query_seq, seq_list, sm, g):
+    #     """Finds the most similar sequence to a query sequence.
+    #     Uses local alignment"""
     #     bestScore = -1
     #     bestSeq = None
     #     bestAl = None
