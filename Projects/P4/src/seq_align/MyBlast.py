@@ -19,6 +19,8 @@ class MyBlast:
     @staticmethod
     def read_database(filename):
         """From file with sequences line by line read the sequences to a list"""
+        with open(filename, 'r') as fd:
+            return [line.strip() for line in fd]
         return []
 
     def add_sequence_database(self, seq):
@@ -102,7 +104,7 @@ class MyBlast:
 
     def hit_best_score(self, target, query):
         """Identify the best alignment between the query sequence and the target sequence"""
-        hits = self.get_hits(target, query)
+        hits = self.get_hits(target)
         best_align = (None, None, None, -1.0)
 
         for h in hits:
@@ -129,17 +131,23 @@ class MyBlast:
                      (best_hit_align[3] == best[3] and best_hit_align[2] < best[2])):
                 best = (*best_hit_align, k)
 
+        # Return (idx align on query, idx align on sequence, size align, score, index of sequence in db)
         return best if best[3] >= 0 else ()
 
+
 def test1():
-    mb = MyBlast("seqBlast.txt", 11)
+    mb = MyBlast("testfiles/seqBlast.txt", 11)
     query = "gacgcctcgcgctcgcgcgctgaggcaaaaaaaaaaaaaaaaaaaatcggatagctagctgagcgctcgatagcgcgttcgctgcatcgcgtatagcgctgaagctcccggcgagctgtctgtaaatcggatctcatctcgctctatcct"
     r = mb.best_alignment(query)
     print(r)
 
 
 def test2():
-    mb = MyBlast("seqBlast.txt", 11)
+    mb = MyBlast("testfiles/seqBlast.txt", 11)
     query2 = "cgacgacgacgacgaatgatg"
     r = mb.best_alignment(query2)
     print(r)
+
+
+test1()
+test2()
