@@ -23,6 +23,13 @@ class MyBlast:
             return [line.strip() for line in fd]
         return []
 
+    @staticmethod
+    def read_query(filename):
+        """Read a query sequence froma a given file"""
+        with open(filename, 'r') as fd:
+            for line in fd:
+                return line.strip()
+
     def add_sequence_database(self, seq):
         """Add an extra sequence to the database"""
         self.database.append(seq)
@@ -31,6 +38,7 @@ class MyBlast:
         """Perform the hashing of the query sequence, i.e.
         pre-process the query sequence to identify all words
         of size word_size keeping the positions where they occur"""
+        self.mapping = {}  # Clearing dictionary
 
         for i in range(len(query_seq) - self.word_size + 1):
             subseq = query_seq[i: i + self.word_size]
@@ -40,14 +48,11 @@ class MyBlast:
             else:
                 self.mapping[subseq] = [i]
 
-    def get_hits(self, target_seq, threshold=None):
-        if threshold is None:
-            threshold = self.word_size
-
+    def get_hits(self, target_seq):
         res = []  # list of hits: (index in query, index in target)
 
-        for i in range(len(target_seq) - threshold + 1):
-            subseq = target_seq[i: i + threshold]
+        for i in range(len(target_seq) - self.word_size + 1):
+            subseq = target_seq[i: i + self.word_size]
 
             # Subseq of target sequence in mapping of query sequence
             if subseq in self.mapping:
@@ -133,21 +138,3 @@ class MyBlast:
 
         # Return (idx align on query, idx align on sequence, size align, score, index of sequence in db)
         return best if best[3] >= 0 else ()
-
-
-def test1():
-    mb = MyBlast("testfiles/seqBlast.txt", 11)
-    query = "gacgcctcgcgctcgcgcgctgaggcaaaaaaaaaaaaaaaaaaaatcggatagctagctgagcgctcgatagcgcgttcgctgcatcgcgtatagcgctgaagctcccggcgagctgtctgtaaatcggatctcatctcgctctatcct"
-    r = mb.best_alignment(query)
-    print(r)
-
-
-def test2():
-    mb = MyBlast("testfiles/seqBlast.txt", 11)
-    query2 = "cgacgacgacgacgaatgatg"
-    r = mb.best_alignment(query2)
-    print(r)
-
-
-test1()
-test2()
