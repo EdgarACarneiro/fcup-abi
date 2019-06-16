@@ -148,5 +148,44 @@ __BLAST__ can be __summarized__ in:
 
 ---
 
-## Multiple Sequence Alignment
+## Multiple Sequence Alignment _(MSA)_
+
+Generalization of the Alignment Problem to multiple sequences (__pairwise alignment problem _(PSA)___ for _N > 2_ sequences).
+
+Possible utilities of _MSA_:
+* identify recurrent motifs across a family of protein sequences
+* study homology relations between an evolving gene (Phylogenetic analysis)
+* assess conservation on secondary and tertiary protein structures
+* epidemiological studies to understand the mutation rate of a gives species strain.
+
+MSA can be used to start phylogenetic analysis. The phylogenetic tree describes the distance between the sequences under analysis. From the alignment, each column shows if there are conservation of the residues (amino-acids), mutations or divergence from the common ancestor.
+
+Compared to the _PSA_, we now have multiple symbols per column. The __sum of pairs _(SP)___ method considers all possible pairs of symbols within the column and sums them. Eventually, it counts the number of gaps only once.
+
+With many sequences, dynamic programming becomes inviable and therefore __Heuristic approaches__ are used. They represent a trade-off between speed and optimality.
+Some Heuristic approaches are:
+* __Progressive__: start by aligning the two most similar sequences and iteratively add the other sequences to the alignment.
+* __Iterative__: consider an initial alignment and then improve it by adding, removing or moving gaps.
+* __Hybrid__: combine both strategies and use complementary information (e.g. protein structural information, other good alignments)
+
+The ___CLUSTAL_ algorithm__ is a classic MSA method that is at the basis of many MSA algorithms. CLUSTAL approach __(Progressive approach)__:
+1. Calculate pairwise alignment of all sequences and build a similarity matrix
+2. Select the most similar sequences to form the basis of the MSA; the order of the sequences follows that of the guide tree;
+3. To add more than two sequences we need to create, from the existing alignment, a summary of the content on each column.
+    * __Consensus representation__: each column is represented by the most common character;
+    * __Frequency representation__: each column is represented by the frequency of the characters, also called profile.
+4. At each iteration align the new sequence with the profile of the current MSA.
+    * The column score is the weighted average of the scores of all possible pairs.
+    * Once a gap is added to the alignment it will prevail as gap throughout the next alignment steps.
+    * In some situations, we may need to join to sub-alignments corresponding to two different sub-branches of the tree. Requires joining two profiles in a generalisation of the above process.
+
+![CLUSTAL Overview](https://i.imgur.com/I3cJTMk.png)
+
+__Cons of Heuristic__ approaches:
+* If wrong decisions are made early in the alignment they will be propagated and not corrected afterwards.
+* Worst results occur when sequences have low similarity.
+
+---
+
+## Phylogenetic Analysis
 
