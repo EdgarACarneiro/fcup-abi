@@ -7,29 +7,6 @@ def __matrix(row, col, val=0):
     return [[val] * col for _ in range(0, row)]
 
 
-def read_submat_file(filename):
-    """Read a substitution matrix from the given file"""
-    f = open(filename, "r")
-    alphabet = [symbol for symbol
-                in f.readline().replace('\n', '').split('\t')]
-
-    dic = {}
-    for i, line in enumerate(f):
-        line_symbol = line.replace('\n', '').split('\t')
-
-        for j in range(0, len(line_symbol)):
-            dic[alphabet[i] + alphabet[j]] = int(line_symbol[j])
-
-    f.close()
-    return dic
-
-
-def subst_matrix(alphabet, match, mismatch):
-    """Substitution matrix as a dictionary"""
-    return {i + j: match if i == j else mismatch
-            for i in alphabet for j in alphabet}
-
-
 def pretty_matrix(matrix, row_label, col_label):
     """Pretty print of the given matrix """
 
