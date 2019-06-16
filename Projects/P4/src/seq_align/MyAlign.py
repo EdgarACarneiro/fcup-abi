@@ -15,7 +15,10 @@ class MyAlign:
                 raise Exception(
                     "All sequences in list must be of the same type")
 
-        self.list_seqs = lseqs
+        if seq_type == str:
+            self.list_seqs = lseqs
+        else:
+            self.list_seqs = [str(seq) for seq in lseqs]
 
     def __len__(self):
         """Returns the number of columns"""
@@ -35,7 +38,7 @@ class MyAlign:
 
     def __str__(self):
         """Returns list of sequences separated by '\n'"""
-        return "".join(["\n %s" % seq for seq in self.list_seqs])
+        return "".join(["\n%s" % seq for seq in self.list_seqs])
 
     def num_seqs(self):
         """Returns the number of sequences used in the alignment"""
@@ -57,16 +60,3 @@ class MyAlign:
                 for i
                 in range(0, len(self))]
         )
-
-
-if __name__ == "__main__":
-    alig = MyAlign(["ATGA-A", "AA-AT-"])
-    print(alig)
-    print(len(alig))
-    print(alig.column(2))
-    print(alig[1, 1])
-    print(alig[0])
-    print(alig.consensus())
-
-    alig2 = MyAlign(["VJKK", "JRSK", "VRSK"])
-    # print(alig2.richpolarbasic())

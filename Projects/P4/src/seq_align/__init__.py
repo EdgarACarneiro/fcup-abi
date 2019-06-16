@@ -11,3 +11,4 @@ from seq_align.SeqAlign import read_submat_file,\
                                 compare_pairwise_local_align,\
                                 align_query
 from seq_align.MyBlast import MyBlast
+from seq_align.MyAlign import MyAlign

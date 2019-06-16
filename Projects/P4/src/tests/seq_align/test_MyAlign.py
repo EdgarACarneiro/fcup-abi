@@ -1,72 +1,52 @@
 import unittest
 
-from seq_align import MyBlast
+from bioseq import Protein
+from seq_align import MyAlign
 
 
 class test_MyAlign(unittest.TestCase):
 
     align_1 = ["ATGA-A", "AA-AT-"]
-    align_2 = ["VJKK", "JRSK", "VRSK"]
-    align_protein = []
+    align_protein = [Protein("VJKK"), Protein("JRSK"), Protein("VRSK")]
 
-    # def test_create_my_align(self):
-    #     self.assertRaises
+    def test_create_my_align(self):
+        self.assertRaises(Exception, MyAlign, ["AA", Protein("AA")])
 
-    # def test_read_database(self):
-    #     db = MyBlast.read_database("../testfiles/seqBlast.txt")
+        try:
+            MyAlign(self.align_1)
+            MyAlign(self.align_protein)
+        except Exception:
+            self.fail("MyAlign() raised Exception unexpectedly!")
 
-    #     self.assertEqual(db[3], 'atagctcgatgcttagatctcgcgtatgctgctagataagagctgctgagctgatcggatgcctcgcgctcgcgcgctgaggctcggatagctagctgagcgctcgatagcgcgttcgctggatcgcgtatagcgctgaagctcccggctagctgtctgtaaatcggatctgatctcgctctatact')
+    def test_basics(self):
+        align = MyAlign(self.align_1)
+        align_p = MyAlign(self.align_protein)
 
-    # def test_read_query(self):
-    #     query = MyBlast.read_query("../testfiles/query2.fasta")
+        self.assertEqual(str(align), "\nATGA-A\nAA-AT-")
+        self.assertEqual(len(align), 6)
+        self.assertEqual(align[0], "ATGA-A")
+        self.assertEqual(align[1,3], "A")
+        self.assertEqual(align.num_seqs(), 2)
 
-    #     self.assertEqual(query, 'cgacgacgacgacgaatgatg')
+        self.assertEqual(str(align_p), "\nVJKK\nJRSK\nVRSK")
+        self.assertEqual(len(align_p), 4)
+        self.assertEqual(align_p[2], "VRSK")
+        self.assertEqual(align_p[1,3], "K")
+        self.assertEqual(align_p.num_seqs(), 3)
 
-    # def test_add_seq_to_db(self):
-    #     blast = MyBlast(None, 11)
+    def test_num_column(self):
+        align = MyAlign(self.align_1)
+        align_p = MyAlign(self.align_protein)
 
-    #     self.assertEqual(0, len(blast.database))
-    #     blast.add_sequence_database('test sequence')
-    #     self.assertEqual(1, len(blast.database))
+        self.assertEqual("".join(align.column(1)), "TA")
+        self.assertEqual("".join(align_p.column(3)), "KKK")
 
-    # def test_build_map(self):
-    #     self.blast.build_map(self.query2)
+    def test_consensus(self):
+        align = MyAlign(self.align_1)
+        align_p = MyAlign(self.align_protein)
 
-    #     self.assertEqual(self.blast.mapping['cgacgacgacg'], [0, 3])
-    #     self.assertEqual(self.blast.mapping['gacgacgaatg'], [7])
-
-    # def test_get_hits(self):
-    #     self.blast.build_map(self.query2)
-    #     hits = self.blast.get_hits(self.blast.database[4])
-
-    #     self.assertEqual(hits[0], (0, 0))
-    #     self.assertEqual(hits[3], (4, 1))
-    #     self.assertEqual(hits[4], (2, 2))
-    #     self.assertEqual(hits[7], (1, 4))
-    #     self.assertEqual(hits[10], (6, 6))
-
-    # def test_extends_hit(self):
-    #     self.blast.build_map(self.query2)
-    #     hits = self.blast.get_hits(self.blast.database[4])
-
-    #     self.assertEqual(
-    #         self.blast.extends_hit(
-    #             self.blast.database[4], hits[10], self.query2), # hit = (6,6)
-    #         (0, 0, 21, 21))
-    #     self.assertEqual(
-    #         self.blast.extends_hit(
-    #             self.blast.database[4], hits[0], self.query2), # hit = (0,0)
-    #         (0, 0, 21, 21))
-
-    # def test_hit_best_score(self):
-    #     self.blast.build_map(self.query2)
-    #     bs = self.blast.hit_best_score(self.blast.database[4], self.query2)
-
-    #     self.assertEqual(bs, (0, 0, 21, 21))
-
-    # def test_best_alignment(self):
-    #     self.assertEqual(self.blast.best_alignment(self.query2), (0, 0, 21, 21, 4))
-    #     self.assertEqual(self.blast.best_alignment(self.query1), (1, 38, 149, 108, 3))
+        self.assertEqual(align.consensus(), "ATGATA")
+        self.assertEqual(align_p.consensus(), "VRSK")
 
 
 if __name__ == '__main__':
