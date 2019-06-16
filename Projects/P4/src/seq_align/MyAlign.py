@@ -37,8 +37,8 @@ class MyAlign:
                     str(seq2),
                     sm,
                     g)[1],
-                seq1,
-                seq2
+                str(seq1),
+                str(seq2)
             )[0], type(seq1).__name__)
 
     def __len__(self):

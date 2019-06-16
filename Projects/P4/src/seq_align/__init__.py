@@ -11,3 +11,4 @@ from seq_align.SeqAlign import pretty_matrix,\
 from seq_align.SubstMatrix import SubstMatrix
 from seq_align.MyBlast import MyBlast
 from seq_align.MyAlign import MyAlign
+from seq_align.MultipleAlignment import MultipleAlignment
