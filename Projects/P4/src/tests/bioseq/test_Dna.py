@@ -13,13 +13,19 @@ class test_Rna(unittest.TestCase):
         self.assertRaises(Seq.InvalidSequenceException, Dna, "ATCUGT")
         self.assertRaises(Seq.InvalidSequenceException, Dna, "ACSG")
 
+        print('>> Passed Dna::test_init()')
+
     def test_basics(self):
         self.assertEqual(str(Dna("ATCGAT")), "ATCGAT")
+
+        print('>> Passed Dna::test_basics()')
 
     def test_transcription(self):
         rna = Dna("TCATT").transcription()
         self.assertIsInstance(rna, Rna)
         self.assertEqual(rna.get_seq(), "RNA: UCAUU")
+
+        print('>> Passed test_transcription()')
 
     def test_genetic_code(self):
         dna = Dna("ACTG")
@@ -29,15 +35,21 @@ class test_Rna(unittest.TestCase):
         dna.set_genetic_code({"ABC": "C"})
         self.assertEqual(list(dna.get_genetic_code())[0], "ABC")
 
+        print('>> Passed test_genetic_code()')
+
     def test_translate(self):
         dna = Dna("ACTGAATCG")
         dna.read_genetic_code('tests/files/genetic_code.txt')
         self.assertEqual(dna.translate().get_seq(), "Protein: TES")
 
+        print('>> Passed test_translate()')
+
     def test_codon_usage(self):
         dna = Dna("AGCTAGCTAGCTACATCAAACGATCGTCGCTAGCTAGCTAC")
         dna.read_genetic_code('tests/files/genetic_code.txt')
         self.assertEqual(dna.codon_usage("R"), {'CGT': 0.5, 'CGC': 0.5})
+
+        print('>> Passed test_codon_usage()')
 
     def test_reading_frames(self):
         dna = Dna("ACGTACGATATGTA")
@@ -45,6 +57,8 @@ class test_Rna(unittest.TestCase):
         rf = dna.reading_frames()
         self.assertEqual(len(rf), 6)
         self.assertTrue(all(str(n) in ['TYDM', 'RTIC', 'TYRT', 'VRYV', 'HIVR', 'YISY'] for n in rf))
+
+        print('>> Passed test_reading_frames()')
 
     def test_all_orfs(self):
         dna = Dna("ATGAAATTATGAATGAGCCTCAGCTGAAGCATCGCGCATCAGACTACGCTCAGACTCAGACTCAGCATTATAGTGAATGTTAATAAATAAAATAA")
@@ -63,6 +77,8 @@ class test_Rna(unittest.TestCase):
         orfs_ten = dna.all_orfs(10)
         self.assertEqual(orfs_ten[0].get_seq(), 'Protein: MRDASAEAHS')
         self.assertEqual(orfs_ten[1].get_seq(), 'Protein: MNEPQLKHRASDYAQTQTQHYSEC')
+
+        print('>> Passed test_all_orfs()')
 
 
 if __name__ == '__main__':

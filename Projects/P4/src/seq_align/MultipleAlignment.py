@@ -26,7 +26,7 @@ class MultipleAlignment():
         res = ["" for i in range(len(alignment.get_seqs())+1)]
 
         # create consensus from given alignments
-        cons = BioSeq.create_bio_seq.(
+        cons = BioSeq.create_bio_seq(
             alignment.consensus(), alignment.get_align_type())
 
         align2 = MyAlign.align_from_global_alignment(
@@ -77,17 +77,12 @@ class MultipleAlignment():
                     score += self.pair_align_data[self.SM_IDX][p1, p2]
         return score
 
-    def scoreSP(self, alignment):
+    def scoreSP(self, alignment: MyAlign):
         """Returns the score SP from a complete alignment"""
-        # for el in alignment:
-        #     self.SCoreColumn()
-        # TODO
-        return None
-
-
-def printMat(mat):
-    for i in range(0, len(mat)):
-        print(mat[i])
+        return sum(
+            [self.ScoreColumn(alignment.column(col_idx))
+             for col_idx in range(len(alignment))]
+        )
 
 
 def test_prot():

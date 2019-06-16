@@ -18,6 +18,8 @@ class test_MyAlign(unittest.TestCase):
         except Exception:
             self.fail("MyAlign() raised Exception unexpectedly!")
 
+        print('>> Passed test_create_my_align()')
+
     def test_basics(self):
         align = MyAlign(self.align_1)
         align_p = MyAlign(self.align_protein)
@@ -39,6 +41,8 @@ class test_MyAlign(unittest.TestCase):
                          [str(prot) for prot in self.align_protein])
         self.assertEqual(align_p.get_align_type(), 'Protein')
 
+        print('>> Passed MyAlign::test_basics()')
+
     def test_num_column(self):
         align = MyAlign(self.align_1)
         align_p = MyAlign(self.align_protein)
@@ -46,12 +50,16 @@ class test_MyAlign(unittest.TestCase):
         self.assertEqual("".join(align.column(1)), "TA")
         self.assertEqual("".join(align_p.column(3)), "KKK")
 
+        print('>> Passed test_num_column()')
+
     def test_consensus(self):
         align = MyAlign(self.align_1)
         align_p = MyAlign(self.align_protein)
 
         self.assertEqual(align.consensus(), "ATGATA")
         self.assertEqual(align_p.consensus(), "VRSK")
+
+        print('>> Passed test_consensus()')
 
 
 if __name__ == '__main__':

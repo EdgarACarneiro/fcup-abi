@@ -10,14 +10,20 @@ class test_Seq(unittest.TestCase):
         # Launches Exception since class is abstract
         self.assertRaises(Exception, Seq, "ACTG")
 
+        print('>> Passed Seq::test_init()')
+
     def test_basics(self):
         seq = BioSeq.create_bio_seq("ACTGTCATGAT")
         self.assertEqual(str(seq), "ACTGTCATGAT")
         self.assertEqual(len(seq), len("ACTGTCATGAT"))
 
+        print('>> Passed Seq::test_basics()')
+
     def test_freq(self):
         seq = BioSeq.create_bio_seq("ACTGTCATAT")
         self.assertEqual(seq.freq_symbols(), {"T": 4, "A": 3, "C": 2, "G": 1})
+
+        print('>> Passed test_freq()')
 
     def test_read_write(self):
         seq = BioSeq.create_bio_seq("ACTGTCATAT")
@@ -31,6 +37,8 @@ class test_Seq(unittest.TestCase):
         seq.read_sequence('tests/files/test_write.csv')
         self.assertEqual(len_bwr, len(seq))
 
+        print('>> Passed test_read_write()')
+
     def test_save_load(self):
         seq = BioSeq.create_bio_seq("ACTGTCATAT")
         seq.save('tests/files/test_save_load.csv')
@@ -38,6 +46,8 @@ class test_Seq(unittest.TestCase):
         self.assertEqual(seq.get_seq(), loaded_seq.get_seq())
         self.assertEqual(seq.get_genetic_code(), loaded_seq.get_genetic_code())
         self.assertEqual(seq.__class__.__name__, loaded_seq.__class__.__name__)
+
+        print('>> Passed test_save_load()')
 
 
 if __name__ == '__main__':

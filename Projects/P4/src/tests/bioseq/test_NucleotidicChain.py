@@ -10,11 +10,15 @@ class test_NucleotidicChain(unittest.TestCase):
         # Launches Exception since class is abstract
         self.assertRaises(Exception, NucleotideChain, "ACTG")
 
+        print('>> Passed NucleotidicChain::test_init()')
+
     def test_validate(self):
         dna = BioSeq.create_bio_seq("ACTG")
         rna = BioSeq.create_bio_seq("ACUG", "rna")
         self.assertTrue(dna.validate())
         self.assertTrue(rna.validate())
+
+        print('>> Passed NucleotidicChain::test_validate()')
 
         # seq.csv contains a DNA sequence
         rna.read_sequence('tests/files/seq.csv')
@@ -25,11 +29,15 @@ class test_NucleotidicChain(unittest.TestCase):
         self.assertEqual(dna.gc_percent(), 0.75)
         self.assertEqual(dna.gc_percent_sub_seq(2), [0.5, 1])
 
+        print('>> Passed test_gc_percent()')
+
     def test_rev_complement(self):
         self.assertEqual(BioSeq.create_bio_seq(
             "ACGGTA").reverse_complement(), "TACCGT")
         self.assertEqual(BioSeq.create_bio_seq(
             "ACGUUA", "rna").reverse_complement(), "UAACGU")
+
+        print('>> Passed test_rev_complement()')
 
 
 if __name__ == '__main__':

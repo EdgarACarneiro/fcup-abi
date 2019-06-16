@@ -16,11 +16,15 @@ class test_BioSeq(unittest.TestCase):
             "AUNED_MIAEDMA_IAED", "Protein"), Protein)
         self.assertRaises(BioSeq.BioTypeException, BioSeq.create_bio_seq, "ATCTG", "noseq")
 
+        print('>> Passed test_create_bio_seq()')
+
     def test_read_fasta_file(self):
         # TP53 AND "Homo sapiens"
         fasta = BioSeq.read_fasta_file('tests/files/sequence.fasta')
         self.assertEqual(len(fasta), 15)
         self.assertEqual(list(fasta.keys())[2], "NM_001126113.2 Homo sapiens tumor protein p53 (TP53), transcript variant 4, mRNA")
+
+        print('>> Passed test_read_fasta_file()')
 
     # Test of method load() is made on test_Seq.py
 
