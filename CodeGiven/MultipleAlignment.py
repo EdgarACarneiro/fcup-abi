@@ -1,4 +1,3 @@
-
 from PairwiseAlignment import PairwiseAlignment
 from MyAlign import MyAlign
 from MySeq import MySeq

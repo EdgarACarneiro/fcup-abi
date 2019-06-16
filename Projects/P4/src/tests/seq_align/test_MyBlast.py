@@ -3,7 +3,7 @@ import unittest
 from seq_align import MyBlast
 
 
-class test_BioSeq(unittest.TestCase):
+class test_MyBlast(unittest.TestCase):
 
     blast = MyBlast("../testfiles/seqBlast.txt", 11)
 

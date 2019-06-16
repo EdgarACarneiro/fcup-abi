@@ -10,8 +10,8 @@ def __matrix(row, col, val=0):
 def read_submat_file(filename):
     """Read a substitution matrix from the given file"""
     f = open(filename, "r")
-    alphabet = [symbol for symbol in f.readline().replace('\n',
-                                                          '').split('\t')]
+    alphabet = [symbol for symbol
+                in f.readline().replace('\n', '').split('\t')]
 
     dic = {}
     for i, line in enumerate(f):
