@@ -1,8 +1,13 @@
+from seq_align import recover_global_align_multiple_solutions,\
+    global_align_multiple_solutions
+
+
 class MyAlign:
 
     list_seqs: list
+    align_type: str
 
-    def __init__(self, lseqs):
+    def __init__(self, lseqs, al_type='str'):
         """Verifies if all the sequences are from the same type,
         and if so saves them"""
         seq_type = None
@@ -17,8 +22,24 @@ class MyAlign:
 
         if seq_type == str:
             self.list_seqs = lseqs
+            self.align_type = al_type
         else:
             self.list_seqs = [str(seq) for seq in lseqs]
+            self.align_type = seq_type.__name__
+
+    @staticmethod
+    def align_from_global_alignment(seq1, seq2, sm, g):
+        """Create MyAlign object from global alignment"""
+        return MyAlign(
+            recover_global_align_multiple_solutions(
+                global_align_multiple_solutions(
+                    str(seq1),
+                    str(seq2),
+                    sm,
+                    g)[1],
+                seq1,
+                seq2
+            )[0], type(seq1).__name__)
 
     def __len__(self):
         """Returns the number of columns"""
@@ -39,6 +60,14 @@ class MyAlign:
     def __str__(self):
         """Returns list of sequences separated by '\n'"""
         return "".join(["\n%s" % seq for seq in self.list_seqs])
+
+    def get_seqs(self):
+        """Get the list of sequences"""
+        return self.list_seqs
+
+    def get_align_type(self):
+        """Get the alignment type (DNA, RNA or Protein expected)"""
+        return self.align_type
 
     def num_seqs(self):
         """Returns the number of sequences used in the alignment"""

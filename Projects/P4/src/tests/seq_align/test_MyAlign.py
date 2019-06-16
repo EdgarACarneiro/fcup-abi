@@ -25,14 +25,19 @@ class test_MyAlign(unittest.TestCase):
         self.assertEqual(str(align), "\nATGA-A\nAA-AT-")
         self.assertEqual(len(align), 6)
         self.assertEqual(align[0], "ATGA-A")
-        self.assertEqual(align[1,3], "A")
+        self.assertEqual(align[1, 3], "A")
         self.assertEqual(align.num_seqs(), 2)
+        self.assertEqual(align.get_seqs(), self.align_1)
+        self.assertEqual(align.get_align_type(), 'str')
 
         self.assertEqual(str(align_p), "\nVJKK\nJRSK\nVRSK")
         self.assertEqual(len(align_p), 4)
         self.assertEqual(align_p[2], "VRSK")
-        self.assertEqual(align_p[1,3], "K")
+        self.assertEqual(align_p[1, 3], "K")
         self.assertEqual(align_p.num_seqs(), 3)
+        self.assertEqual(align_p.get_seqs(),
+                         [str(prot) for prot in self.align_protein])
+        self.assertEqual(align_p.get_align_type(), 'Protein')
 
     def test_num_column(self):
         align = MyAlign(self.align_1)
