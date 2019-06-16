@@ -11,7 +11,7 @@ class Rna(NucleotideChain):
     def __init__(self, seq):
         super().__init__(seq)
 
-    def __str__(self):
+    def get_seq(self):
         return 'RNA: ' + self._seq
 
     def pretty_print(self):

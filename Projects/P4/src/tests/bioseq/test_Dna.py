@@ -8,18 +8,18 @@ from bioseq import Dna
 class test_Rna(unittest.TestCase):
 
     def test_init(self):
-        self.assertEqual(Dna("ATCGAT").get_seq(), "ATCGAT")
+        self.assertEqual(Dna("ATCGAT").get_seq(), "DNA: ATCGAT")
         # Launches Exception since sequence contains invalid chars ('U'/ 'S')
         self.assertRaises(Seq.InvalidSequenceException, Dna, "ATCUGT")
         self.assertRaises(Seq.InvalidSequenceException, Dna, "ACSG")
 
     def test_basics(self):
-        self.assertEqual(str(Dna("ATCGAT")), "DNA: ATCGAT")
+        self.assertEqual(str(Dna("ATCGAT")), "ATCGAT")
 
     def test_transcription(self):
         rna = Dna("TCATT").transcription()
         self.assertIsInstance(rna, Rna)
-        self.assertEqual(rna.get_seq(), "UCAUU")
+        self.assertEqual(rna.get_seq(), "RNA: UCAUU")
 
     def test_genetic_code(self):
         dna = Dna("ACTG")
@@ -32,7 +32,7 @@ class test_Rna(unittest.TestCase):
     def test_translate(self):
         dna = Dna("ACTGAATCG")
         dna.read_genetic_code('tests/files/genetic_code.txt')
-        self.assertEqual(dna.translate().get_seq(), "TES")
+        self.assertEqual(dna.translate().get_seq(), "Protein: TES")
 
     def test_codon_usage(self):
         dna = Dna("AGCTAGCTAGCTACATCAAACGATCGTCGCTAGCTAGCTAC")
@@ -44,25 +44,25 @@ class test_Rna(unittest.TestCase):
         dna.read_genetic_code('tests/files/genetic_code.txt')
         rf = dna.reading_frames()
         self.assertEqual(len(rf), 6)
-        self.assertTrue(all(n.get_seq() in ['TYDM', 'RTIC', 'TYRT', 'VRYV', 'HIVR', 'YISY'] for n in rf))
+        self.assertTrue(all(str(n) in ['TYDM', 'RTIC', 'TYRT', 'VRYV', 'HIVR', 'YISY'] for n in rf))
 
     def test_all_orfs(self):
         dna = Dna("ATGAAATTATGAATGAGCCTCAGCTGAAGCATCGCGCATCAGACTACGCTCAGACTCAGACTCAGCATTATAGTGAATGTTAATAAATAAAATAA")
         dna.read_genetic_code('tests/files/genetic_code.txt')
 
         orfs = dna.all_orfs()
-        self.assertEqual(orfs[0].get_seq(), 'MKL')
-        self.assertEqual(orfs[1].get_seq(), 'MSLS')
-        self.assertEqual(orfs[2].get_seq(), 'MLSLSLSVV')
-        self.assertEqual(orfs[3].get_seq(), 'MRDASAEAHS')
-        self.assertEqual(orfs[4].get_seq(), 'MNEPQLKHRASDYAQTQTQHYSEC')
+        self.assertEqual(orfs[0].get_seq(), 'Protein: MKL')
+        self.assertEqual(orfs[1].get_seq(), 'Protein: MSLS')
+        self.assertEqual(orfs[2].get_seq(), 'Protein: MLSLSLSVV')
+        self.assertEqual(orfs[3].get_seq(), 'Protein: MRDASAEAHS')
+        self.assertEqual(orfs[4].get_seq(), 'Protein: MNEPQLKHRASDYAQTQTQHYSEC')
         
         for i in range(0, len(orfs) - 1):
             self.assertTrue(len(orfs[i]) <= len(orfs[i+1]))
 
         orfs_ten = dna.all_orfs(10)
-        self.assertEqual(orfs_ten[0].get_seq(), 'MRDASAEAHS')
-        self.assertEqual(orfs_ten[1].get_seq(), 'MNEPQLKHRASDYAQTQTQHYSEC')
+        self.assertEqual(orfs_ten[0].get_seq(), 'Protein: MRDASAEAHS')
+        self.assertEqual(orfs_ten[1].get_seq(), 'Protein: MNEPQLKHRASDYAQTQTQHYSEC')
 
 
 if __name__ == '__main__':

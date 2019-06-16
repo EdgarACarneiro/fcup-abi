@@ -22,8 +22,8 @@ class SubstMatrix:
         for i in range(0, ns): 
             self.alphabet += tokens[i][0]
         for i in range(0,ns):
-            line = f.readline();
-            tokens = line.split(sep);
+            line = f.readline()
+            tokens = line.split(sep)
             for j in range(0, len(tokens)):
                 k = self.alphabet[i]+self.alphabet[j]
                 self.sm[k] = int(tokens[j])

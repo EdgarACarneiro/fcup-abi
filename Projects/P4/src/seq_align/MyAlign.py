@@ -14,7 +14,7 @@ class MyAlign:
             if type(seq) != seq_type:
                 raise Exception(
                     "All sequences in list must be of the same type")
- 
+
         self.list_seqs = lseqs
 
     def __len__(self):

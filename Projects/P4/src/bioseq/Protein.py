@@ -9,7 +9,7 @@ class Protein(Seq):
     def validate(self):
         return all(n.isalpha() or n is '_' for n in self._seq)
 
-    def __str__(self):
+    def get_seq(self):
         return 'Protein: ' + self._seq
 
     def pretty_print(self):

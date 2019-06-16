@@ -15,8 +15,9 @@ class Seq(ABC):
         if (not self.validate()):
             raise self.InvalidSequenceException()
 
+    @abstractmethod
     def get_seq(self):
-        return self._seq
+        pass
 
     def __len__(self):
         return len(self._seq)
@@ -26,9 +27,8 @@ class Seq(ABC):
         """Validates the sequence used in the object creation"""
         pass
 
-    @abstractmethod
     def __str__(self):
-        pass
+        return self._seq
 
     def pretty_print(self):
         """Method to be overriden by child classes.

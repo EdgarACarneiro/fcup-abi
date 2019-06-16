@@ -14,7 +14,7 @@ class Dna(NucleotideChain):
         super().__init__(seq)
         self._genetic_code = {}
 
-    def __str__(self):
+    def get_seq(self):
         return 'DNA: ' + self._seq
 
     def pretty_print(self):

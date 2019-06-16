@@ -12,7 +12,7 @@ class test_Seq(unittest.TestCase):
 
     def test_basics(self):
         seq = BioSeq.create_bio_seq("ACTGTCATGAT")
-        self.assertEqual(seq.get_seq(), "ACTGTCATGAT")
+        self.assertEqual(str(seq), "ACTGTCATGAT")
         self.assertEqual(len(seq), len("ACTGTCATGAT"))
 
     def test_freq(self):
