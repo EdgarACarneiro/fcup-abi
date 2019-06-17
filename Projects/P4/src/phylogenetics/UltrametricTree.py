@@ -1,10 +1,18 @@
+from __future__ import annotations
+
+
 class UltrametricTree:
 
+    value: float
+    distance: float
+    left: UltrametricTree
+    right: UltrametricTree
+
     def __init__(self, val, dist=0, left=None, right=None):
-        self.value = val
+        self.value = val # node's value
         self.distance = dist  # distance from this node to the leafs
-        self.left = left
-        self.right = right
+        self.left = left # left sibling
+        self.right = right  # right sibling
 
     def __has_left_sibling(self):
         """Indicate if this node has a left sibling"""
