@@ -189,3 +189,53 @@ __Cons of Heuristic__ approaches:
 
 ## Phylogenetic Analysis
 
+__Phylogenetics__ studies the evolutionary history and relationship among individuals or species while __Phylogenetics trees__ illustrate the relationship between these individuals.
+
+__Phylogenetics trees__
+
+* Leaves are sequences (typically from different species or taxonomic categories)
+* Internal nodes represent common ancestors of the sequences.
+* The structure of a rooted tree may be represented by clusters.
+* The height of the nodes in the tree represent a measure of time (moving from the root to the leaves).
+* The length of the branch represents the evolutionary distance between the ancestor and the species at the node. This is captured by the number of sequence changes between one level and the next level of the tree.
+* Trees without a root illustrate the relation between the leaves without explicitly inferring the common ancestor.
+
+__The Phylogeny Problem__
+
+Assume we are given a set of sequences evolutionarily related, i.e. with a common ancestor.
+The problem: __infer the best possible evolutionary tree__.
+This is an optimisation problem, since the number of possible trees increases exponentially with the number of input sequences, and therefore requires an objective function. There are three main algorithms:
+* __Distance-based algorithm__: compute a distance matrix based on the pairwise distances of the sequences. Derive trees consistent with the distances from the matrix.
+* __Maximum parsimony__: search for trees that try to minimize the number of mutations (in internal nodes) to explain the variability of the sequences. Based on _MSA_ of the input sequences. Use certain columns in the alignment that are informative of the possible phylogeny.
+* __Statistical/Bayesian__: probabilistic models for the occurrence of different types of mutations in the sequences. Score trees based on their probability searching the most likely trees that explain the sequences according to the assumed model.
+
+__Distance-based methods__
+
+Rely on measuring the consistency of the distances between the leaves in the tree (sequences) and the distances derived from sequence similarity (alignment). The structure of the tree and the length of the branches connecting the nodes reflect the pairwise distances between sequences.
+
+Distance is the reverse of similarity (e.g. percentage of columns in the alignment with mismatches or gaps)
+
+![Score function for Distance-based methods]()
+<!-- Missing Upload of image with Imgur -->
+
+* S: set of input sequences
+* T: tree
+* dij(T): distances of the leaves representing sequences i and j in the the tree.
+* Dij: distance between sequences I and j in the input matrix D given from sequence * alignment.
+
+__Ultrametric tree__: the distance between all leaves and the root is the same. The height of each leaf is 0. Thus, _duw = h(w)_ -> _duv = 2 * h(w)_.
+
+As the number of sequences increases the solution space also increases exponentially. Heuristic methods need to be applied to obtain solutions in reasonable time. Hence, use _Unweighted Pair Group Method Using Arithmetic Averages_ - __UPGMA__, which is based on agglomerative hierarchical clustering algorithms.
+
+__Clustering Algorithm__ (uses _Ultrametric Tree_):
+* Consider each sequence (tree leaf) as its own cluster. height = 0 in the tree.
+* Merge the pair of closest sequence/clusters (minimum value in the matrix D); join these sequences creating an internal node. The __height__ = half of distance between sequences. These sequences form a cluster.
+* Distance of a cluster to the remaining sequences is the average of the distances. Update distance matrix D: remove cols and rows of the connected sequences. Add row and col for the new cluster.
+* Iteratively: find pairs of clusters with minimum distance and repeat: join clusters, add internal node to the tree with the given height and update D.
+* Stop when all sequences are within a single cluster that corresponds to the root of the tree.
+
+![Clustering Algorithm]()
+<!-- Missing Upload of image with Imgur -->
+
+---
+
