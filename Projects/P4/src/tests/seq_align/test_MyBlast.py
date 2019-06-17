@@ -5,20 +5,20 @@ from seq_align import MyBlast
 
 class test_MyBlast(unittest.TestCase):
 
-    blast = MyBlast("../testfiles/seqBlast.txt", 11)
+    blast = MyBlast("tests/files/seqBlast.txt", 11)
 
-    query1 = MyBlast.read_query("../testfiles/query1.fasta")
-    query2 = MyBlast.read_query("../testfiles/query2.fasta")
+    query1 = MyBlast.read_query("tests/files/query1.fasta")
+    query2 = MyBlast.read_query("tests/files/query2.fasta")
 
     def test_read_database(self):
-        db = MyBlast.read_database("../testfiles/seqBlast.txt")
+        db = MyBlast.read_database("tests/files/seqBlast.txt")
 
         self.assertEqual(db[3], 'atagctcgatgcttagatctcgcgtatgctgctagataagagctgctgagctgatcggatgcctcgcgctcgcgcgctgaggctcggatagctagctgagcgctcgatagcgcgttcgctggatcgcgtatagcgctgaagctcccggctagctgtctgtaaatcggatctgatctcgctctatact')
 
         print('>> Passed test_read_database()')
 
     def test_read_query(self):
-        query = MyBlast.read_query("../testfiles/query2.fasta")
+        query = MyBlast.read_query("tests/files/query2.fasta")
 
         self.assertEqual(query, 'cgacgacgacgacgaatgatg')
 
