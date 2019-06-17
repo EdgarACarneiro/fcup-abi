@@ -9,9 +9,9 @@ class UltrametricTree:
     right: UltrametricTree
 
     def __init__(self, val, dist=0, left=None, right=None):
-        self.value = val # node's value
+        self.value = val  # node's value
         self.distance = dist  # distance from this node to the leafs
-        self.left = left # left sibling
+        self.left = left  # left sibling
         self.right = right  # right sibling
 
     def __has_left_sibling(self):
@@ -114,27 +114,3 @@ class UltrametricTree:
     def distance_leaves(self, leafnum1, leafnum2):
         """Distance between leafnum1 and leafnum2 using the common ancestor function."""
         return self.common_ancestor(leafnum1, leafnum2).distance * 2
-
-
-def test():
-    a = UltrametricTree(1)
-    b = UltrametricTree(2)
-    c = UltrametricTree(3)
-    d = UltrametricTree(4)
-    e = UltrametricTree(-1, 2.0, b, c)
-    f = UltrametricTree(-1, 1.5, d, a)
-    g = UltrametricTree(-1, 4.5, e, f)
-    g.print_tree()
-    print(g.get_cluster())
-
-    # testing exercise 3
-    print(g.size())
-    print(g.exists_leaf(1))
-    print(g.exists_leaf(5))
-    g.common_ancestor(1, 4).print_tree()
-    print(g.distance_leaves(1, 4))
-    print(g.distance_leaves(1, 2))
-
-
-if __name__ == '__main__':
-    test()

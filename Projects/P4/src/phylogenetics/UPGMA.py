@@ -4,6 +4,8 @@ from seq_align import SubstMatrix, MyAlign
 
 
 class UPGMA:
+    """Implementation of the 'Unweighted Pair Group Method
+    Using Arithmetic Averages' method"""
 
     seqs: [Seq]
     align_data: (SubstMatrix, float)
@@ -16,7 +18,7 @@ class UPGMA:
 
     def __create_mat_dist(self):
         # create distance matrix
-        self.dists_mat = NumMatrix(self.seqs, len(self.seqs))
+        self.dists_mat = NumMatrix(len(self.seqs), len(self.seqs))
 
         for i in range(len(self.seqs)):
             for j in range(i, len(self.seqs)):
