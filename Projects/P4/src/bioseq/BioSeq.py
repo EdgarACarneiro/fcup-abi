@@ -49,7 +49,7 @@ class BioSeq:
         for line in fd:
             l = line.strip()
 
-            if l is "" and curr_fasta is not "":
+            if (l is "" or l.strip()[0:1] is ">") and curr_fasta is not "":
                 fasta[curr_fasta] = helper_seq
                 helper_seq = ""
                 curr_fasta = ""

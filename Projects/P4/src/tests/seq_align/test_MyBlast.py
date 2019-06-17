@@ -59,11 +59,11 @@ class test_MyBlast(unittest.TestCase):
 
         self.assertEqual(
             self.blast.extends_hit(
-                self.blast.database[4], hits[10], self.query2), # hit = (6,6)
+                self.blast.database[4], hits[10], self.query2),  # hit = (6,6)
             (0, 0, 21, 21))
         self.assertEqual(
             self.blast.extends_hit(
-                self.blast.database[4], hits[0], self.query2), # hit = (0,0)
+                self.blast.database[4], hits[0], self.query2),  # hit = (0,0)
             (0, 0, 21, 21))
 
         print('>> Passed test_extends_hit()')
@@ -76,11 +76,18 @@ class test_MyBlast(unittest.TestCase):
 
         print('>> Passed test_hit_best_score()')
 
-    def test_best_alignment(self):
-        self.assertEqual(self.blast.best_alignment(self.query2), (0, 0, 21, 21, 4))
-        self.assertEqual(self.blast.best_alignment(self.query1), (1, 38, 149, 108, 3))
+    def test_best_alignments(self):
+        self.assertEqual(
+            self.blast.best_alignments(self.query2),
+            [(0, 0, 21, 21, 4)])
+        self.assertEqual(
+            self.blast.best_alignments(self.query1),
+            [(1, 38, 149, 108, 3)])
+        self.assertEqual(
+            len(self.blast.best_alignments(self.query1, 2)),
+            2)
 
-        print('>> Passed test_best_alignment()')
+        print('>> Passed test_best_alignments()')
 
 
 if __name__ == '__main__':

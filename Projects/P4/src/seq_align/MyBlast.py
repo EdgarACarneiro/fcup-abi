@@ -123,18 +123,21 @@ class MyBlast:
         # Same return tuple as extends_hit
         return best_align if best_align[0] != None else ()
 
-    def best_alignment(self, query):
+    def best_alignments(self, query, top=1):
+        """Get the best alignments by computing all
+        alignments and return only the 'top' ones"""
         self.build_map(query)
-        best = (0, 0, 0, -1.0, 0)
+        alignments = []
 
         for k in range(0, len(self.database)):
             best_hit_align = self.hit_best_score(self.database[k], query)
 
-            # Better score or same score but smaller size
-            if best_hit_align != () and \
-                    (best_hit_align[3] > best[3] or
-                     (best_hit_align[3] == best[3] and best_hit_align[2] < best[2])):
-                best = (*best_hit_align, k)
+            if best_hit_align != ():
+                alignments.append((*best_hit_align, k))
 
-        # Return (idx align on query, idx align on sequence, size align, score, index of sequence in db)
-        return best if best[3] >= 0 else ()
+        # Sorting the list first by score and then by size
+        # and return 'top' elements
+        # Return (idx align on query, idx align on sequence, size align,
+        #         score, index of sequence in db)
+        return sorted(alignments, reverse=True,
+                      key=lambda align: (align[3], align[2]))[:top]
