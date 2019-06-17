@@ -215,8 +215,7 @@ Rely on measuring the consistency of the distances between the leaves in the tre
 
 Distance is the reverse of similarity (e.g. percentage of columns in the alignment with mismatches or gaps)
 
-![Score function for Distance-based methods]()
-<!-- Missing Upload of image with Imgur -->
+![Score function for Distance-based methods](https://i.imgur.com/WBuKTvF.png)
 
 * S: set of input sequences
 * T: tree
@@ -234,8 +233,72 @@ __Clustering Algorithm__ (uses _Ultrametric Tree_):
 * Iteratively: find pairs of clusters with minimum distance and repeat: join clusters, add internal node to the tree with the given height and update D.
 * Stop when all sequences are within a single cluster that corresponds to the root of the tree.
 
-![Clustering Algorithm]()
-<!-- Missing Upload of image with Imgur -->
+![Clustering Algorithm](https://i.imgur.com/h3fs6c6.png)
 
 ---
+
+## Graphs and Biological Networks
+
+The elements of the cell form networks that are significantly different from random networks. Examples of cell networks include:
+* Protein-protein interactions;
+* Metabolic;
+* Signalling and Metabolic networks;
+* Protein phosporylation*;
+* Genetic interactions;
+* Co-expression networks;
+* Protein-DNA interactions;
+
+The cell is formed by the interplay of networks and emerge as the sum of the interaction of its different elements. It is a network of networks.
+
+Graphs can be:
+* __Undirected__ if edges are unordered
+* __Directed__ or __digraph__ if edges have an orientation, i.e. pairs are ordered
+* __Weighted__ if numerical weights are associated to edges.
+
+__Matrices__ or __adjacency lists__ are the typical way to represent graphs.
+
+__Matrices Representation__
+
+All possible combination of vertices are represented.
+* __Undirect graph__: the rows and cols represent the nodes. _Cell(i,j)_ represents an edge between node i and j: 1 if connected and 0 otherwise.
+* __Direct graph__: rows represent the origin node and cols the destination node. _Cell(i,j)_ represents an edge between node i and j: 1 if connected and 0 otherwise.
+* __Weighted graph__: Cell(i,j) represents the weight of the edge between node i and j. 0 if not connected.
+
+__Adjacency lists Representation__
+
+Represent only the existing edges. Each vertex is linked to a list with associated neighbor nodes.
+* __Direct graph__: list for vertex v includes all destination nodes for the edges where v is the origin.
+* __Undirect graph__: the edge only exist for one of the directions.
+
+__Some Network concepts:__
+* __Degree:__ how many links a node has.
+* __Degree In:__ ho many links a node has entering it.
+* __Degree Out:__ ho many links a node has leaving it.
+* __Shortest path__: path with the smallest number of links between selected nodes. Distances are measured as the length of the path.
+* __Degree distribution P(k)__: gives the probability that a selected node has exactly k links. P(k) is obtained by counting how many nodes have k = 1,2,... links and dividing by the total number of nodes N. The degree distribution will allow to discriminate between different types of networks.
+* __Clustering coefficient__: indicates how connected are the the nodes on the network. If a node A is connected to B and B is connected to C, then it is highly probable that A is connected to C. The clustering coefficient of a node, gives the number of triangles that go through that node
+
+The last two measures capture the features and characteristics of the network and therefore allow to compare and classify the various networks.
+
+Different type of networks according to degree distribution:
+* __Scale free network__: the degree distribution approximates a power-law distribution where P(k) ~ k-a
+    * Most networks on the cell are scale-free.
+* __Random network__: P(k) decreases exponentially, which indicates that nodes that deviate from average are extremely rare.
+* __Hierarchical network__:
+    * The starting point is a small number of four nodes highly linked.
+    * Communication between highly clustered models is maintained by hubs.
+    * Scale free topology + modular structure
+    * Clustering coefficient follows C(k) ~ K-1 is the most important signature for this type of networks.
+
+Two strategies to traverse the graph:
+* __Breadth-First Search (BFS)__: starts with the source node, then visits all its successors, followed by their successors until all nodes are visited.
+* __Depth-First Search (DFS)__: starts with the source node, explores its first successor, then its first successor until no further exploration is possible. Backtracks to explore further alternatives.
+
+Not all nodes are equally significant. Identification of nodes that are most important is a central task in network analysis.
+
+Identification of hub nodes provides information on important properties of the network, like the robustness and resistance to failure. In biological networks a hub node in a gene-gene or gene-protein interaction network may reveal an important regulator, for instance a transcription factor that regulates many other genes.
+
+---
+
+## High-throughput sequencing applications
 

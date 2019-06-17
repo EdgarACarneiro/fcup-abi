@@ -47,6 +47,5 @@ class test_UPGMA(unittest.TestCase):
         print('>> Passed test_run_UPGMA()')
 
 
-
 if __name__ == '__main__':
     unittest.main()

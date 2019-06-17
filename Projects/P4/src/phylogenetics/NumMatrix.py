@@ -82,8 +82,8 @@ class NumMatrix:
     def copy(self):
         """Create a new NumMatrix instance that is
         a copy of the current instance"""
-        newm = NumMatrix(self.num_rows(), self.num_cols())
+        new_matrix = NumMatrix(self.num_rows(), self.num_cols())
         for i in range(self.num_rows()):
             for j in range(self.num_cols()):
-                newm.mat[i][j] = self.mat[i][j]
-        return newm
+                new_matrix.mat[i][j] = self.mat[i][j]
+        return new_matrix
