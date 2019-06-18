@@ -11,11 +11,11 @@ class Pipeline:
     # Used list instead of dict since order is important
     database: [(str, Seq)]
     cut: float
-    align_data: (SubstMatrix, float)
+    align_config: (SubstMatrix, float)
 
     TOP = 10
 
-    def __init__(self, input_fasta, database_fasta, cut):
+    def __init__(self, input_fasta, database_fasta, cut, sub_mat_file=None, gap=-8):
         """input_fasta: file with the query fasta.
         database_fasta: file with the fastas that will be the database.
         cut: maximum distance accepted in graph creation"""
@@ -36,8 +36,9 @@ class Pipeline:
         self.database = list(map(
             lambda k: (k, db_fasta[k]), db_fasta.keys()))
 
-        self.align_data = (SubstMatrix.read_submat_file(
-            "tests/files/blosum62.mat"), -8)
+        if sub_mat_file != None:
+            self.align_config =\
+                (SubstMatrix.read_submat_file(sub_mat_file), gap)
 
         self.cut = cut
 
@@ -75,8 +76,7 @@ class Pipeline:
     def change_alignment_settings(self, subst_mat, gap):
         """Change the settings used in the alignment:
         (SubsMatrix and gap penalty)"""
-        self.align_data = (subst_mat, gap)
-
+        self.align_config = (subst_mat, gap)
 
     def execute(self):
         """Execute the Pipeline"""
@@ -87,7 +87,7 @@ class Pipeline:
                    if Pipeline.get_specie_from_id(_id) !=
                    self.get_specie()]
 
-        print("\n\t:::Step 2 - Running Blast and getting top alignments:::\n")
+        print("\n\t:::Step 2 - Running BLAST and getting top alignments:::\n")
         # Creating Blast and populating its database
         blast = MyBlast()
         for _, seq in db_copy:
@@ -108,20 +108,26 @@ class Pipeline:
 
         print("\n\t:::Step 3 - Running MSA with the respective top alignments:::\n")
         # Multiple Sequence Alignment
-        msa = MultipleAlignment(best_seqs, self.align_data).align_consensus()
+        msa = MultipleAlignment(best_seqs, self.align_config).align_consensus()
 
         # Printing the Multiple Sequence Alignemnt
         print("Multiple Sequence Alignment Result:\n")
         msa.pretty_print()
         print()
 
-        print("\n\t:::Step 4 - Obtaining the Ultrametric Tree from the top alignments:::\n")
+        print("\n\t:::Step 4 - Obtaining the Ultrametric Tree from the top alignments, using UPGMA:::\n")
+        # Setting up UPGMA
+        upgma = UPGMA(best_seqs, self.align_config)
+
+        # Printing UPGMA distance matrix
+        print("Distances Matrix obtained by the UPGMA method:")
+        upgma.dists_mat.print_mat()
+
         # Producing the Ultrametric Tree
-        upgma = UPGMA(best_seqs, self.align_data)
         tree = upgma.run()
 
         # Printing the tree with a mapping for the species
-        print("Phylogenetics Tree created:\n")
+        print("\nPhylogenetics Tree created:\n")
         tree.print_tree({
             idx: self.get_specie_from_seq(seq)
             for idx, seq in enumerate(best_seqs)
@@ -132,15 +138,10 @@ class Pipeline:
         # Creating Graph from distance matrix with the given cut value
         g = MyGraph.create_from_num_matrix(upgma.dists_mat, self.cut)
 
-        # Printing the Graph Edges
-        print("  Nodes of the created Network:")
-        print(g.get_nodes())
-        print("  Edges of the created Network:")
-        print(g.get_edges())
-        print()
+        # Printing the Graph and its Metrics
+        g.print_graph_and_metrics()
 
 
 if __name__ == '__main__':
-    p = Pipeline('tests/files/source.fasta', 'tests/files/seqdump.txt', 10)
+    p = Pipeline('tests/files/source.fasta', 'tests/files/seqdump.txt', 10, 'tests/files/blosum62.mat')
     p.execute()
-    # print(p.database)

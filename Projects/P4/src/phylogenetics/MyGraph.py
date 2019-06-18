@@ -243,3 +243,26 @@ class MyGraph:
     def mean_clustering_coef(self):
         """Mean value of all clustering coefficient for all the nodes in the graph"""
         return sum(self.all_clustering_coefs().values()) / self.size()[0]
+
+    # print Graph and Metrics
+
+    def print_graph_and_metrics(self):
+        """Print this graph and its metrics"""
+        print("GRAPH:")
+        print("Graph nodes:\n\t", self.get_nodes())
+        print("\nGraph edges:\n\t Edge")
+        for e in self.get_edges():
+            print("\t", e)
+
+        print("\nGRAPH METRICS:")
+        print("Top 3 highest degree nodes:\n\t Node")
+        for n in self.highest_degrees(top=3):
+            print("\t", n)
+        print("\nMean degree:", self.mean_degree())
+
+        print("\nMean distance:", self.mean_distances())
+
+        print("\nClustering Coefficient of all nodes:\n\t Node - Clustering Coefficient")
+        for k, v in self.all_clustering_coefs().items():
+            print("\t", k, "-", v)
+        print("\nMean Clustering Coefficient:", self.mean_clustering_coef())

@@ -39,8 +39,6 @@ class test_pipeline(unittest.TestCase):
 
     def test_change_alignment_settings(self):
         self.assertEqual(self.p.align_data[1], -8)
-        self.assertEqual(
-            self.p.align_data[0].__class__.__name__, 'SubstMatrix')
 
         self.p.change_alignment_settings(None, -1)
 
