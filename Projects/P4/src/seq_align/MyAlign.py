@@ -1,4 +1,4 @@
-from seq_align import recover_global_align_multiple_solutions,\
+from . import recover_global_align_multiple_solutions,\
     global_align_multiple_solutions
 
 

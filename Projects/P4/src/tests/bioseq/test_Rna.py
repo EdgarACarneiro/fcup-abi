@@ -1,8 +1,8 @@
 import unittest
 
-from bioseq import Rna
-from bioseq import Seq
-from bioseq import Dna
+from ...bioseq import Rna
+from ...bioseq import Seq
+from ...bioseq import Dna
 
 
 class test_Rna(unittest.TestCase):

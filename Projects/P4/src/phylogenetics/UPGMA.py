@@ -1,6 +1,6 @@
-from phylogenetics import NumMatrix, HierarchicalClustering
-from bioseq import Seq
-from seq_align import SubstMatrix, MyAlign
+from . import NumMatrix, HierarchicalClustering
+from ..bioseq import Seq
+from ..seq_align import SubstMatrix, MyAlign
 
 
 class UPGMA:

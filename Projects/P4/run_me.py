@@ -23,7 +23,7 @@ if __name__ == '__main__':
     p = Pipeline('src/tests/files/source.fasta',
                  'src/tests/files/seqdump.txt', 10)
 
-    print("As you can see, our query sequence is:\n\t%s - %s" %
+    print("As you can see, our query sequence is:\n\t%s\n\t%s" %
           (p.query_id, p.query_seq.get_seq()))
     print("Noticed that it output a Protein? That is because our Pipeline is capable of infering the Sequence type!\n")
     wait_input()

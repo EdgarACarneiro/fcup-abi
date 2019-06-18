@@ -1,8 +1,8 @@
 import unittest
 
-from bioseq import Rna
-from bioseq import Seq
-from bioseq import Dna
+from ...bioseq import Rna
+from ...bioseq import Seq
+from ...bioseq import Dna
 
 
 class test_Rna(unittest.TestCase):
@@ -29,7 +29,7 @@ class test_Rna(unittest.TestCase):
 
     def test_genetic_code(self):
         dna = Dna("ACTG")
-        dna.read_genetic_code('tests/files/genetic_code.txt')
+        dna.read_genetic_code('src/tests/files/genetic_code.txt')
         self.assertEqual(len(dna.get_genetic_code()), 64)
         self.assertEqual(list(dna.get_genetic_code())[5], "TGC")
         dna.set_genetic_code({"ABC": "C"})
@@ -39,21 +39,21 @@ class test_Rna(unittest.TestCase):
 
     def test_translate(self):
         dna = Dna("ACTGAATCG")
-        dna.read_genetic_code('tests/files/genetic_code.txt')
+        dna.read_genetic_code('src/tests/files/genetic_code.txt')
         self.assertEqual(dna.translate().get_seq(), "Protein: TES")
 
         print('>> Passed test_translate()')
 
     def test_codon_usage(self):
         dna = Dna("AGCTAGCTAGCTACATCAAACGATCGTCGCTAGCTAGCTAC")
-        dna.read_genetic_code('tests/files/genetic_code.txt')
+        dna.read_genetic_code('src/tests/files/genetic_code.txt')
         self.assertEqual(dna.codon_usage("R"), {'CGT': 0.5, 'CGC': 0.5})
 
         print('>> Passed test_codon_usage()')
 
     def test_reading_frames(self):
         dna = Dna("ACGTACGATATGTA")
-        dna.read_genetic_code('tests/files/genetic_code.txt')
+        dna.read_genetic_code('src/tests/files/genetic_code.txt')
         rf = dna.reading_frames()
         self.assertEqual(len(rf), 6)
         self.assertTrue(all(str(n) in ['TYDM', 'RTIC', 'TYRT', 'VRYV', 'HIVR', 'YISY'] for n in rf))
@@ -62,7 +62,7 @@ class test_Rna(unittest.TestCase):
 
     def test_all_orfs(self):
         dna = Dna("ATGAAATTATGAATGAGCCTCAGCTGAAGCATCGCGCATCAGACTACGCTCAGACTCAGACTCAGCATTATAGTGAATGTTAATAAATAAAATAA")
-        dna.read_genetic_code('tests/files/genetic_code.txt')
+        dna.read_genetic_code('src/tests/files/genetic_code.txt')
 
         orfs = dna.all_orfs()
         self.assertEqual(orfs[0].get_seq(), 'Protein: MKL')

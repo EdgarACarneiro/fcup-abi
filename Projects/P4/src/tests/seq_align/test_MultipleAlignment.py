@@ -1,7 +1,7 @@
 import unittest
 
-from bioseq import Dna, Rna, Protein
-from seq_align import MyAlign, SubstMatrix, MultipleAlignment
+from ...bioseq import Dna, Rna, Protein
+from ...seq_align import MyAlign, SubstMatrix, MultipleAlignment
 
 
 class test_MultipleAlignment(unittest.TestCase):
@@ -11,7 +11,7 @@ class test_MultipleAlignment(unittest.TestCase):
         s1 = Protein("PHWAS")
         s2 = Protein("HWASW")
         s3 = Protein("HPHWA")
-        sm = SubstMatrix.read_submat_file("tests/files/blosum62.mat")
+        sm = SubstMatrix.read_submat_file("src/tests/files/blosum62.mat")
         ma = MultipleAlignment([s1, s2, s3], (sm, -8))
         self.assertEqual(
             str(ma.align_consensus()),
@@ -42,7 +42,7 @@ class test_MultipleAlignment(unittest.TestCase):
 
     def test_score_sp(self):
         alignment = MyAlign([Protein("PHWAS"), Protein("HWASW"), Protein("HPHWA")])
-        sm = SubstMatrix.read_submat_file("tests/files/blosum62.mat")
+        sm = SubstMatrix.read_submat_file("src/tests/files/blosum62.mat")
         ma = MultipleAlignment([], (sm, -8))
 
         self.assertEqual(ma.score_sp(alignment), -21)

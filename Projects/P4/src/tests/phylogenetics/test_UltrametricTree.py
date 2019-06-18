@@ -1,6 +1,6 @@
 import unittest
 
-from phylogenetics import UltrametricTree
+from ...phylogenetics import UltrametricTree
 
 
 class test_UltrametricTree(unittest.TestCase):

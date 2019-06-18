@@ -1,7 +1,7 @@
 import unittest
 
-from bioseq import Protein
-from bioseq import Seq
+from ...bioseq import Protein
+from ...bioseq import Seq
 
 
 class test_Protein(unittest.TestCase):

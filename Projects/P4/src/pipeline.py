@@ -1,6 +1,6 @@
-from bioseq import BioSeq, Seq, Dna, Rna, Protein
-from seq_align import MyBlast, MultipleAlignment, SubstMatrix
-from phylogenetics import UPGMA, MyGraph
+from .bioseq import BioSeq, Seq, Dna, Rna, Protein
+from .seq_align import MyBlast, MultipleAlignment, SubstMatrix
+from .phylogenetics import UPGMA, MyGraph
 import re
 
 
@@ -39,6 +39,8 @@ class Pipeline:
         if sub_mat_file != None:
             self.align_config =\
                 (SubstMatrix.read_submat_file(sub_mat_file), gap)
+        else:
+            self.align_config = (None, gap)
 
         self.cut = cut
 
@@ -140,8 +142,3 @@ class Pipeline:
 
         # Printing the Graph and its Metrics
         g.print_graph_and_metrics()
-
-
-if __name__ == '__main__':
-    p = Pipeline('tests/files/source.fasta', 'tests/files/seqdump.txt', 10, 'tests/files/blosum62.mat')
-    p.execute()

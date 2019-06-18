@@ -1,6 +1,6 @@
 import unittest
 
-from phylogenetics import NumMatrix
+from ...phylogenetics import NumMatrix
 
 
 class test_NumMatrix(unittest.TestCase):

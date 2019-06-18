@@ -1,7 +1,7 @@
 import unittest
 
-from bioseq import NucleotideChain
-from bioseq import BioSeq
+from ...bioseq import NucleotideChain
+from ...bioseq import BioSeq
 
 
 class test_NucleotidicChain(unittest.TestCase):
@@ -21,7 +21,7 @@ class test_NucleotidicChain(unittest.TestCase):
         print('>> Passed NucleotidicChain::test_validate()')
 
         # seq.csv contains a DNA sequence
-        rna.read_sequence('tests/files/seq.csv')
+        rna.read_sequence('src/tests/files/seq.csv')
         self.assertFalse(rna.validate())
 
     def test_gc_percent(self):

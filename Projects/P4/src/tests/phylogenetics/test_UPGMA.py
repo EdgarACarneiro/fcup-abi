@@ -1,8 +1,8 @@
 import unittest
 
-from bioseq import Dna
-from seq_align import SubstMatrix
-from phylogenetics import UPGMA
+from ...bioseq import Dna
+from ...seq_align import SubstMatrix
+from ...phylogenetics import UPGMA
 
 
 class test_UPGMA(unittest.TestCase):

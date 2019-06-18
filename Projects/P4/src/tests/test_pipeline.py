@@ -1,11 +1,11 @@
 import unittest
 
-from pipeline import Pipeline
+from ..pipeline import Pipeline
 
 
 class test_pipeline(unittest.TestCase):
 
-    p = Pipeline('tests/files/source.fasta', 'tests/files/seqdump.txt', 10)
+    p = Pipeline('src/tests/files/source.fasta', 'src/tests/files/seqdump.txt', 10)
 
     def test__init__(self):
 
@@ -38,12 +38,12 @@ class test_pipeline(unittest.TestCase):
         print('>> Passed test_get_specie()')
 
     def test_change_alignment_settings(self):
-        self.assertEqual(self.p.align_data[1], -8)
+        self.assertEqual(self.p.align_config[1], -8)
 
         self.p.change_alignment_settings(None, -1)
 
-        self.assertEqual(self.p.align_data[1], -1)
-        self.assertEqual(self.p.align_data[0], None)
+        self.assertEqual(self.p.align_config[1], -1)
+        self.assertEqual(self.p.align_config[0], None)
 
         print('>> Passed test_change_alignment_settings()')
 

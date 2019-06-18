@@ -1,6 +1,6 @@
 import unittest
 
-from phylogenetics import MyGraph, NumMatrix
+from ...phylogenetics import MyGraph, NumMatrix
 
 
 class test_MyGraph(unittest.TestCase):

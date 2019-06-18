@@ -1,10 +1,10 @@
 import unittest
 
-from seq_align import SubstMatrix
+from ...seq_align import SubstMatrix
 
 class test_SubstMatrix(unittest.TestCase):
 
-    sm = SubstMatrix.read_submat_file('tests/files/blosum62.mat')
+    sm = SubstMatrix.read_submat_file('src/tests/files/blosum62.mat')
 
     def test_read_submat(self):
         # Choosing random elements to check if sm is loaded correctly

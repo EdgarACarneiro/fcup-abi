@@ -1,4 +1,4 @@
-from seq_align.SeqAlign import pretty_matrix,\
+from .SeqAlign import pretty_matrix,\
     global_align_multiple_solutions,\
     recover_global_align_multiple_solutions,\
     local_align_multiple_solutions,\
@@ -8,7 +8,7 @@ from seq_align.SeqAlign import pretty_matrix,\
     compare_pairwise_global_align,\
     compare_pairwise_local_align,\
     align_query
-from seq_align.SubstMatrix import SubstMatrix
-from seq_align.MyBlast import MyBlast
-from seq_align.MyAlign import MyAlign
-from seq_align.MultipleAlignment import MultipleAlignment
+from .SubstMatrix import SubstMatrix
+from .MyBlast import MyBlast
+from .MyAlign import MyAlign
+from .MultipleAlignment import MultipleAlignment

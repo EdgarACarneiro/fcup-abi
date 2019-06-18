@@ -1,9 +1,9 @@
 import unittest
 
-from bioseq import BioSeq
-from bioseq import Dna
-from bioseq import Rna
-from bioseq import Protein
+from ...bioseq import BioSeq
+from ...bioseq import Dna
+from ...bioseq import Rna
+from ...bioseq import Protein
 
 
 class test_BioSeq(unittest.TestCase):
@@ -20,7 +20,7 @@ class test_BioSeq(unittest.TestCase):
 
     def test_read_fasta_file(self):
         # TP53 AND "Homo sapiens"
-        fasta = BioSeq.read_fasta_file('tests/files/sequence.fasta')
+        fasta = BioSeq.read_fasta_file('src/tests/files/sequence.fasta')
         self.assertEqual(len(fasta), 15)
         self.assertEqual(list(fasta.keys())[2], "NM_001126113.2 Homo sapiens tumor protein p53 (TP53), transcript variant 4, mRNA")
 

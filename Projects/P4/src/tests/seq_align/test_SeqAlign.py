@@ -1,7 +1,7 @@
 import unittest
 
-from bioseq import BioSeq
-from seq_align import SubstMatrix,\
+from ...bioseq import BioSeq
+from ...seq_align import SubstMatrix,\
     pretty_matrix,\
     global_align_multiple_solutions,\
     recover_global_align_multiple_solutions,\
@@ -16,7 +16,7 @@ from seq_align import SubstMatrix,\
 
 class test_SeqAlign(unittest.TestCase):
 
-    sm = SubstMatrix.read_submat_file('tests/files/blosum62.mat')
+    sm = SubstMatrix.read_submat_file('src/tests/files/blosum62.mat')
     sm_dna = SubstMatrix.create_submat("ACGT", 1, -1)
 
     seq1 = 'GATTACA'
@@ -88,7 +88,7 @@ class test_SeqAlign(unittest.TestCase):
         self.assertTrue('GCAT-GCT' in seq2_alignments)
         self.assertTrue('GCATG-CT' in seq2_alignments)
 
-        seqs = BioSeq.read_fasta_file('tests/files/protein_sequences.fas')
+        seqs = BioSeq.read_fasta_file('src/tests/files/protein_sequences.fas')
         _, ga_trace = global_align_multiple_solutions(
             seqs['sp|C1F111'], seqs['sp|B7JC18'], self.sm, -3)
         rga = recover_global_align_multiple_solutions(
@@ -157,7 +157,7 @@ class test_SeqAlign(unittest.TestCase):
 
         self.assertEqual(rga, [['AT', 'AT'], ['CA', 'CA']])
 
-        seqs = BioSeq.read_fasta_file('tests/files/protein_sequences.fas')
+        seqs = BioSeq.read_fasta_file('src/tests/files/protein_sequences.fas')
         ga_score, ga_trace, _ = local_align_multiple_solutions(
             seqs['sp|C1F111'], seqs['sp|B7JC18'], self.sm, -3)
         rga = recover_local_align_multiple_solutions(
@@ -170,7 +170,7 @@ class test_SeqAlign(unittest.TestCase):
 
     def test_compare_pairwise_global_align(self):
         seqs = list(BioSeq.read_fasta_file(
-            'tests/files/protein_sequences.fas').values())
+            'src/tests/files/protein_sequences.fas').values())
         cga = compare_pairwise_global_align(seqs, self.sm, -3)
 
         # Some random values
@@ -184,7 +184,7 @@ class test_SeqAlign(unittest.TestCase):
 
     def test_compare_pairwise_local_align(self):
         seqs = list(BioSeq.read_fasta_file(
-            'tests/files/protein_sequences.fas').values())
+            'src/tests/files/protein_sequences.fas').values())
         cla = compare_pairwise_local_align(seqs, self.sm, -3)
 
         # Some random values
@@ -198,7 +198,7 @@ class test_SeqAlign(unittest.TestCase):
 
     def test_compare_pairwise_num_global_align(self):
         seqs = list(BioSeq.read_fasta_file(
-            'tests/files/protein_sequences.fas').values())
+            'src/tests/files/protein_sequences.fas').values())
         cga = compare_pairwise_num_global_align(seqs, self.sm, -3)
 
         # Some random values
@@ -212,7 +212,7 @@ class test_SeqAlign(unittest.TestCase):
 
     def test_compare_pairwise_num_local_align(self):
         seqs = list(BioSeq.read_fasta_file(
-            'tests/files/protein_sequences.fas').values())
+            'src/tests/files/protein_sequences.fas').values())
         cla = compare_pairwise_num_local_align(seqs, self.sm, -3)
 
         # Some random values
@@ -227,7 +227,7 @@ class test_SeqAlign(unittest.TestCase):
     def test_align_query(self):
         query_seq, * \
             seqs = list(BioSeq.read_fasta_file(
-                'tests/files/protein_sequences.fas').values())
+                'src/tests/files/protein_sequences.fas').values())
         align, max_score = align_query(query_seq, seqs, self.sm, -3)
 
         self.assertTrue('VYT-RPLARLVEQLQR-LPGIGP' in align[0])

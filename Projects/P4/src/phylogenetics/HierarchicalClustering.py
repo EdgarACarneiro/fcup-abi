@@ -1,4 +1,4 @@
-from phylogenetics import UltrametricTree, NumMatrix
+from . import UltrametricTree, NumMatrix
 
 
 class HierarchicalClustering:

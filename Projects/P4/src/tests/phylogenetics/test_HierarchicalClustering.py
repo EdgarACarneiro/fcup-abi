@@ -1,6 +1,6 @@
 import unittest
 
-from phylogenetics import HierarchicalClustering, NumMatrix
+from ...phylogenetics import HierarchicalClustering, NumMatrix
 
 
 class test_HierarchicalClustering(unittest.TestCase):

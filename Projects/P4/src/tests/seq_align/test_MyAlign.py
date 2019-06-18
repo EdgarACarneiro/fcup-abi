@@ -1,7 +1,7 @@
 import unittest
 
-from bioseq import Protein
-from seq_align import MyAlign
+from ...bioseq import Protein
+from ...seq_align import MyAlign
 
 
 class test_MyAlign(unittest.TestCase):

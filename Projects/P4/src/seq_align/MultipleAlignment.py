@@ -1,5 +1,5 @@
-from bioseq import Seq, BioSeq
-from seq_align import MyAlign, SubstMatrix
+from ..bioseq import Seq, BioSeq
+from ..seq_align import MyAlign, SubstMatrix
 
 
 class MultipleAlignment():
