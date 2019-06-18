@@ -11,6 +11,7 @@ class Pipeline:
     # Used list instead of dict since order is important
     database: [(str, Seq)]
     cut: float
+    align_data: (SubstMatrix, float)
 
     TOP = 10
 
@@ -34,6 +35,9 @@ class Pipeline:
 
         self.database = list(map(
             lambda k: (k, db_fasta[k]), db_fasta.keys()))
+
+        self.align_data = (SubstMatrix.read_submat_file(
+            "tests/files/blosum62.mat"), -8)
 
         self.cut = cut
 
@@ -68,6 +72,12 @@ class Pipeline:
             if v == seq:
                 return Pipeline.get_specie_from_id(k)
 
+    def change_alignment_settings(self, subst_mat, gap):
+        """Change the settings used in the alignment:
+        (SubsMatrix and gap penalty)"""
+        self.align_data = (subst_mat, gap)
+
+
     def execute(self):
         """Execute the Pipeline"""
         print("\n\t:::Step 1 - Create copy database without similar specie sequences:::\n")
@@ -96,13 +106,9 @@ class Pipeline:
         best_seqs = [self.query_seq] + list(map(
             lambda align: db_seqs[align[4]], top_alignments))
 
-        # Substitution Matrix and Gap penalty
-        align_data = (SubstMatrix.read_submat_file(
-            "tests/files/blosum62.mat"), -1)
-
         print("\n\t:::Step 3 - Running MSA with the respective top alignments:::\n")
         # Multiple Sequence Alignment
-        msa = MultipleAlignment(best_seqs, align_data).align_consensus()
+        msa = MultipleAlignment(best_seqs, self.align_data).align_consensus()
 
         # Printing the Multiple Sequence Alignemnt
         print("Multiple Sequence Alignment Result:\n")
@@ -111,7 +117,7 @@ class Pipeline:
 
         print("\n\t:::Step 4 - Obtaining the Ultrametric Tree from the top alignments:::\n")
         # Producing the Ultrametric Tree
-        upgma = UPGMA(best_seqs, align_data)
+        upgma = UPGMA(best_seqs, self.align_data)
         tree = upgma.run()
 
         # Printing the tree with a mapping for the species
@@ -127,9 +133,9 @@ class Pipeline:
         g = MyGraph.create_from_num_matrix(upgma.dists_mat, self.cut)
 
         # Printing the Graph Edges
-        print("Nodes of the created Network:")
+        print("  Nodes of the created Network:")
         print(g.get_nodes())
-        print("Edges of the created Network:")
+        print("  Edges of the created Network:")
         print(g.get_edges())
         print()
 

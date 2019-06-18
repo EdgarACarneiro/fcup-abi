@@ -1,6 +1,6 @@
 import unittest
 
-from phylogenetics import MyGraph
+from phylogenetics import MyGraph, NumMatrix
 
 
 class test_MyGraph(unittest.TestCase):
@@ -73,6 +73,20 @@ class test_MyGraph(unittest.TestCase):
         self.assertEqual(self.gr.mean_clustering_coef(), 0.5833333333333333)
 
         print('>> Passed test_clustering()')
+
+    def test_create_from_num_matrix(self):
+        mat = NumMatrix(4, 4)
+        mat.set_value(0, 1, 1)
+        mat.set_value(1, 2, 5)
+        mat.set_value(1, 3, 7)
+
+        gr3 = MyGraph.create_from_num_matrix(mat, 6)
+        self.assertEqual(
+            gr3.get_edges(),
+            [(1, 0), (2, 0), (2, 1), (3, 0), (3, 2)])
+        self.assertTrue((1, 3) not in gr3.get_edges())
+
+        print('>> Passed test_create_from_num_matrix()')
 
 
 if __name__ == '__main__':

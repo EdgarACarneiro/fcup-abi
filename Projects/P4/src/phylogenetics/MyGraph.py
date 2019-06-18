@@ -3,6 +3,8 @@ class MyGraph:
     Keys are vertices.
     Values of the dictionary represent the list of adjacent vertices of the key node"""
 
+    graph: dict
+
     def __init__(self, g={}):
         """Constructor - takes dictionary to fill the graph as input; default is empty dictionary"""
         self.graph = g
@@ -10,14 +12,14 @@ class MyGraph:
     @staticmethod
     def create_from_num_matrix(mat, cut):
         """Create a graph from the given NumMatrix and a cut value"""
-        g = MyGraph()
+        new_gr = MyGraph(g={})
 
         for i in range(mat.num_rows()):
             for j in range(mat.num_rows()):
                 if i > j and mat[i][j] < cut:
-                    g.add_edge(i, j)
+                    new_gr.add_edge(i, j)
 
-        return g
+        return new_gr
 
     def print_graph(self):
         """Prints the content of the graph as adjacency list"""
