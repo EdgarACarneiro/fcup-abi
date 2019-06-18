@@ -61,6 +61,11 @@ class MyAlign:
         """Returns list of sequences separated by '\n'"""
         return "".join(["\n%s" % seq for seq in self.list_seqs])
 
+    def pretty_print(self):
+        """Pretty print of the Alignment"""
+        for idx, seq in enumerate(self.list_seqs):
+            print('%d. %s\n' % (idx, seq))
+
     def get_seqs(self):
         """Get the list of sequences"""
         return self.list_seqs

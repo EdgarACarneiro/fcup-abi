@@ -37,23 +37,28 @@ class UltrametricTree:
 
         return res
 
-    def print_tree(self):
-        """Print the tree"""
-        self.__print_tree_rec(0, "Root")
+    def print_tree(self, mapping=None):
+        """Print the tree using the given mapping for the leaf's values"""
+        self.__print_tree_rec(0, "Root", mapping=mapping)
 
-    def __print_tree_rec(self, level, side):
-        """Auxiliary recursive function to help print the tree"""
+    def __print_tree_rec(self, level, side, mapping):
+        """Auxiliary recursive function to help print the tree with the mapping"""
         tabs = ""
         for i in range(level):
             tabs += "\t"
+
         if self.value >= 0:
-            print(tabs, side, " - value:", self.value)
+            if mapping == None:
+                print(tabs, side, " - value:", self.value)
+            else:
+                print(tabs, "%s:" % side, mapping[self.value])
+
         else:
             print(tabs, side, "- Dist.: ", self.distance)
             if (self.__has_left_sibling()):
-                self.left.__print_tree_rec(level+1, "Left")
+                self.left.__print_tree_rec(level+1, "Left", mapping)
             if (self.__has_right_sibling()):
-                self.right.__print_tree_rec(level+1, "Right")
+                self.right.__print_tree_rec(level+1, "Right", mapping)
 
     def size(self):
         """size of the tree: returns two values
