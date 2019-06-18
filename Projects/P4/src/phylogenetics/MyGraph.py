@@ -7,6 +7,18 @@ class MyGraph:
         """Constructor - takes dictionary to fill the graph as input; default is empty dictionary"""
         self.graph = g
 
+    @staticmethod
+    def create_from_num_matrix(mat, cut):
+        """Create a graph from the given NumMatrix and a cut value"""
+        g = MyGraph()
+
+        for i in range(mat.num_rows()):
+            for j in range(mat.num_rows()):
+                if i > j and mat[i][j] < cut:
+                    g.add_edge(i, j)
+
+        return g
+
     def print_graph(self):
         """Prints the content of the graph as adjacency list"""
         for v in self.graph.keys():

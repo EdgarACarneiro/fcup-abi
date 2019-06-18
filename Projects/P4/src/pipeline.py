@@ -1,6 +1,6 @@
 from bioseq import BioSeq, Seq, Dna, Rna, Protein
 from seq_align import MyBlast, MultipleAlignment, SubstMatrix
-from phylogenetics import UPGMA
+from phylogenetics import UPGMA, MyGraph
 import re
 
 
@@ -8,9 +8,16 @@ class Pipeline:
 
     query_seq: Seq
     query_id: str
-    database: [(str, Seq)] # Used list instead of dict since order is important
+    # Used list instead of dict since order is important
+    database: [(str, Seq)]
+    cut: float
 
-    def __init__(self, input_fasta, database_fasta):
+    TOP = 10
+
+    def __init__(self, input_fasta, database_fasta, cut):
+        """input_fasta: file with the query fasta.
+        database_fasta: file with the fastas that will be the database.
+        cut: maximum distance accepted in graph creation"""
         fasta_dic = BioSeq.read_fasta_file(input_fasta)
 
         if len(fasta_dic) != 1:
@@ -27,6 +34,8 @@ class Pipeline:
 
         self.database = list(map(
             lambda k: (k, db_fasta[k]), db_fasta.keys()))
+
+        self.cut = cut
 
     @staticmethod
     def infer_type(seq):
@@ -61,20 +70,26 @@ class Pipeline:
 
     def execute(self):
         """Execute the Pipeline"""
+        print("\n\t:::Step 1 - Create copy database without similar specie sequences:::\n")
         # Create copy database without similar species
         db_copy = [(_id, seq)
                    for _id, seq in self.database
                    if Pipeline.get_specie_from_id(_id) !=
                    self.get_specie()]
 
+        print("\n\t:::Step 2 - Running Blast and getting top alignments:::\n")
         # Creating Blast and populating its database
         blast = MyBlast()
         for _, seq in db_copy:
             blast.add_sequence_database(str(seq))
 
         # Top 10 Alignments
-        top_alignments = blast.best_alignments(str(self.query_seq), 50)
-        print([(self.get_specie_from_seq(db_copy[a[4]][1]), a[3]) for a in top_alignments])
+        top_alignments = blast.best_alignments(str(self.query_seq), self.TOP)
+
+        # Printing Top Alignments
+        print("Top %d Alignments obtained from Blast" % self.TOP)
+        for al in top_alignments:
+            print(al)
 
         # Mapping the top alignments into the correspondent sequences
         db_seqs = [val for _, val in db_copy]
@@ -85,6 +100,7 @@ class Pipeline:
         align_data = (SubstMatrix.read_submat_file(
             "tests/files/blosum62.mat"), -1)
 
+        print("\n\t:::Step 3 - Running MSA with the respective top alignments:::\n")
         # Multiple Sequence Alignment
         msa = MultipleAlignment(best_seqs, align_data).align_consensus()
 
@@ -93,6 +109,7 @@ class Pipeline:
         msa.pretty_print()
         print()
 
+        print("\n\t:::Step 4 - Obtaining the Ultrametric Tree from the top alignments:::\n")
         # Producing the Ultrametric Tree
         upgma = UPGMA(best_seqs, align_data)
         tree = upgma.run()
@@ -105,10 +122,19 @@ class Pipeline:
         })
         print()
 
-        # 
+        print("\n\t:::Step 5 - Creating Graph using UPGMA distance matrix and cut value of %d:::\n" % self.cut)
+        # Creating Graph from distance matrix with the given cut value
+        g = MyGraph.create_from_num_matrix(upgma.dists_mat, self.cut)
+
+        # Printing the Graph Edges
+        print("Nodes of the created Network:")
+        print(g.get_nodes())
+        print("Edges of the created Network:")
+        print(g.get_edges())
+        print()
 
 
 if __name__ == '__main__':
-    p = Pipeline('tests/files/source.fasta', 'tests/files/seqdump.txt')
+    p = Pipeline('tests/files/source.fasta', 'tests/files/seqdump.txt', 10)
     p.execute()
     # print(p.database)
