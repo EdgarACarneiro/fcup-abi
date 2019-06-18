@@ -248,7 +248,7 @@ class MyGraph:
 
     def print_graph_and_metrics(self):
         """Print this graph and its metrics"""
-        print("GRAPH:")
+        print("\tGRAPH:")
         print("Graph nodes:\n\t", self.get_nodes())
         print("\nGraph edges:\n\t Edge")
         for e in self.get_edges():
@@ -266,3 +266,4 @@ class MyGraph:
         for k, v in self.all_clustering_coefs().items():
             print("\t", k, "-", v)
         print("\nMean Clustering Coefficient:", self.mean_clustering_coef())
+        print('\n')

@@ -21,7 +21,7 @@ if __name__ == '__main__':
     wait_input()
 
     p = Pipeline('src/tests/files/source.fasta',
-                 'src/tests/files/seqdump.txt', 10)
+                 'src/tests/files/seqdump.txt', [10])
 
     print("As you can see, our query sequence is:\n\t >> %s\n\t%s" %
           (p.query_id, p.query_seq.get_seq()))
@@ -133,22 +133,22 @@ if __name__ == '__main__':
     print("First, lets see a tree with a cut value of 10!")
     wait_input()
 
-    print("\n\t:::Step 5 - Creating Graph using UPGMA distance matrix and cut value of %d:::\n" % p.cut)
-    g = MyGraph.create_from_num_matrix(upgma.dists_mat, p.cut)
+    print("\n\t:::Step 5 - Creating Graph using UPGMA distance matrix and cut values %s:::\n" % str([10, 5, 15]))
+    g = MyGraph.create_from_num_matrix(upgma.dists_mat, p.cut[0])
     g.print_graph_and_metrics()
     wait_input()
 
     print("Now lets see how the graph we get from cut 15 looks like!")
     wait_input()
-    p.cut = 15
-    g = MyGraph.create_from_num_matrix(upgma.dists_mat, p.cut)
+    p.cut = [15]
+    g = MyGraph.create_from_num_matrix(upgma.dists_mat, p.cut[0])
     g.print_graph_and_metrics()
     wait_input()
 
     print("And what about cut 5?")
     wait_input()
-    p.cut = 5
-    g = MyGraph.create_from_num_matrix(upgma.dists_mat, p.cut)
+    p.cut = [5]
+    g = MyGraph.create_from_num_matrix(upgma.dists_mat, p.cut[0])
     g.print_graph_and_metrics()
     wait_input()
 
@@ -161,9 +161,9 @@ if __name__ == '__main__':
     wait_input()
 
     print("First we create and setup the Pipeline:")
-    print("             #fasta_query_filename          #fasta_database_filename       #cut #subst_matrix_filename        #gap penalty")
-    print("p = Pipeline('src/tests/files/source.fasta', 'src/tests/files/seqdump.txt', 10, 'src/tests/files/blosum62.mat', -8)")
-    p = Pipeline('src/tests/files/source.fasta', 'src/tests/files/seqdump.txt', 10, 'src/tests/files/blosum62.mat', -8)
+    print("             #fasta_query_filename          #fasta_database_filename       #cut values   #subst_matrix_filename        #gap penalty")
+    print("p = Pipeline('src/tests/files/source.fasta', 'src/tests/files/seqdump.txt', [10, 5, 15], 'src/tests/files/blosum62.mat', -8)")
+    p = Pipeline('src/tests/files/source.fasta', 'src/tests/files/seqdump.txt', [10, 5, 15], 'src/tests/files/blosum62.mat', -8)
     wait_input()
 
     print("And now we run our Pipeline with: p.execute().\nHere is the output:\n")

@@ -5,15 +5,20 @@ import re
 
 
 class Pipeline:
+    """Class responsible for implementing the Pipeline of automatic sequence analysis.´
+    First setup the Class using the constructor its methods or by changing the attributes.
+    Then, run the pipeline with the execute method."""
 
     query_seq: Seq
     query_id: str
     # Used list instead of dict since order is important
     database: [(str, Seq)]
-    cut: float
+    cut: [float]
     align_config: (SubstMatrix, float)
 
+    # Pipeline changeable configs
     TOP = 10
+    WORD_SIZE = 3
 
     def __init__(self, input_fasta, database_fasta, cut, sub_mat_file=None, gap=-8):
         """input_fasta: file with the query fasta.
@@ -96,7 +101,7 @@ class Pipeline:
 
         print("\n\t:::Step 2 - Running BLAST and getting top alignments:::\n")
         # Creating Blast and populating its database
-        blast = MyBlast()
+        blast = MyBlast(word_size=self.WORD_SIZE)
         for _, seq in db_copy:
             blast.add_sequence_database(str(seq))
 
@@ -141,9 +146,11 @@ class Pipeline:
         })
         print()
 
-        print("\n\t:::Step 5 - Creating Graph using UPGMA distance matrix and cut value of %d:::\n" % self.cut)
-        # Creating Graph from distance matrix with the given cut value
-        g = MyGraph.create_from_num_matrix(upgma.dists_mat, self.cut)
+        print("\n\t:::Step 5 - Creating Graph using UPGMA distance matrix and cut values %s:::\n" % str(self.cut))
+        for c in self.cut:
+            # Creating Graph from distance matrix with the given cut value
+            g = MyGraph.create_from_num_matrix(upgma.dists_mat, c)
 
-        # Printing the Graph and its Metrics
-        g.print_graph_and_metrics()
+            # Printing the Graph and its Metrics
+            print("Cut value: %s\n" % str(c))
+            g.print_graph_and_metrics()

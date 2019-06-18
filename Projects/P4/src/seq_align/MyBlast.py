@@ -63,10 +63,6 @@ class MyBlast:
 
         return res
 
-    # TODO Develop a variation of the getHits function that allows
-    # for mismatches. It should allow at most 1 mismatch and return
-    # all hits that have w or w-1 matches.
-
     def extends_hit(self, target, hit, query):
         """Extend the hits found in get_hits(), in both directions while:
         increase in score is >= positions in tht extension / 2"""
