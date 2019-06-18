@@ -89,6 +89,11 @@ class Pipeline:
                    if Pipeline.get_specie_from_id(_id) !=
                    self.get_specie()]
 
+        # Print Copy Database Info
+        print("Correspondent species of sequences in copy Database:")
+        for _id, _ in db_copy:
+            print("\t%s" % Pipeline.get_specie_from_id(_id))
+
         print("\n\t:::Step 2 - Running BLAST and getting top alignments:::\n")
         # Creating Blast and populating its database
         blast = MyBlast()

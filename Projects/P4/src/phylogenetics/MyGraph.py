@@ -218,7 +218,7 @@ class MyGraph:
         return sum([self.distance(i, j)
                     for j in self.get_nodes()
                     for i in self.get_nodes()
-                    if j > i and self.distance(i, j) != None]) / num_nodes
+                    if self.distance(i, j) != None]) / num_nodes
 
     # clustering
 

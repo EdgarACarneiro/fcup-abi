@@ -47,31 +47,3 @@ class SubstMatrix:
                    for i in alphabet for j in alphabet}
 
         return new_sm
-
-
-def test1():
-    sm = SubstMatrix()
-    sm.read_submat_file("blosum62.mat", "\t")
-    print(sm.alphabet)
-    print(sm.score_pair("G", "M"))
-    print(sm.score_pair("W", "W"))
-    print(sm.score_pair("A", "S"))
-    print(sm.score_pair("X", "X"))
-    print(sm["G", "K"])
-    print(sm["T", "T"])
-
-
-def test2():
-    sm = SubstMatrix()
-    sm.create_submat(3, -1, "ACGU")
-    print(sm.alphabet)
-    print(sm.score_pair("A", "A"))
-    print(sm.score_pair("A", "U"))
-    print(sm.score_pair("T", "T"))
-    print(sm["G", "G"])
-
-
-if __name__ == "__main__":
-    test1()
-    print()
-    test2()
