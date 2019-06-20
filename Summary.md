@@ -2,7 +2,110 @@
 
 ## Molecular Biology Concepts
 
-BioinformaticsAlgorithms.C2a.pdf
+Evolution has three main components:
+* __Inheritance__
+    * Passage of characteristics from parents to offspring.
+    * Determines most of the structure and functions of the organism.
+    * The amount of variation passed from one generation to the next one is very small.
+* __Variation__
+    * Occurs with mutations, sexual recombination, random changes of genetic
+material.
+* __Selection__
+    * Reflects the fitness of the organism to adapt to the medium.
+    * This fitness capacity is expressed through reproduction, i.e. parents transmit their fitness to their offspring.
+
+__Phylogenetics__ is the division of biology that studies evolutionary divergence and relationship between organisms, based on two important important concepts:
+* __Similarity__: Measures the resemblance and differences between organisms without taking
+into account any contextualization.
+* __Homology__: Investigates the common ground between the organisms and if they share any
+ancestral characteristics. Find the point in the evolutionary tree that they started to diverge.
+
+> The Micro perspective: The cell
+
+The cell is the unit of life. Each cell derives from another cell and contains all the necessary information to replicate itself. All cells have some common features, such as its composition (70% water, 23 % macro-molecules and 7% small molecules).
+
+Organisms are categorized according to their cell type:
+* __Prokaryotes__
+    * No nucleus or internal membranes.
+    * Lacks other membrane-bound organelles.
+* __Eukaryotes__
+    * Nucleus (membrane-enclosed DNA).
+    * Internal membranes.
+    * Organelles inside the cell that play different and specific roles.
+
+And according to the number of cells:
+* __Unicellular__
+    * _Prokaryotes_: Bacteria, Archaea.
+    * _Eukaryotes_: baker yeast.
+* __Multicellular__
+    * _Eukaryotes_: animals, plants, fungi
+
+> What defines a cell?
+
+* __Proteins__ perform most of the functions in the cell, they have catalytic and structural functions, from sensors and signaling to promoting chemical reactions (catalysis).
+* __Enzymes__ are proteins that convert cellular molecules in other types of molecules necessary for the functions of the cell, like generating energy.
+
+__DNA and RNA are composed of nucleic acids. Proteins are composed of amino- acids.__
+
+Other important organic molecules:
+* __Carbohydrates__, store energy (simple - immediate energy demands, complex - long term
+storage of energy).
+* __Lipids__, make part of the plasma membrane and also store energy and are involved in
+signaling.
+
+Other components of the cell:
+* __Mitochondria__ and Chloroplasts are cellular organelles involved in the production of energy.
+* __Ribosomes__ are large and complex molecules composed by a mixture of proteins and genetic
+material. Their function is to assemble proteins.
+
+Cells form tissues that themselves form organs, and eventually entire organisms.
+
+> Information transfer in the cell: nucleic acids
+
+Both DNA and RNA are polymers composed of four nucleic acid units, called __nucleotides__ or bases.
+* Adenyne (__A__) and Guanine (__G__), belong to one group (purynes).
+* Cytosine (__C__) and Timine (__T__) and Uracil (__U__), belong to another group (pyrimidine).
+
+Timine only exists in DNA and Uracil is only found in RNA, the other three bases exist in both.
+
+The DNA is composed of two complementary strands due to connections established between the bases in both strands.
+* **Adenine and Timine** (A == T), connected by two hydrogen connections
+* __Guanine and Cytosine__ (G === C), connected by three hydrogen connections
+
+Chains are __antiparallel__ because they are connected in opposite directions.
+
+> Genetic material
+
+* __Genome__: an organism’s genetic material (complete set of DNA).
+    * human genome has 24 distinct chromosomes.
+    * Each chromosome contains many genes.
+    * In __Prokaryotics__ existis in the form of a circular chromosome located in the cytoplasm.
+    * In __Eukaryotes__ is found in the nucleus and is tightly packaged into linear chromosomes.
+* __Gene__: a discrete units of hereditary information located on the chromosomes and consisting of DNA and encode instructions on how to make proteins.
+* __Genotype__: The genetic makeup of an organism.
+* __Phenotype__: the physical expressed traits of an organism.
+
+![Genetic material](https://i.imgur.com/xV6K7jh.png)
+
+> Protein Synthesis
+
+Cellular DNA contains instructions for building the various proteins the cell needs to survive:
+1. To manufacture these proteins, specific genes within its DNA must first be transcribed into molecules of mRNA;
+2. these transcripts must be translated into chains of amino acids,
+3. fold into fully functional proteins.
+
+In most eukaryotic genes, coding regions (__exons__) are interrupted by noncoding regions (__introns__). During transcription, the entire gene is copied into a pre-mRNA, which includes exons and introns. During the process of RNA splicing, introns are removed and exons joined to form a contiguous coding sequence. This "mature" mRNA is ready for translation.
+
+All cells in a multicellular organism contain the same set of genetic information
+(Genome).
+
+The differences in the abundance of the RNA (Transcriptome) determines the cell specificity.
+
+> Alternative Splicing
+
+Alternative splicing (AS), the process in which the exons of the pre-RNAs are spliced in different combinations to produce distinct mRNA that lead to structurally and functionally protein variants.
+
+Combinatorial splicing leads to the generation of of multiple isoforms from a single gene
 
 ---
 
@@ -314,7 +417,7 @@ The only available sequences are the __s1,s2 & s3__, and so we update our tree, 
      __|__           | 2.5        |
 1.5 |     | 1.5      |            |
     |     |          |            |
-   s1     s2         s3           |
+   s1     s2         s3           s4
 ```
 
 ---
