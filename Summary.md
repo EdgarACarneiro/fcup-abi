@@ -68,8 +68,8 @@ Both DNA and RNA are polymers composed of four nucleic acid units, called __nucl
 
 Timine only exists in DNA and Uracil is only found in RNA, the other three bases exist in both.
 
-The DNA is composed of two complementary strands due to connections established between the bases in both strands.
-* **Adenine and Timine** (A == T), connected by two hydrogen connections
+The DNA is composed of two complementary strands, in a double-helix structure, due to connections established between the bases in both strands.
+* __Adenine and Timine__ (A == T), connected by two hydrogen connections
 * __Guanine and Cytosine__ (G === C), connected by three hydrogen connections
 
 Chains are __antiparallel__ because they are connected in opposite directions.
@@ -90,8 +90,8 @@ Chains are __antiparallel__ because they are connected in opposite directions.
 > Protein Synthesis
 
 Cellular DNA contains instructions for building the various proteins the cell needs to survive:
-1. To manufacture these proteins, specific genes within its DNA must first be transcribed into molecules of mRNA;
-2. these transcripts must be translated into chains of amino acids,
+1. To manufacture these proteins, specific genes within its DNA must first be transcribed into molecules of mRNA (__Transcription__);
+2. these transcripts must be translated into chains of amino acids (__Translation__),
 3. fold into fully functional proteins.
 
 In most eukaryotic genes, coding regions (__exons__) are interrupted by noncoding regions (__introns__). During transcription, the entire gene is copied into a pre-mRNA, which includes exons and introns. During the process of RNA splicing, introns are removed and exons joined to form a contiguous coding sequence. This "mature" mRNA is ready for translation.
@@ -103,16 +103,24 @@ The differences in the abundance of the RNA (Transcriptome) determines the cell 
 
 > Alternative Splicing
 
-Alternative splicing (AS), the process in which the exons of the pre-RNAs are spliced in different combinations to produce distinct mRNA that lead to structurally and functionally protein variants.
+__Alternative splicing__ (AS), the process in which the exons of the pre-RNAs are spliced in different combinations to produce distinct mRNA that lead to structurally and functionally protein variants.
 
-Combinatorial splicing leads to the generation of of multiple isoforms from a single gene
+Combinatorial splicing leads to the generation of of multiple isoforms from a single gene.
 
 ---
 
 
 ## Basic Processing of Biological Sequences
 
-BioIinformaticsAlgorithms.C3.pdf
+> Open Reading Frames
+
+The translation of a protein sequence occurs for the coding region of the gene. This region start with a __start codon (ATG)__ and stops when one of the __stop codons__ is found.
+
+A __reading frame__ is a way of dividing a DNA (or RNA) sequence into a set of consecutive non-overlapping triplets or codons. Recall that a sequence may have 6 reading frames: 3 in one strand: +1, +2, +3 starting at position 1, 2 and 3 respectively of the sequence (in python strings at index 0, 1 and 2).
+
+An __open reading frame__ is a reading frame with the potential to be translated into protein (sarting with start codon - __M, Meteonin__ - and the stop codon - __A__).
+
+__Putative proteins__ are the result of analysing all open reading frames of a given DNA sequence.
 
 ---
 
@@ -486,4 +494,69 @@ Identification of hub nodes provides information on important properties of the 
 ---
 
 ## High-throughput sequencing applications
+
+> Sequencing Technologies
+
+Presents in slides the typical applications of massive (also called next-generation or high-throughput) sequencing technologies. 
+
+__DNA Sequencing__: process of determining the order of nucleotides in DNA.
+
+### Exercises
+
+> Exercise #1: __RPKM__ (Reads per KiloBase per Million):
+
+Is for single end RNA-sequencing.
+
+Notice that:
+* Sequencing runs with more depth will have more reads mapping to each gene.
+* Longer genes will have more reads mapping to them.
+
+__RPKM__ = 10^9 * #reads / ((Σ #reads) * Len)
+
+| gene | Len | Reads | __RPKM__ |
+|:----:|:---:|:-----:|:--------:|
+|   A  |   2 |    20 |          |
+|   B  |   3 |    10 |          |
+|   C  |   5 |    50 |          |
+|   D  |  10 |   100 |          |
+
+We can infer that gene A's __sequencing runs have more depth__ than gene B, since they have similar gene size but A #reads is _2x_ bigger.
+
+__Σ #reads__ = 20 + 10 + 50 + 100 = 180
+
+_Example A_ <=> _RPKM_ = 20 * 10^9/ (180 * 2) = 5 * 10^7
+
+| gene | Len | Reads | __RPKM__ |
+|:----:|:---:|:-----:|:--------:|
+|   A  |   2 |    20 |   5.5    |
+|   B  |   3 |    10 |   1.8    |
+|   C  |   5 |    50 |   5.5    |
+|   D  |  10 |   100 |   5.5    |
+
+> Exercise #3: Candidate mutations in sequencing read pile-up
+
+```json
+CGACGACGACGACGAATGATGTATTATCGAGCGAGCGGCAGATGCTA
+-----------------------------------------------
+CGACGACGACGACGAATGAT    TATCGAGCGCGCGGCAGATG
+ GACGACGACGACGAATGATG      CGAGCGCGCGGCAGATGCTA
+ GACGACGACGACGAACGATG      CGAGCGCGCGGCAGATGCTA
+         CGACGAACGATGTATTATCG
+            CGAACGATGTATTATCGAGC
+                   TGTATTATCGAGCGCGCGGC
+```
+
+Reads that do not match the reference genome:
+
+```json
+CGACGACGACGACGAATGATGTATTATCGAGCGAGCGGCAGATGCTA
+-----------------------------------------------
+CGACGACGACGACGAATGAT    TATCGAGCGCGCGGCAGATG
+ GACGACGACGACGAATGATG      CGAGCGCGCGGCAGATGCTA
+ GACGACGACGACGAACGATG      CGAGCGCGCGGCAGATGCTA
+         CGACGAACGATGTATTATCG
+            CGAACGATGTATTATCGAGC
+                   TGTATTATCGAGCGCGCGGC
+                ^                ^
+```
 
