@@ -235,6 +235,88 @@ __Clustering Algorithm__ (uses _Ultrametric Tree_):
 
 ![Clustering Algorithm](https://i.imgur.com/h3fs6c6.png)
 
+> Practical example of _UPGMA_:
+
+Having the sequences:
+```js
+s1 = A-CATATC-AT-
+s2 = A-GATATT-AG-
+s3 = AACAGATC-T--
+s4 = G-CAT--CGATT
+```
+
+Distance Matrix (using __Hamming Distances__):
+
+* __Iteration 0__
+
+|   | s1 | s2 | s3 | s4 |
+| -:|:--:|:--:|:--:|:--:|
+| s1|  0 |    |    |    |
+| s2|  3 |  0 |    |    |
+| s3|  4 |  6 |  0 |    |
+| s4|  5 |  8 |  9 |  0 |
+
+The most similar sequences are the __s1 & s2__, and so we start our tree, with the height being `3/2`:
+
+```js
+     ___
+1.5 |   | 1.5
+    |   |
+   s1   s2
+```
+
+Now, lets compute the new distance matrix, remembering that:
+
+![Imgur](https://i.imgur.com/olswI4A.png)
+
+|A| represents the cluster size of A, e.g. |_s1, s2_| = 2 and |_s1, s2, s3, s4_| = 4.
+
+* __Iteration 1__
+
+* d(_s1 U s2_), _s3_ = (1 * 4 + 1 * 6) / (1 + 1) = 5
+* d(_s1 U s2_), _s4_ = (1 * 5 + 1 * 8) / (1 + 1) = 6.5
+
+|       | s1, s2 | s3 | s4 |
+| -----:|:------:|:--:|:--:|
+| s1, s2|      0 |    |    |
+|     s3|      5 |  0 |    |
+|     s4|    6.5 |  9 |  0 |
+
+The most similar sequences are the __s1,s2 & s3__, and so we update our tree, with the height being `5/2`:
+
+```js
+        _____________
+  2.5  |             |
+     __|__           | 2.5
+1.5 |     | 1.5      |
+    |     |          |
+   s1     s2         s3
+```
+
+* __Iteration 2__
+
+* d(_(s1, s2) U s3_), _s4_ = (2 * 6,5 + 1 * 9) / (2 + 1) = 7.33
+
+|           | s1, s2, s3 | s4 |
+| ---------:|:----------:|:--:|
+| s1, s2, s3|          0 |    |
+|         s3|       7.33 |  0 |
+
+The only available sequences are the __s1,s2 & s3__, and so we update our tree, with the height being `7.33/2`:
+
+```js
+                         |
+               __________|________
+         3.66 |                   |
+              |                   |
+        ______|______             |
+  2.5  |             |            | 3.66
+     __|__           | 2.5        |
+1.5 |     | 1.5      |            |
+    |     |          |            |
+   s1     s2         s3           |
+```
+
 ---
 
 ## Graphs and Biological Networks
