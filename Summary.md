@@ -132,10 +132,17 @@ Examples where finding patterns might be useful:
 
 __Sequence motifs__ are relatively short sub-sequences, shared among several (related) sequences that are presumed to have a similar biological function.
 
-_Hamming distance_ between two sequences, with the same size, are the number of different characters between the 2 sequences.
+__Hamming distance__ between two sequences, with the same size, are the number of different characters between the 2 sequences.
 
-Improved search rules, that the _Booyer-Moore_ algorithm incldues:
-* __Bad-Character Rule:__ The search can advance the pattern to the next ocurrence of the symbol in the sequence at the position of the mismatch.
+Example, where Hamming distance is 3.
+```json
+Q:ATTACGAT
+    | | |
+T:ATCAGGTT
+```
+
+Improved search rules, that the _Booyer-Moore_ algorithm includes:
+* __Bad-Character Rule:__ The search can advance the pattern to the next occurrence of the symbol in the sequence at the position of the mismatch.
 * __Good Suffix Rule:__ In case of a mismatch we can move forward to the next instance in the pattern of the part (suffix) that matched before of the mismatch.
 
 ___Prosite___ is a database of protein families and domains. They analyze sets of related sequences to identify regions of sequence similarity. Prosite patterns are described using a syntax similar to the RE syntax:
@@ -199,22 +206,148 @@ Substitution matrices give a score for each substitution of one amino-acid by an
 
 In __pairwise sequence alignment__ we try to arrange two sequences so that the number of matching characters is maximised.
 
-__Dynamic Programming for Global Alignment:__ fill __score matrix__ cell by cell, using the value of adjacent cells to reach the target cell.
+> __Dynamic Programming for Global Alignment:__
+
+Fill the __score matrix__ cell by cell, using the value of adjacent cells to reach the target cell.
 ```python
 S[i][j] = max(S[i-1][j-1] + sm(a[i], b[j]), S[i-1][j] + g, S[i][j-1] + g) for all 0 < i <= n and 0 < j <= m
 ```
 Matrix is filled left to right and top to bottom. To calculate `S[i][j]` you need to have
 calculated: `S[i-1][j], S[i][j-1], S[i-1][j-1]`.
 
-Additionally, keep a __trace-back matrix__ (T) to keep all the possible optimal moves at each cell. From T, one can recover the optimal alignment - start from lower-right cell and trace-bacl to upper-left cell.
+* Iteration example 0:
 
-__Dynamic Programming for Local Alignment:__ find the best partial alignment of the sub-sequences from the 2 sequences.
+```python
+gap = -8
+seq1 = 'PHSWG'
+seq2 = 'HGWAG'
+```
+
+|     | gap |  H |  G  |  W  |  A  |  G  |
+|:---:|:---:|:--:|:---:|:---:|:---:|:---:|
+| gap |   0 | -8 | -16 | -24 | -32 | -40 |
+|   P |  -8 |    |     |     |     |     |
+|   H | -16 |    |     |     |     |     |
+|   S | -24 |    |     |     |     |     |
+|   W | -32 |    |     |     |     |     |
+|   G | -40 |    |     |     |     |     |
+
+Additionally, keep a __trace-back matrix__ (T) to keep all the possible optimal moves at each cell. From T, one can recover the optimal alignment - start from lower-right cell and trace-back to upper-left cell.
+
+> Trace-back example
+
+Assuming one has the trace-back matrix:
+
+```python
+DIAGONAL = 1
+VERTICAL = 2
+HORIZONTAL = 3
+```
+
+|     | gap | H | G | W | A | G |
+|:---:|:---:|:-:|:-:|:-:|:-:|:-:|
+| gap |   0 | 3 | 3 | 3 | 3 | 3 |
+|   P |   2 | 1 | 1 | 3 | 1 | 3 |
+|   H |   2 | 1 | 1 | 1 | 1 | 1 |
+|   S |   2 | 2 | 1 | 1 | 1 | 3 |
+|   W |   2 | 2 | 2 | 1 | 3 | 3 |
+|   G |   2 | 2 | 1 | 2 | 1 | 1 |
+
+We start at `TB[G][G]`. There we have a 1, so we must proceed in the diagonal to `TB[W][A]` so our sequences look like:
+```
+G
+G
+```
+Remember that since we are starting from the  bottom right and going to the upper left in a trace-back style, we must also fill our alignment sequences in the opposite natural order.
+
+Next, we find a 3 so we must move in the horizontal and reach `TB[W][W]`. Since we only decrease our column without decreasing the row, we are only moving through the second sequence. Our first sequence of the alignment will get a __gap__.
+```
+-G
+AG
+```
+Next we find 1 so we reach `TB[S][G]`.
+```
+W-G
+WAG
+```
+Next we have a 1 so we reach `TB[H][H]`.
+```
+SW-G
+GWAG
+```
+Next we find 1 so we reach `TB[P][gap]`.
+```
+HW-G
+HWAG
+```
+Next we find a 2, so we must move in the vertical and reach `TB[gap][gap]`. Since we only moved in the first sequence, the second sequence will get a __gap__.
+```
+PHW-G
+-HWAG
+```
+
+We have reached `TB[0][0]` and so we have finished!
+
+
+> __Dynamic Programming for Local Alignment:__
+
+Find the best partial alignment of the sub-sequences from the 2 sequences.
 ```python
 S[i][j] = max(S[i-1][j-1] + sm(a[i], b[j]), S[i-1][j] + g, S[i][j-1] + g, 0) for all 0 < i <= n and 0 < j <= m
 ```
 For the optimal alignment, one now starts in the cells with highest score.
 
 Now, the __trace-back matrix T contains 4 possible values__: three previous values and an extra value to the cases where the alignment is terminated (correspond to cells in S with 0).
+
+> Trace-back example
+
+Assuming we have the score matrix:
+
+|     | gap | H | G |  W |  A |  G |
+|:---:|:---:|:-:|:-:|:--:|:--:|:--:|
+| gap |   0 | 0 | 0 |  0 |  0 |  0 |
+|   P |   0 | 0 | 0 |  0 |  0 |  0 |
+|   H |   0 | 8 | 0 |  0 |  0 |  0 |
+|   S |   0 | 0 | 8 |  0 |  1 |  0 |
+|   W |   0 | 0 | 0 | 19 | 11 |  3 |
+|   G |   0 | 0 | 6 | 11 | 19 | 17 |
+
+And we have the correspondent trace-back matrix:
+
+|     | gap | H | G | W | A | G |
+|:---:|:---:|:-:|:-:|:-:|:-:|:-:|
+| gap |   0 | 0 | 0 | 0 | 0 | 0 |
+|   P |   0 | 0 | 0 | 0 | 0 | 0 |
+|   H |   0 | 1 | 0 | 0 | 0 | 0 |
+|   S |   0 | 0 | 1 | 0 | 1 | 0 |
+|   W |   0 | 0 | 0 | 1 | 3 | 3 |
+|   G |   0 | 0 | 1 | 2 | 1 | 1 |
+
+We start at the position of the cell with __maximum score__. In this case there are 2 cells with maximum score, so we will end up with 2 possible best alignments.
+
+* For _alignment\_one_, we start at `TB[G][A]` nd we have a 1 so we move diagonally to `TB[W][W]`. There we have a 1 as well so we move to `TB[S][G]`. Once again a 1, to `TB[H][H]`. Again a 1 to `TB[P][gap]` were we have a 0, so we stop. We end up with the alignment:
+```
+G
+A
+```
+```
+WG
+WA
+```
+```
+SWG
+GWA
+```
+```
+HSWG
+HGWA
+```
+
+* For _alignment\_two_ we start at `TB[W][W]` and then, form there, its actually the exact same alignment as _alignment\_one_, so:
+```
+HSW
+HGW
+```
 
 ---
 
@@ -505,7 +638,7 @@ __DNA Sequencing__: process of determining the order of nucleotides in DNA.
 
 > Exercise #1: __RPKM__ (Reads per KiloBase per Million):
 
-Is for single end RNA-sequencing.
+Used for single end RNA-sequencing.
 
 Notice that:
 * Sequencing runs with more depth will have more reads mapping to each gene.
