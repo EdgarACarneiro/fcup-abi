@@ -414,14 +414,13 @@ def get_hits (seq, m, w):
     return res
 ```
 
-__get_hits()__ allowing at most 1 mismatch, meaning returns all hits that have _w_ or _w-1_ matches:
+__get_hits()__ allowing at most 1 mismatch, meaning returns it all hits that have _w_ or _w-1_ matches:
  ```python
 def hamming_distance(seq1, seq2):
     assert len(seq1) == len(seq2), "Sequences can not have different lengths"
 
     return sum(
-        [1 for i in range(len(seq1))
-         if seq1[i] != seq2[i]]
+        [1 for i in range(len(seq1)) if seq1[i] != seq2[i]]
     )
 
 def get_hits (seq, m, w):
