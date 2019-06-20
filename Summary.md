@@ -325,7 +325,7 @@ And we have the correspondent trace-back matrix:
 
 We start at the position of the cell with __maximum score__. In this case there are 2 cells with maximum score, so we will end up with 2 possible best alignments.
 
-* For _alignment\_one_, we start at `TB[G][A]` nd we have a 1 so we move diagonally to `TB[W][W]`. There we have a 1 as well so we move to `TB[S][G]`. Once again a 1, to `TB[H][H]`. Again a 1 to `TB[P][gap]` were we have a 0, so we stop. We end up with the alignment:
+* For _alignment\_one_, we start at `TB[G][A]` nd we have a 1 so we move diagonally to `TB[W][W]`. There we have a 1 as well so we move to `TB[S][G]`. Once again a 1, to `TB[H][H]`. Again a 1 to `TB[P][gap]` were we have a 0, so we stop. We end up with the following alignment evolution:
 ```
 G
 A
@@ -360,11 +360,12 @@ Pairwise sequence alignment algorithms are not efficient enough (quadratic compl
 __BLAST__ can be used to infer functional and evolutionary relationships between sequences as well as help to identify members of gene families.
 
 BLAST Concepts:
-* __Query sequence__: sequence that will be processed with BLAST (we want to know more about).
+* __Query sequence__: sequence that will be processed with BLAST (to know more about).
 * __Target sequence__: sequence in the database that was matched with the query sequence.
-* __Dtabase (D)__: database of sequences where the search is done.
+* __Database (D)__: database of sequences where the search is done.
 
-BLAST in an heuristic approach based on the idea of _K-indexing_.
+BLAST is an heuristic approach based on the idea of _K-indexing_.
+
 _K-mer Indexing_ concepts:
 * __Database Pre-processing__: Scan every word of length __K__ and keep it in a hashmap.
 * __Query sequence scan__: scan every k-word in Query and get its location in the hashmap.
@@ -389,6 +390,55 @@ __BLAST__ can be __summarized__ in:
 4. Search in all sequences from the database, all occurrences of the words collected in the last step, which represent __matches (hits or seeds) of size w between the query and one of the database sequences__;
 5. Extend all hits from the last step, in both directions, while the score follows a given criterion (typically, the criterion is dependent on the size of the extension);
 6. Select the alignments in the previous step with highest scores, normalized for its size (these are named the __high-scoring pairs - HSPs__).
+
+> Consideration
+
+Notice however, that the teacher _MyBlast_ implementation only creates a hash table out of the query sequence - __build_map()__ function. Regarding the database, he iterates over it, calling the __get_hits()__ method for each stored sequence.
+
+> Exercises
+
+Original __get_hits()__ function:
+```python
+def get_hits (seq, m, w):
+    res = [] # list of tuples
+
+    for i in range(len(seq)-w+1):
+        subseq = seq[i:i+w]
+
+        if subseq in m:
+            l = m[subseq]
+
+            for ind in l:
+                res.append((ind, i))
+
+    return res
+```
+
+__get_hits()__ allowing at most 1 mismatch, meaning returns all hits that have _w_ or _w-1_ matches:
+ ```python
+def hamming_distance(seq1, seq2):
+    assert len(seq1) == len(seq2), "Sequences can not have different lengths"
+
+    return sum(
+        [1 for i in range(len(seq1))
+         if seq1[i] != seq2[i]]
+    )
+
+def get_hits (seq, m, w):
+    res = [] # list of tuples
+
+    for i in range(len(seq)-w+1):
+        subseq = seq[i:i+w]
+
+        for word in m.keys():
+            if haming_distance(subseq, word) <= 1:
+
+            for ind in m[word]:
+                if (ind, i) not in res: # No duplicates
+                    res.append((ind, i))
+
+    return res
+```
 
 ---
 
